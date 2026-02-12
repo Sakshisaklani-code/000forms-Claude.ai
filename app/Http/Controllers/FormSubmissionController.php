@@ -44,7 +44,10 @@ class FormSubmissionController extends Controller
 
         // Get form data
         $allData = $request->except(['_token']);
-        $internalFields = ['_gotcha', '_honeypot', '_subject', '_replyto', '_next', '_format', '_form_load_time'];
+        
+        // SIMPLE FIX: Only exclude honeypot and gotcha from submission data
+        // Keep _subject and _replyto in the data so email can use them
+        $internalFields = ['_gotcha', '_honeypot', '_next', '_format', '_form_load_time'];
         $submissionData = [];
         
         // Process regular fields - EXCLUDE file uploads
@@ -57,11 +60,11 @@ class FormSubmissionController extends Controller
             }
         }
 
-        // ✅ FILE UPLOAD HANDLING - Store file and metadata
+        // FILE UPLOAD HANDLING - Store file and metadata
         $uploadedFilePath = null;
         $uploadMetadata = null;
         
-        Log::info('🔍 FILE UPLOAD CHECK', [
+        Log::info('FILE UPLOAD CHECK', [
             'form_allows_upload' => $form->allow_file_upload ?? false,
             'has_upload_file' => $request->hasFile('upload'),
             'all_files' => array_keys($request->allFiles()),
@@ -87,7 +90,7 @@ class FormSubmissionController extends Controller
         }
         
         if ($uploadedFile && $uploadedFile->isValid()) {
-            Log::info('📎 File detected in field: ' . $uploadFieldName);
+            Log::info('File detected in field: ' . $uploadFieldName);
             
             // ============ FILE SIZE VALIDATION (Like FormSubmit.co) ============
             // Default max file size: 10MB (Free tier) - can be configurable per form
@@ -99,7 +102,7 @@ class FormSubmissionController extends Controller
             if ($fileSize > $maxFileSize) {
                 $maxSizeMB = $maxFileSize / 1024 / 1024;
                 $error = "File too large. Maximum size is {$maxSizeMB}MB. Your file: " . round($fileSize / 1024 / 1024, 2) . "MB";
-                Log::error('❌ ' . $error);
+                Log::error($error);
                 
                 return $this->errorResponse($request, $error, 422);
             }
@@ -133,19 +136,19 @@ class FormSubmissionController extends Controller
                 // Store metadata in submission data
                 $submissionData['upload'] = $uploadMetadata;
                 
-                Log::info('✅ FILE UPLOADED SUCCESSFULLY', [
+                Log::info('FILE UPLOADED SUCCESSFULLY', [
                     'original_name' => $uploadMetadata['name'],
                     'stored_as' => $uploadMetadata['filename'],
                     'size' => $uploadMetadata['size'] . ' bytes',
                 ]);
                 
             } catch (\Exception $e) {
-                Log::error('❌ Failed to store file: ' . $e->getMessage());
+                Log::error('Failed to store file: ' . $e->getMessage());
                 return $this->errorResponse($request, 'Failed to upload file. Please try again.', 500);
             }
             
         } else {
-            Log::info('ℹ️ No valid file uploaded');
+            Log::info('No valid file uploaded');
         }
 
         // Check for spam
@@ -173,7 +176,7 @@ class FormSubmissionController extends Controller
                 'spam_reason' => $spamCheck['is_spam'] ? implode(', ', $spamCheck['reasons']) : null,
             ]);
             
-            Log::info('✅ Submission created: ID ' . $submission->id);
+            Log::info('Submission created: ID ' . $submission->id);
         }
 
         // Update form stats
@@ -182,15 +185,18 @@ class FormSubmissionController extends Controller
         // Send email notification if not spam
         if (!$spamCheck['is_spam'] && $form->email_notifications) {
             try {
-                Log::info('📧 Preparing to send email', [
+                Log::info('Preparing to send email', [
+                    'to' => $form->recipient_email,
                     'has_attachment' => $uploadedFilePath !== null,
                     'attachment_name' => $uploadMetadata['name'] ?? null,
+                    'has_subject' => isset($submissionData['_subject']),
+                    'subject_value' => $submissionData['_subject'] ?? 'not set',
                 ]);
                 
                 // Pass the absolute file path directly to the mail class
                 $mail = new FormSubmissionMail(
                     $form, 
-                    $submissionData, 
+                    $submissionData, // This includes _subject and _replyto now
                     $submission,
                     $uploadedFilePath,  // Pass the actual file path
                     $uploadMetadata     // Pass metadata for display
@@ -209,7 +215,7 @@ class FormSubmissionController extends Controller
                     }));
                 }
                 
-                Log::info('📧 Sending email ' . ($uploadedFilePath ? 'WITH' : 'WITHOUT') . ' attachment');
+                Log::info('Sending email ' . ($uploadedFilePath ? 'WITH' : 'WITHOUT') . ' attachment');
                 
                 if (!empty($ccEmails)) {
                     Mail::to($form->recipient_email)->cc($ccEmails)->send($mail);
@@ -224,10 +230,10 @@ class FormSubmissionController extends Controller
                     ]);
                 }
                 
-                Log::info('✅ Email sent successfully to: ' . $form->recipient_email);
+                Log::info('Email sent successfully to: ' . $form->recipient_email);
                 
             } catch (\Exception $e) {
-                Log::error('❌ Failed to send email: ' . $e->getMessage());
+                Log::error('Failed to send email: ' . $e->getMessage());
                 Log::error('Stack trace: ' . $e->getTraceAsString());
             }
         }

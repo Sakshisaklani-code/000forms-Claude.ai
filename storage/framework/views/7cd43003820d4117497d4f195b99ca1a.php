@@ -1,23 +1,21 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Documentation - 000form'); ?>
 
-@section('title', 'Documentation - 000form')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <nav class="nav">
     <div class="nav-inner">
         <a href="/" class="nav-logo"><span>000</span>form</a>
         <ul class="nav-links">
             <li><a href="/#features">Features</a></li>
-            <li><a href="{{ route('docs') }}" style="color: var(--accent);">Docs</a></li>
-            <li><a href="{{ route('pricing') }}">Pricing</a></li>
+            <li><a href="<?php echo e(route('docs')); ?>" style="color: var(--accent);">Docs</a></li>
+            <li><a href="<?php echo e(route('pricing')); ?>">Pricing</a></li>
         </ul>
         <div class="nav-actions">
-            @auth
-                <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-ghost">Login</a>
-                <a href="{{ route('signup') }}" class="btn btn-primary">Get Started</a>
-            @endauth
+            <?php if(auth()->guard()->check()): ?>
+                <a href="<?php echo e(route('dashboard')); ?>" class="btn btn-primary">Dashboard</a>
+            <?php else: ?>
+                <a href="<?php echo e(route('login')); ?>" class="btn btn-ghost">Login</a>
+                <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary">Get Started</a>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
@@ -33,7 +31,7 @@
             <p class="text-muted mb-3">Get forms working in under 2 minutes:</p>
             
             <ol style="color: var(--text-secondary); padding-left: 1.5rem; line-height: 2;">
-                <li><a href="{{ route('signup') }}">Create an account</a> (free, no credit card)</li>
+                <li><a href="<?php echo e(route('signup')); ?>">Create an account</a> (free, no credit card)</li>
                 <li>Create a new form and note your endpoint URL</li>
                 <li>Point your HTML form's <code>action</code> attribute to your endpoint</li>
                 <li>That's it! Submissions go to your email and dashboard</li>
@@ -224,7 +222,7 @@
         
         <div class="text-center mt-4">
             <p class="text-muted mb-3">Ready to get started?</p>
-            <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">Create Free Account</a>
+            <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary btn-lg">Create Free Account</a>
         </div>
     </div>
 </div>
@@ -234,12 +232,14 @@
         <div class="footer-inner">
             <div class="nav-logo"><span>000</span>form</div>
             <ul class="footer-links">
-                <li><a href="{{ route('docs') }}">Documentation</a></li>
-                <li><a href="{{ route('pricing') }}">Pricing</a></li>
+                <li><a href="<?php echo e(route('docs')); ?>">Documentation</a></li>
+                <li><a href="<?php echo e(route('pricing')); ?>">Pricing</a></li>
                 <li><a href="mailto:support@000form.com">Support</a></li>
             </ul>
-            <p class="footer-copy">&copy; {{ date('Y') }} 000form</p>
+            <p class="footer-copy">&copy; <?php echo e(date('Y')); ?> 000form</p>
         </div>
     </div>
 </footer>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/pages/docs.blade.php ENDPATH**/ ?>

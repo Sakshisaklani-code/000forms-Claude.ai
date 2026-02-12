@@ -1,23 +1,21 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Documentation - 000form'); ?>
 
-@section('title', 'Documentation - 000form')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <nav class="nav">
     <div class="nav-inner">
         <a href="/" class="nav-logo"><span>000</span>form</a>
         <ul class="nav-links">
             <li><a href="/#features">Features</a></li>
-            <li><a href="{{ route('docs') }}" style="color: var(--accent);">Docs</a></li>
-            <li><a href="{{ route('pricing') }}">Pricing</a></li>
+            <li><a href="<?php echo e(route('docs')); ?>" style="color: var(--accent);">Docs</a></li>
+            <li><a href="<?php echo e(route('pricing')); ?>">Pricing</a></li>
         </ul>
         <div class="nav-actions">
-            @auth
-                <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-ghost">Login</a>
-                <a href="{{ route('signup') }}" class="btn btn-primary">Get Started</a>
-            @endauth
+            <?php if(auth()->guard()->check()): ?>
+                <a href="<?php echo e(route('dashboard')); ?>" class="btn btn-primary">Dashboard</a>
+            <?php else: ?>
+                <a href="<?php echo e(route('login')); ?>" class="btn btn-ghost">Login</a>
+                <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary">Get Started</a>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
@@ -33,7 +31,7 @@
             <p class="text-muted mb-3">Get forms working in under 2 minutes:</p>
             
             <ol style="color: var(--text-secondary); padding-left: 1.5rem; line-height: 2;">
-                <li><a href="{{ route('signup') }}">Create an account</a> (free, no credit card)</li>
+                <li><a href="<?php echo e(route('signup')); ?>">Create an account</a> (free, no credit card)</li>
                 <li>Create a new form and note your endpoint URL</li>
                 <li>Point your HTML form's <code>action</code> attribute to your endpoint</li>
                 <li>That's it! Submissions go to your email and dashboard</li>
@@ -135,52 +133,32 @@
                     <button class="code-copy">Copy</button>
                 </div>
                 <div class="code-content">
-<pre>document.getElementById('YOUR-FORM-ID').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const form = this;
-    const responseBox = document.getElementById('form-response');
-    const formData = new FormData(form);
-    const submitButton = form.querySelector('button[type="submit"]');
-    
-    // Disable button and show loading state
-    submitButton.disabled = true;
-    submitButton.textContent = 'Sending...';
-    responseBox.innerHTML = '<span style="color: #64748b;"> Sending your message...</span>';
-    
-    try {
-        const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok && data.success) {
-            responseBox.innerHTML = '<span style="color: #22c55e;"> Thank you for your submission!</span>';
-            form.reset();
-        } else {
-            throw new Error(data.error || 'Something went wrong');
-        }
-    } catch (error) {
-        responseBox.innerHTML = '<span style="color: #ef4444;"> ' + error.message + '. Please try again.</span>';
-    } finally {
-        // Re-enable button
-        submitButton.disabled = false;
-        submitButton.textContent = 'Send Message';
+<pre>const form = document.querySelector('form');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const response = await fetch('https://000form.com/f/YOUR_FORM_ID', {
+    method: 'POST',
+    body: new FormData(form),
+    headers: {
+      'Accept': 'application/json'
     }
+  });
+  
+  const result = await response.json();
+  
+  if (result.success) {
+    alert(result.message);
+    form.reset();
+  } else {
+    alert('Error: ' + result.error);
+  }
 });</pre>
                 </div>
             </div>
             
-            <p class="text-muted mt-3">
-                Include this in your form: 
-                <strong style="color: #d4d7db;">&lt;div id="form-response" style="margin-top: 15px;"&gt;&lt;/div&gt;</strong>
-                </p>
-
+            <p class="text-muted mt-3">Include <code>Accept: application/json</code> header or add <code>_format=json</code> as a form field to receive JSON responses.</p>
         </section>
         
         <!-- Custom Redirects -->
@@ -224,7 +202,7 @@
         
         <div class="text-center mt-4">
             <p class="text-muted mb-3">Ready to get started?</p>
-            <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">Create Free Account</a>
+            <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary btn-lg">Create Free Account</a>
         </div>
     </div>
 </div>
@@ -234,12 +212,14 @@
         <div class="footer-inner">
             <div class="nav-logo"><span>000</span>form</div>
             <ul class="footer-links">
-                <li><a href="{{ route('docs') }}">Documentation</a></li>
-                <li><a href="{{ route('pricing') }}">Pricing</a></li>
+                <li><a href="<?php echo e(route('docs')); ?>">Documentation</a></li>
+                <li><a href="<?php echo e(route('pricing')); ?>">Pricing</a></li>
                 <li><a href="mailto:support@000form.com">Support</a></li>
             </ul>
-            <p class="footer-copy">&copy; {{ date('Y') }} 000form</p>
+            <p class="footer-copy">&copy; <?php echo e(date('Y')); ?> 000form</p>
         </div>
     </div>
 </footer>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views\pages\docs.blade.php ENDPATH**/ ?>

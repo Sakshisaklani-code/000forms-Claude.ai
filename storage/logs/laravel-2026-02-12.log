@@ -1947,3 +1947,138 @@
 #52 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://Git-folders//...')
 #53 {main}
 "} 
+[2026-02-12 10:41:21] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 10:41:21] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 10:41:21] local.INFO: ✅ Submission created: ID a10fd01d-30bc-4521-b126-6e9a61477534  
+[2026-02-12 10:41:22] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 10:41:22] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 10:41:22] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 10:41:22] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 10:41:22] local.INFO: Attachment path provided: NO  
+[2026-02-12 10:41:22] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 10:41:22] local.INFO: Total attachments: 0  
+[2026-02-12 10:41:22] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 10:41:26] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 10:41:28] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 10:41:28] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 10:41:28] local.INFO: ✅ Submission created: ID a10fd027-9c05-457a-a85a-20b339277083  
+[2026-02-12 10:41:29] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 10:41:29] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 10:41:29] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 10:41:29] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 10:41:29] local.INFO: Attachment path provided: NO  
+[2026-02-12 10:41:29] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 10:41:29] local.INFO: Total attachments: 0  
+[2026-02-12 10:41:29] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 10:41:33] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 10:41:34] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 10:41:34] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 10:41:34] local.INFO: ✅ Submission created: ID a10fd031-37af-4902-94f8-7e9fc18e9d19  
+[2026-02-12 10:41:35] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 10:41:35] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 10:41:35] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 10:41:35] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 10:41:35] local.INFO: Attachment path provided: NO  
+[2026-02-12 10:41:35] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 10:41:35] local.INFO: Total attachments: 0  
+[2026-02-12 10:41:35] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 10:41:39] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 10:41:53] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 10:41:53] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 10:41:54] local.INFO: ✅ Submission created: ID a10fd04e-9114-48e6-961c-ce2f2263dfb9  
+[2026-02-12 10:41:54] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 10:41:54] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 10:41:54] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 10:41:54] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 10:41:54] local.INFO: Attachment path provided: NO  
+[2026-02-12 10:41:54] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 10:41:54] local.INFO: Total attachments: 0  
+[2026-02-12 10:41:54] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 10:41:59] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 10:44:03] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 10:44:03] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 10:44:03] local.INFO: ✅ Submission created: ID a10fd114-9cf2-4400-b9b4-2c60ef3d24b8  
+[2026-02-12 10:44:04] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 10:44:04] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 10:44:04] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 10:44:04] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 10:44:04] local.INFO: Attachment path provided: NO  
+[2026-02-12 10:44:04] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 10:44:04] local.INFO: Total attachments: 0  
+[2026-02-12 10:44:04] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 10:44:08] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 11:12:27] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 11:12:27] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 11:12:27] local.INFO: ✅ Submission created: ID a10fdb3b-b9ed-458a-8f69-e8c0830cd612  
+[2026-02-12 11:12:27] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 11:12:27] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 11:12:27] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 11:12:27] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 11:12:27] local.INFO: Attachment path provided: NO  
+[2026-02-12 11:12:27] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 11:12:27] local.INFO: Total attachments: 0  
+[2026-02-12 11:12:27] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 11:12:33] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 11:13:18] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 11:13:18] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 11:13:18] local.INFO: ✅ Submission created: ID a10fdb8a-8842-4e3b-9c0e-c5d00195009a  
+[2026-02-12 11:13:19] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 11:13:19] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 11:13:19] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 11:13:19] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 11:13:19] local.INFO: Attachment path provided: NO  
+[2026-02-12 11:13:19] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 11:13:19] local.INFO: Total attachments: 0  
+[2026-02-12 11:13:19] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 11:13:23] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 11:14:43] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 11:14:43] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 11:14:43] local.INFO: ✅ Submission created: ID a10fdc0b-dc19-423a-9c31-c7ffc935d724  
+[2026-02-12 11:14:44] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 11:14:44] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 11:14:44] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 11:14:44] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 11:14:44] local.INFO: Attachment path provided: NO  
+[2026-02-12 11:14:44] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 11:14:44] local.INFO: Total attachments: 0  
+[2026-02-12 11:14:44] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 11:14:48] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 11:16:12] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 11:16:12] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 11:16:12] local.INFO: ✅ Submission created: ID a10fdc93-b816-448e-82dd-6aa447aa3a73  
+[2026-02-12 11:16:13] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 11:16:13] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 11:16:13] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 11:16:13] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 11:16:13] local.INFO: Attachment path provided: NO  
+[2026-02-12 11:16:13] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 11:16:13] local.INFO: Total attachments: 0  
+[2026-02-12 11:16:13] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 11:16:17] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 11:18:51] local.INFO: 🔍 FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 11:18:51] local.INFO: ℹ️ No valid file uploaded  
+[2026-02-12 11:18:51] local.INFO: ✅ Submission created: ID a10fdd86-068f-4cc1-8ae5-54a201f90b07  
+[2026-02-12 11:18:51] local.INFO: 📧 Preparing to send email {"has_attachment":false,"attachment_name":null} 
+[2026-02-12 11:18:51] local.INFO: 📧 Sending email WITHOUT attachment  
+[2026-02-12 11:18:51] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 11:18:51] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 11:18:51] local.INFO: Attachment path provided: NO  
+[2026-02-12 11:18:51] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 11:18:51] local.INFO: Total attachments: 0  
+[2026-02-12 11:18:51] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 11:18:55] local.INFO: ✅ Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-12 11:27:13] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 11:27:13] local.INFO: No valid file uploaded  
+[2026-02-12 11:27:13] local.INFO: Submission created: ID a10fe084-5659-43d1-aaaf-f661b749fe5c  
+[2026-02-12 11:31:44] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"has_upload_file":false,"all_files":[]} 
+[2026-02-12 11:31:44] local.INFO: No valid file uploaded  
+[2026-02-12 11:31:44] local.INFO: Submission created: ID a10fe222-0c50-443e-83fa-e724d64959d7  
+[2026-02-12 11:31:45] local.INFO: Preparing to send email {"to":"tsaklani2drish@gmail.com","has_attachment":false,"attachment_name":null,"has_subject":true,"subject_value":"New submission from 000forms First Form while testing _subject field"} 
+[2026-02-12 11:31:45] local.INFO: Sending email WITHOUT attachment  
+[2026-02-12 11:31:45] local.INFO: ========== ATTACHMENT DEBUG START ==========  
+[2026-02-12 11:31:45] local.INFO: Form ID: a10d87d5-b920-4539-aa57-b19184312874  
+[2026-02-12 11:31:45] local.INFO: Attachment path provided: NO  
+[2026-02-12 11:31:45] local.INFO: ℹ️ No attachment to include  
+[2026-02-12 11:31:45] local.INFO: Total attachments: 0  
+[2026-02-12 11:31:45] local.INFO: ========== ATTACHMENT DEBUG END ==========  
+[2026-02-12 11:31:49] local.INFO: Email sent successfully to: tsaklani2drish@gmail.com  

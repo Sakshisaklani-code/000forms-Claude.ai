@@ -132,19 +132,19 @@ class Submission extends Model
     }
 
     /**
-     * Get reply-to email if available.
-     */
-    public function getReplyToAttribute(): ?string
-    {
-        return $this->data['email'] ?? $this->data['_replyto'] ?? null;
-    }
-
-    /**
-     * Get subject if available.
+     * Get subject from metadata or data.
      */
     public function getSubjectAttribute(): ?string
     {
-        return $this->data['_subject'] ?? $this->data['subject'] ?? null;
+        return $this->metadata['subject'] ?? $this->data['_subject'] ?? $this->data['subject'] ?? null;
+    }
+
+    /**
+     * Get reply-to email from metadata or data.
+     */
+    public function getReplyToAttribute(): ?string
+    {
+        return $this->metadata['replyto'] ?? $this->data['email'] ?? $this->data['_replyto'] ?? null;
     }
 
     /**
