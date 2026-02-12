@@ -449,7 +449,7 @@ const successColor = '#22c55e';
 const warningColor = '#f59e0b';
 const mutedColor = '#94a3b8';
 
-// 📈 Line Chart
+// Line Chart
 new Chart(document.getElementById('lineChart'), {
     type: 'line',
     data: {
@@ -482,7 +482,7 @@ new Chart(document.getElementById('lineChart'), {
     }
 });
 
-// 📊 Bar Chart
+// Bar Chart
 new Chart(document.getElementById('barChart'), {
     type: 'bar',
     data: {
