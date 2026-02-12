@@ -133,32 +133,52 @@
                     <button class="code-copy">Copy</button>
                 </div>
                 <div class="code-content">
-<pre>const form = document.querySelector('form');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const response = await fetch('https://000form.com/f/YOUR_FORM_ID', {
-    method: 'POST',
-    body: new FormData(form),
-    headers: {
-      'Accept': 'application/json'
+<pre>document.getElementById('YOUR-FORM-ID').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const responseBox = document.getElementById('form-response');
+    const formData = new FormData(form);
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    // Disable button and show loading state
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+    responseBox.innerHTML = '<span style="color: #64748b;"> Sending your message...</span>';
+    
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            responseBox.innerHTML = '<span style="color: #22c55e;"> Thank you for your submission!</span>';
+            form.reset();
+        } else {
+            throw new Error(data.error || 'Something went wrong');
+        }
+    } catch (error) {
+        responseBox.innerHTML = '<span style="color: #ef4444;"> ' + error.message + '. Please try again.</span>';
+    } finally {
+        // Re-enable button
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Message';
     }
-  });
-  
-  const result = await response.json();
-  
-  if (result.success) {
-    alert(result.message);
-    form.reset();
-  } else {
-    alert('Error: ' + result.error);
-  }
 });</pre>
                 </div>
             </div>
             
-            <p class="text-muted mt-3">Include <code>Accept: application/json</code> header or add <code>_format=json</code> as a form field to receive JSON responses.</p>
+            <p class="text-muted mt-3">
+                Include this in your form: 
+                <strong style="color: #d4d7db;">&lt;div id="form-response" style="margin-top: 15px;"&gt;&lt;/div&gt;</strong>
+                </p>
+
         </section>
         
         <!-- Custom Redirects -->

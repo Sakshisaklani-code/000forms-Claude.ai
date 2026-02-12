@@ -5,18 +5,30 @@
 <?php $__env->startSection('content'); ?>
 
 <!-- HTML Form -->
-<form id="form" action="http://127.0.0.1:8000/f/f_qychdxq8" method="POST">
+<form  action="http://127.0.0.1:8000/f/f_qychdxq8" method="POST">
   <input type="email" name="email" placeholder="Your email" required>
 
   <textarea name="message" placeholder="Your message"></textarea>
   
     <!-- Honeypot (spam protection) -->
   <input type="text" name="_gotcha" style="display:none">
-  
+  <input type="hidden" name="_blacklist" value="
+    viagra,
+    cialis,
+    casino games,
+    lottery winner,
+    free money now,
+    click here immediately,
+    bitcoin investment,
+    make money fast,
+    work from home job,
+    limited time offer">
+  <input type="hidden" name="_next" value="http://127.0.0.1:8000/thank-you">
+  <input type="hidden" name="_subject" value="New submission from 000forms First Form while testing _subject field">
   <button type="submit">Send Message</button>
 </form>
 
-<script>
+<!-- <script>
 document.getElementById('form').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -55,7 +67,7 @@ document.getElementById('form').addEventListener('submit', async function(e) {
         submitButton.textContent = 'Send Message';
     }
 });
-</script>
+</script> -->
 
 <?php $__env->stopSection(); ?>
 

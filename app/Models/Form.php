@@ -19,6 +19,7 @@ class Form extends Model
         'slug',
         'recipient_email',
         'cc_emails',
+        'blacklist_phrases',
         'email_verified',
         'email_verification_token',
         'email_verified_at',
