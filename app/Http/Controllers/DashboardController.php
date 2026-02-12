@@ -35,9 +35,7 @@ class DashboardController extends Controller
                 ->count(),
         ];
 
-        $chartData = $this->prepareChartData($user);
-
-        return view('dashboard.index', compact('forms', 'stats', 'chartData'));
+        return view('dashboard.index', compact('forms', 'stats'));
     }
 
     /**
