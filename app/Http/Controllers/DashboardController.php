@@ -131,7 +131,7 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        // 📊 Line Graph Data (Last 7 Days)
+        // Line Graph Data (Last 7 Days)
         $dailySubmissions = $form->submissions()
             ->where('is_spam', false)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
@@ -318,7 +318,14 @@ class DashboardController extends Controller
                 $submission->ip_address,
             ];
             foreach ($fields as $field) {
-                $row[] = $submission->data[$field] ?? '';
+                $value = $submission->data[$field] ?? '';
+                
+                // Convert arrays to comma-separated strings
+                if (is_array($value)) {
+                    $value = implode(', ', $value);
+                }
+                
+                $row[] = $value;
             }
             fputcsv($csv, $row);
         }
