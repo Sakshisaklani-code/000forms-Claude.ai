@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', 'Test Forms - 000form')
 
-@section('content')
+<?php $__env->startSection('title', 'Test Forms - 000form'); ?>
+
+<?php $__env->startSection('content'); ?>
 
 <!-- HTML Form -->
 <form  action="http://127.0.0.1:8000/f/f_qychdxq8" method="POST">
@@ -58,5 +58,7 @@ document.getElementById('form').addEventListener('submit', async function(e) {
 });
 </script> -->
 
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/test.blade.php ENDPATH**/ ?>
