@@ -44,12 +44,57 @@ class AuthController extends Controller
     /**
      * Handle email/password signup.
      */
+    // public function signup(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email|max:255',
+    //         'password' => 'required|min:8|confirmed',
+    //     ]);
+
+    //     $result = $this->supabase->signUp(
+    //         $request->input('email'),
+    //         $request->input('password')
+    //     );
+
+    //     if (!$result['success']) {
+    //         return back()
+    //             ->withInput()
+    //             ->withErrors(['email' => $result['error']]);
+    //     }
+
+    //     // Check if email confirmation is required
+    //     if (isset($result['data']['user']) && empty($result['data']['session'])) {
+    //         return redirect()->route('login')
+    //             ->with('message', 'Please check your email to confirm your account.');
+    //     }
+
+    //     // Auto-login if no confirmation required
+    //     if (isset($result['data']['session'])) {
+    //         $this->storeSession($result['data']);
+    //         return redirect()->route('dashboard');
+    //     }
+
+    //     return redirect()->route('login')
+    //         ->with('message', 'Account created! Please check your email to verify.');
+    // }
+
+    /**
+     * Handle email/password signup.
+     */
     public function signup(Request $request)
     {
         $request->validate([
             'email' => 'required|email|max:255',
             'password' => 'required|min:8|confirmed',
         ]);
+
+        // Check if user already exists in your database
+        $existingUser = User::where('email', $request->input('email'))->first();
+        if ($existingUser) {
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['email' => 'An account with this email already exists. Please login instead.']);
+        }
 
         $result = $this->supabase->signUp(
             $request->input('email'),
@@ -58,8 +103,18 @@ class AuthController extends Controller
 
         if (!$result['success']) {
             return back()
-                ->withInput()
+                ->withInput($request->only('email'))
                 ->withErrors(['email' => $result['error']]);
+        }
+
+        // Additional check: if Supabase returns a user but no session and no confirmation needed,
+        // it might be an existing user
+        if (isset($result['data']['user']) && 
+            empty($result['data']['session']) && 
+            !isset($result['data']['user']['confirmation_sent_at'])) {
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['email' => 'An account with this email already exists. Please login instead.']);
         }
 
         // Check if email confirmation is required
