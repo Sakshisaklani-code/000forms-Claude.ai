@@ -12,8 +12,43 @@
     @stack('styles')
 </head>
 <body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo"><span>000</span>form</a>
+            <ul class="nav-links">
+                <li><a href="{{ route('docs') }}" style="color: var(--accent);">Documentation</a></li>
+                <li><a href="{{ route('pricing') }}">Pricing</a></li>
+                <li><a href="{{ route('Home.library') }}">Library</a></li>
+            </ul>
+            <div class="nav-actions">
+                @auth
+                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-ghost">Login</a>
+                    <a href="{{ route('signup') }}" class="btn btn-primary">Get Started</a>
+                @endauth
+            </div>
+        </div>
+    </nav>
+
     @yield('content')
     <script src="/js/app.js"></script>
     @stack('scripts')
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="nav-logo"><span>000</span>form</div>
+                <ul class="footer-links">
+                    <!-- <li><a href="{{ route('docs') }}">Documentation</a></li>
+                    <li><a href="{{ route('pricing') }}">Pricing</a></li>
+                    <li><a href="mailto:support@000form.com">Support</a></li> -->
+                </ul>
+                <p class="footer-copy">&copy; {{ date('Y') }} 000form</p>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>

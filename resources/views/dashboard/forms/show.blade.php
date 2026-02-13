@@ -349,7 +349,7 @@
 <!-- Stats -->
 <div class="stats-grid">
     <div class="card stat-card">
-        <div class="stat-label">Total Submissions</div>
+        <div class="stat-label">Valid Submissions</div>
         <div class="stat-value">{{ number_format($form->submission_count) }}</div>
     </div>
     <div class="card stat-card">

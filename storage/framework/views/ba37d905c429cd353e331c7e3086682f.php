@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Pricing - 000form'); ?>
 
-@section('title', 'Pricing - 000form')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div style="padding: 8rem 0 4rem;">
     <div class="container" style="max-width: 800px;">
@@ -70,7 +68,7 @@
                 </li>
             </ul>
             
-            <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">Get Started Free</a>
+            <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary btn-lg">Get Started Free</a>
         </div>
         
         <div class="text-center mt-4">
@@ -100,4 +98,6 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/pages/pricing.blade.php ENDPATH**/ ?>

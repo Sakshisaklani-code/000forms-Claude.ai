@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', '000form - Free Form Backend for Your Website'); ?>
 
-@section('title', '000form - Free Form Backend for Your Website')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
 <!-- Hero Section -->
@@ -33,7 +31,7 @@
             </p>
             
             <div class="hero-actions">
-                <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">
+                <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary btn-lg">
                     Start for Free
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -169,7 +167,7 @@
         </div>
         
         <div class="text-center mt-4">
-            <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">Create Your First Form</a>
+            <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary btn-lg">Create Your First Form</a>
         </div>
     </div>
 </section>
@@ -183,10 +181,12 @@
                 Join thousands of developers who trust 000form for their static sites. 
                 Forever free, no credit card required.
             </p>
-            <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">Get Started Free</a>
+            <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary btn-lg">Get Started Free</a>
         </div>
     </div>
 </section>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/pages/home.blade.php ENDPATH**/ ?>

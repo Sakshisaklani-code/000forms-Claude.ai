@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formspree - React Form</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        /** Variables **/
+        :root {
+            --color-background: #e7e7e7;
+            --color-background-alt: #ba5ed7;
+            --color-border-active: #a94bc3;
+            --color-border-default: #d1d1d1;
+            --color-highlight: #e2b6f1;
+            --color-primary: #86319a;
+            --color-primary-active: #5e2768;
+            --color-text-default: #262626;
+            --color-text-muted: #4f4f4f;
+            --font-family-body: "Figtree", system-ui, sans-serif;
+            --font-family-display: "Poppins", system-ui, sans-serif;
+        }
+
+        /** Base **/
+        *,
+        ::before,
+        ::after {
+            box-sizing: border-box;
+        }
+
+        * {
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            font-family: var(--font-family-body);
+            font-optical-sizing: auto;
+            font-style: normal;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+
+        #root {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0;
+        }
+
+        [type="checkbox"],
+        [type="radio"],
+        [type="range"] {
+            appearance: none;
+            flex-shrink: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        [type="checkbox"]:focus,
+        [type="radio"]:focus,
+        [type="range"]:focus {
+            outline: none;
+        }
+
+        /** Components **/
+        .fs-form {
+            display: grid;
+            row-gap: 1rem;
+        }
+
+        .fs-form:where(.fs-layout__2-column) {
+            column-gap: 0.75rem;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        fieldset {
+            display: grid;
+            margin: 1rem 0;
+            row-gap: 1rem;
+            border: none;
+        }
+
+        .fs-form:where(.fs-layout__2-column) fieldset {
+            column-gap: 0.75rem;
+            grid-template-columns: 1fr 1fr;
+            grid-column: 1 / -1;
+        }
+
+        .fs-fieldset-title {
+            color: var(--color-text-default);
+            font-family: var(--font-family-display);
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            margin-bottom: 1rem;
+            grid-column: 1 / -1;
+            font-weight: 600;
+        }
+
+        .fs-field {
+            display: flex;
+            flex-direction: column;
+            row-gap: 0.5rem;
+        }
+
+        .fs-label {
+            color: var(--color-text-default);
+            display: block;
+            font-family: var(--font-family-display);
+            font-size: 1rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+        }
+
+        .fs-description {
+            color: var(--color-text-muted);
+            display: block;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        .fs-button-group {
+            display: flex;
+            flex-direction: row-reverse;
+            column-gap: 0.75rem;
+        }
+
+        .fs-form:where(.fs-layout__2-column) .fs-button-group {
+            grid-column: 1 / -1;
+        }
+
+        .fs-button {
+            background-color: var(--color-primary);
+            border-radius: 9999px;
+            color: white;
+            cursor: pointer;
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.5rem;
+            padding: 0.75rem 2rem;
+            transition-duration: 200ms;
+            transition-property: background-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+        }
+
+        .fs-button:hover {
+            background-color: var(--color-primary-active);
+        }
+
+        .fs-button:focus-visible {
+            background-color: var(--color-primary-active);
+            outline: 4px solid var(--color-highlight);
+        }
+
+        .fs-input,
+        .fs-select {
+            appearance: none;
+            border-radius: 9999px;
+            border-width: 0;
+            box-shadow: var(--color-border-default) 0 0 0 1px inset;
+            color: var(--color-text-default);
+            font-size: 0.875rem;
+            height: 2.5rem;
+            line-height: 1.25rem;
+            outline: none;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            width: 100%;
+        }
+
+        .fs-input:focus-visible,
+        .fs-select:focus-visible {
+            box-shadow: var(--color-border-active) 0 0 0 1px inset;
+        }
+
+        .fs-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .fs-checkbox-group,
+        .fs-radio-group {
+            display: flex;
+            flex-direction: column;
+            row-gap: 1rem;
+        }
+
+        .fs-checkbox-field,
+        .fs-radio-field {
+            column-gap: 0.5rem;
+            display: flex;
+        }
+
+        :is(.fs-checkbox-field, .fs-radio-field) .fs-label + .fs-description {
+            margin-top: 0.25rem;
+        }
+
+        .fs-checkbox-wrapper,
+        .fs-radio-wrapper {
+            align-items: center;
+            display: flex;
+            height: 1.25rem;
+        }
+
+        .fs-checkbox,
+        .fs-radio {
+            background-color: #fff;
+            border: 1px solid var(--color-border-default);
+            height: 1.25rem;
+            width: 1.25rem;
+        }
+
+        .fs-checkbox {
+            border-radius: 0.25rem;
+        }
+
+        .fs-radio {
+            border-radius: 100%;
+        }
+
+        .fs-checkbox:checked,
+        .fs-radio:checked {
+            background-color: var(--color-primary);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            border-color: transparent;
+        }
+
+        .fs-checkbox:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+        }
+
+        .fs-radio:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+        }
+
+        .fs-checkbox:focus-visible,
+        .fs-radio:focus-visible {
+            border-color: var(--color-border-active);
+            outline: 4px solid var(--color-highlight);
+            outline-offset: 0;
+        }
+
+        .fs-checkbox:checked:focus-visible,
+        .fs-radio:checked:focus-visible {
+            border-color: transparent;
+        }
+
+        .fs-select {
+            background-color: #fff;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.625em 1.625em;
+            padding-right: 2.875rem;
+        }
+
+        .fs-slider {
+            background: transparent;
+            cursor: pointer;
+            height: 1.25rem;
+            width: 100%;
+        }
+
+        .fs-slider::-moz-range-track {
+            background-color: var(--color-background);
+            border-radius: 0.5rem;
+            height: 0.5rem;
+        }
+
+        .fs-slider::-webkit-slider-runnable-track {
+            background-color: var(--color-background);
+            border-radius: 0.5rem;
+            height: 0.5rem;
+        }
+
+        .fs-slider::-moz-range-thumb {
+            background-color: var(--color-primary);
+            border: none;
+            border-radius: 50%;
+            height: 1.25rem;
+            width: 1.25rem;
+        }
+
+        .fs-slider::-webkit-slider-thumb {
+            appearance: none;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            height: 1.25rem;
+            margin-top: -0.375rem;
+            width: 1.25rem;
+        }
+
+        .fs-slider:focus-visible::-moz-range-thumb {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .fs-slider:focus-visible::-webkit-slider-thumb {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .fs-switch {
+            background-color: var(--color-background-alt);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2.75' fill='white'/%3e%3c/svg%3e");
+            background-position: left center;
+            background-repeat: no-repeat;
+            border-radius: 1.25rem;
+            cursor: pointer;
+            height: 1.25rem;
+            transition-duration: 200ms;
+            transition-property: background-color, background-position;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            width: 2.5rem;
+        }
+
+        .fs-switch:checked {
+            background-color: var(--color-primary);
+            background-position: right center;
+        }
+
+        .fs-switch:focus-visible {
+            outline: 4px solid var(--color-highlight);
+            outline-offset: 0;
+        }
+
+        .fs-textarea {
+            appearance: none;
+            border-radius: 0.75rem;
+            border-width: 0;
+            box-shadow: var(--color-border-default) 0 0 0 1px inset;
+            color: var(--color-text-default);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            outline: none;
+            padding: 0.5rem 0.75rem;
+            resize: vertical;
+            width: 100%;
+        }
+
+        .fs-textarea:focus-visible {
+            box-shadow: var(--color-border-active) 0 0 0 1px inset;
+        }
+
+        .fs-textarea::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        /** Utilities **/
+        .col-span-full {
+            grid-column: 1 / -1;
+        }
+
+        .slider-label-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 0.25rem;
+        }
+
+        .slider-label-text {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 3rem;
+            background-color: #f0fdf4;
+            border-radius: 0.75rem;
+            color: #166534;
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- React and Formspree libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@formspree/react@2.5.1/dist/index.umd.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- Our React component -->
+    <script type="text/babel">
+        // Replace this with your actual Formspree form ID
+        // Get one for free at https://formspree.io
+        const FORM_ID = "xvzbpnwy"; // Example: "mwpkqbgz" is a test form
+        
+        function ExampleForm() {
+            const [state, handleSubmit] = FormspreeReact.useForm(FORM_ID);
+
+            if (state.succeeded) {
+                return (
+                    <div className="success-message">
+                        <p>Thanks for joining! 🎉</p>
+                        <p style=<?php echo e($fontSize: '1rem', marginTop: '1rem'); ?>>
+                            We'll be in touch soon.
+                        </p>
+                    </div>
+                );
+            }
+
+            return (
+                <form className="fs-form fs-layout__2-column" onSubmit={handleSubmit}>
+                    <fieldset>
+                        <legend className="fs-fieldset-title">Personal details</legend>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="name">
+                                Full Name
+                            </label>
+                            <input 
+                                className="fs-input" 
+                                id="name" 
+                                name="name" 
+                                type="text"
+                                placeholder="John Doe"
+                                required 
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="dob">
+                                Date of Birth
+                            </label>
+                            <input
+                                className="fs-input"
+                                id="dob"
+                                name="dob"
+                                type="text"
+                                placeholder="MM-DD-YYYY"
+                                required
+                            />
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend className="fs-fieldset-title">Address details</legend>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="address-1">
+                                Address line 1
+                            </label>
+                            <input 
+                                className="fs-input" 
+                                id="address-1" 
+                                name="address-1" 
+                                type="text"
+                                placeholder="123 Main St"
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="address-2">
+                                Address line 2
+                            </label>
+                            <input 
+                                className="fs-input" 
+                                id="address-2" 
+                                name="address-2" 
+                                type="text"
+                                placeholder="Apt 4B"
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="city">
+                                City
+                            </label>
+                            <input 
+                                className="fs-input" 
+                                id="city" 
+                                name="city" 
+                                type="text"
+                                placeholder="San Francisco"
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="state">
+                                State / Province
+                            </label>
+                            <input 
+                                className="fs-input" 
+                                id="state" 
+                                name="state" 
+                                type="text"
+                                placeholder="CA"
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="zip-code">
+                                Postal / Zip Code
+                            </label>
+                            <input 
+                                className="fs-input" 
+                                id="zip-code" 
+                                name="zip-code" 
+                                type="text"
+                                placeholder="94105"
+                            />
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend className="fs-fieldset-title">Contact information</legend>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="email">
+                                Email
+                            </label>
+                            <input 
+                                className="fs-input" 
+                                id="email" 
+                                name="email" 
+                                type="email"
+                                placeholder="john@example.com"
+                                required 
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="number">
+                                Contact Number
+                            </label>
+                            <input
+                                className="fs-input"
+                                id="number"
+                                name="number"
+                                type="tel"
+                                placeholder="(000) 000-0000"
+                                required
+                            />
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend className="fs-fieldset-title">Latest role description</legend>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="previous-company">
+                                Name of your latest employer
+                            </label>
+                            <input
+                                className="fs-input"
+                                id="previous-company"
+                                name="previous-company"
+                                type="text"
+                                placeholder="Acme Inc."
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="previous-role">
+                                Your latest role
+                            </label>
+                            <input
+                                className="fs-input"
+                                id="previous-role"
+                                name="previous-role"
+                                type="text"
+                                placeholder="Software Engineer"
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="latest-role-start-date">
+                                Start date
+                            </label>
+                            <input
+                                className="fs-input"
+                                id="latest-role-start-date"
+                                name="latest-role-start-date"
+                                type="text"
+                                placeholder="MM-YYYY"
+                            />
+                            <p className="fs-description">
+                                When did you start at your latest role?
+                            </p>
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="latest-role-end-date">
+                                End date
+                            </label>
+                            <input
+                                className="fs-input"
+                                id="latest-role-end-date"
+                                name="latest-role-end-date"
+                                type="text"
+                                placeholder="MM-YYYY. Leave blank if current"
+                            />
+                            <p className="fs-description">End date of your latest role</p>
+                        </div>
+                        <div className="fs-field col-span-full">
+                            <label className="fs-label" htmlFor="role-description">
+                                Role description
+                            </label>
+                            <textarea
+                                className="fs-textarea"
+                                id="role-description"
+                                name="role-description"
+                                rows="4"
+                                placeholder="Describe your responsibilities and achievements..."
+                            />
+                            <p className="fs-description">
+                                Please describe what you did at your latest role
+                            </p>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend className="fs-fieldset-title">Job position preferences</legend>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="position">
+                                Position you want to apply for
+                            </label>
+                            <select className="fs-select" id="position" name="position">
+                                <option value="software-engineer">Software Engineer</option>
+                                <option value="senior-software-engineer">
+                                    Senior Software Engineer
+                                </option>
+                                <option value="ux-designer">UX designer</option>
+                                <option value="marketing-specialist">Marketing Specialist</option>
+                            </select>
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="start-date">
+                                When can you start?
+                            </label>
+                            <input
+                                className="fs-input"
+                                id="start-date"
+                                name="start-date"
+                                type="text"
+                                placeholder="DD-MM-YYYY"
+                                required
+                            />
+                        </div>
+                        <div className="fs-field">
+                            <label className="fs-label" htmlFor="referral">
+                                How did you learn about us?
+                            </label>
+                            <select className="fs-select" id="referral" name="referral">
+                                <option value="search-engines">
+                                    Search Engines (Google, DuckDuckGo, etc)
+                                </option>
+                                <option value="social-media">Social Media</option>
+                                <option value="company-website">Company Website</option>
+                                <option value="jobs-board">Online Jobs Board</option>
+                                <option value="review-site">
+                                    Review sites (G2, Capterra, etc)
+                                </option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <div className="fs-button-group">
+                        <button 
+                            className="fs-button" 
+                            type="submit"
+                            disabled={state.submitting}
+                        >
+                            {state.submitting ? 'Submitting...' : 'Submit'}
+                        </button>
+                    </div>
+                </form>
+            );
+        }
+
+        // Render the form
+        ReactDOM.createRoot(document.getElementById('root')).render(<ExampleForm />);
+    </script>
+</body>
+</html><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/formspree-react.blade.php ENDPATH**/ ?>
