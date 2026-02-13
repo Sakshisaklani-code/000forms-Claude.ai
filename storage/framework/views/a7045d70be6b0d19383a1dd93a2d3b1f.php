@@ -479,6 +479,7 @@
 <span class="hljs-selector-class">.tenant-form</span> <span class="hljs-selector-tag">textarea</span> {
   <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">0.75rem</span> <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0.5rem</span> <span class="hljs-number">0rem</span>;
   <span class="hljs-attribute">background</span>: <span class="hljs-number">#111111</span>;
   <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#1a1a1a</span>;
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">8px</span>;
@@ -602,7 +603,7 @@
                             <pre id="tailwind-code-content"><span class="hljs-tag">&lt;form</span> <span class="hljs-attr">action=</span><span class="hljs-string">"https://000form.com/f/your-endpoint"</span> 
       <span class="hljs-attr">method=</span><span class="hljs-string">"POST"</span> 
       <span class="hljs-attr">class=</span><span class="hljs-string">"max-w-2xl mx-auto p-8 bg-[#0d0d0d] border border-[#1a1a1a] rounded-xl"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;script</span> <span class="hljs-attr">src=</span><span class="hljs-string">"https://cdn.tailwindcss.com"</span><span class="hljs-tag">&gt;&lt;/script&gt;</span>
+      
   
   <span class="hljs-tag">&lt;h3</span> <span class="hljs-attr">class=</span><span class="hljs-string">"text-2xl font-semibold text-white mb-2 tracking-tight"</span><span class="hljs-tag">&gt;</span>
     Tenant Application Form

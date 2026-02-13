@@ -59,6 +59,7 @@
   background: #111111;
   border: 1px solid #1a1a1a;
   border-radius: 8px;
+  margin: 0.5rem 0;
   color: #fafafa;
   font-size: 0.95rem;
   transition: all 0.2s ease;
