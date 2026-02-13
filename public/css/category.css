@@ -325,8 +325,7 @@
     margin-bottom: 2rem;
 }
 
-.form-preview-header {
-    display: flex;
+.form-preview-header {    
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 1.5rem;
