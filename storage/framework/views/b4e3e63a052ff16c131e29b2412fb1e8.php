@@ -1,11 +1,11 @@
-@extends('layouts.app')
 
-@section('title', 'Rental Application Form - 000form Library')
 
-@push('styles')
-<link href="{{ asset('css/library.css') }}" rel="stylesheet">
-<link href="{{ asset('css/category.css') }}" rel="stylesheet">
-<link href="{{ asset('css/tenant-form.css') }}" rel="stylesheet">
+<?php $__env->startSection('title', 'Rental Application Form - 000form Library'); ?>
+
+<?php $__env->startPush('styles'); ?>
+<link href="<?php echo e(asset('css/library.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/category.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/tenant-form.css')); ?>" rel="stylesheet">
 <style>
     .form-preview-code {
         display: grid;
@@ -194,19 +194,19 @@
         margin-top: 0.5rem;
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <section class="form-detail-section">
     <div class="container">
         
         <div class="form-breadcrumb">
-            <a href="{{ route('Home.library') }}">Library</a>
+            <a href="<?php echo e(route('Home.library')); ?>">Library</a>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 18l6-6-6-6"/>
             </svg>
-            <a href="{{ route('Home.library.ApplicationForm') }}">Application Forms</a>
+            <a href="<?php echo e(route('Home.library.ApplicationForm')); ?>">Application Forms</a>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 18l6-6-6-6"/>
             </svg>
@@ -761,4 +761,5 @@
     });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Library/Rental-ApplicationForm.blade.php ENDPATH**/ ?>

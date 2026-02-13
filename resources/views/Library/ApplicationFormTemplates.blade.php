@@ -195,7 +195,7 @@
                 <div class="form-preview-footer">
                     <span class="form-badge">HTML</span>
                     <span class="form-fields-count">14 fields</span>
-                    <button class="get-code-btn">Get code →</button>
+                    <a href="{{ route('Home.library.RentalApplicationForm') }}" class="get-code-btn">Get code →</a>
                 </div>
             </div>
             
@@ -276,7 +276,7 @@
                 <div class="form-preview-footer">
                     <span class="form-badge">HTML</span>
                     <span class="form-fields-count">11 fields</span>
-                    <button class="get-code-btn">Get code →</button>
+                    <a href="{{ route('Home.library.VendorApplicationForm') }}" class="get-code-btn">Get code →</a>
                 </div>
             </div>
             
@@ -356,7 +356,7 @@
                 <div class="form-preview-footer">
                     <span class="form-badge">HTML</span>
                     <span class="form-fields-count">13 fields</span>
-                    <button class="get-code-btn">Get code →</button>
+                    <a href="{{ route('Home.library.ScholarshipApplicationForm') }}" class="get-code-btn">Get code →</a>
                 </div>
             </div>
             
@@ -440,7 +440,7 @@
                 <div class="form-preview-footer">
                     <span class="form-badge">HTML</span>
                     <span class="form-fields-count">12 fields</span>
-                    <button class="get-code-btn">Get code →</button>
+                    <a href="{{ route('Home.library.InternshipApplicationForm') }}" class="get-code-btn">Get code →</a>
                 </div>
             </div>
             
