@@ -105,6 +105,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
 
 Route::get('/library', [LibraryController::class, 'Library'])->name('Home.library');
 Route::get('/Application-forms', [LibraryController::class, 'ApplicationForm'])->name('Home.library.ApplicationForm');
+Route::get('/Tenant-Application-forms', [LibraryController::class, 'TenantApplicationForm'])->name('Home.library.TenantApplicationForm');
 
 
 

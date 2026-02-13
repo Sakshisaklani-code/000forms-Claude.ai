@@ -28,7 +28,7 @@
             <div class="card application-form-card">
                 <div class="form-preview-header">
                     <h3 class="form-preview-title">Tenant Application Form</h3>
-                    <p class="form-preview-description">Thank you for taking an interest in renting one of our properties. Please fill in this form with the needed information.</p>
+                    <p class="form-preview-description">Interested in renting one of our properties. Please fill the form with the needed information.</p>
                 </div>
                 
                 <div class="form-preview-content">
@@ -66,7 +66,7 @@
                 <div class="form-preview-footer">
                     <span class="form-badge">HTML</span>
                     <span class="form-fields-count">12 fields</span>
-                    <button class="get-code-btn">Get code →</button>
+                    <a href="{{ route('Home.library.TenantApplicationForm') }}" class="get-code-btn">Get code →</a>
                 </div>
             </div>
             
