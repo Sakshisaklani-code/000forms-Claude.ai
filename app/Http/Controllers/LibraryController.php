@@ -21,4 +21,30 @@ class LibraryController extends Controller
     {
         return view('Library.Tenant-ApplicationForm');
     }
+
+    public function RentalApplicationForm()
+    {
+        return view('Library.Rental-ApplicationForm');
+    }
+
+    public function JobApplicationForm()
+    {
+        return view('Library.Job-ApplicationForm');
+    }
+
+    public function ScholarshipApplicationForm()
+    {
+        return view('Library.Scholarship-ApplicationForm');
+    }
+
+    public function VendorApplicationForm()
+    {
+        return view('Library.Vendor-ApplicationForm');
+    }
+
+    public function InternshipApplicationForm()
+    {
+        return view('Library.Internship-ApplicationForm');
+    }
+
 }

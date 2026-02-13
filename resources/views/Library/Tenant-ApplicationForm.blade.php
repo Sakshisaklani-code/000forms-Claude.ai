@@ -582,180 +582,200 @@
                 </div>
                 
                 <!-- Tailwind Code Tab -->
-                <div id="tailwind-tab" class="code-tab-panel">
-                    <div class="code-block-wrapper">
-                        <div class="code-block-header">
-                            <div class="code-block-info">
-                                <span class="code-block-language">Tailwind CSS</span>
-                                <span class="code-block-desc">Tailwind version of the tenant form</span>
-                            </div>
-                            <button class="code-copy-btn" onclick="copyCode(this, 'tailwind-code-content')">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                                Copy Tailwind
-                            </button>
-                        </div>
-                        <div class="code-block-content">
-                            
+                <!-- Tailwind Code Tab -->
+<div id="tailwind-tab" class="code-tab-panel">
+    <div class="code-block-wrapper">
+        <div class="code-block-header">
+            <div class="code-block-info">
+                <span class="code-block-language">Tailwind CSS</span>
+                <span class="code-block-desc">Complete Tailwind version with CDN</span>
+            </div>
+            <button class="code-copy-btn" onclick="copyCode(this, 'tailwind-code-content')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Code
+            </button>
+        </div>
+        <div class="code-block-content">
+            <pre id="tailwind-code-content"><span class="hljs-comment">&lt;!-- Add this to your &lt;head&gt; section --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.tailwindcss.com"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
-                            <pre id="tailwind-code-content"><span class="hljs-tag">&lt;form</span> <span class="hljs-attr">action=</span><span class="hljs-string">"https://000form.com/f/your-endpoint"</span> 
-      <span class="hljs-attr">method=</span><span class="hljs-string">"POST"</span> 
-      <span class="hljs-attr">class=</span><span class="hljs-string">"max-w-2xl mx-auto p-8 bg-[#0d0d0d] border border-[#1a1a1a] rounded-xl"</span><span class="hljs-tag">&gt;</span>
-      
+<span class="hljs-comment">&lt;!-- Add this CSS for custom radio button color and form enhancements --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
+    <span class="hljs-selectattr">[type="radio"]</span> {
+        <span class="hljs-attribute">accent-color</span>: <span class="hljs-number">#00ff88</span>;
+    }
+    <span class="hljs-comment">/* Optional: Smooth focus ring */</span>
+    <span class="hljs-selector-tag">input</span><span class="hljs-selector-pseudo">:focus</span>, <span class="hljs-selector-tag">textarea</span><span class="hljs-selector-pseudo">:focus</span> {
+        <span class="hljs-attribute">outline</span>: none;
+        <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">3px</span> <span class="hljs-built_in">rgba</span>(0, 255, 136, 0.15);
+    }
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Tenant Application Form with Tailwind Classes --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"https://000form.com/f/your-endpoint"</span> 
+      <span class="hljs-attr">method</span>=<span class="hljs-string">"POST"</span> 
+      <span class="hljs-attr">class</span>=<span class="hljs-string">"max-w-2xl mx-auto p-8 bg-[#0d0d0d] border border-[#1a1a1a] rounded-xl font-['Outfit',sans-serif]"</span>&gt;</span>
   
-  <span class="hljs-tag">&lt;h3</span> <span class="hljs-attr">class=</span><span class="hljs-string">"text-2xl font-semibold text-white mb-2 tracking-tight"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h3</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-2xl font-semibold text-[#fafafa] mb-2 tracking-tight"</span>&gt;</span>
     Tenant Application Form
-  <span class="hljs-tag">&lt;/h3&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
   
-  <span class="hljs-tag">&lt;p</span> <span class="hljs-attr">class=</span><span class="hljs-string">"text-sm text-gray-400 mb-6 leading-relaxed"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-sm text-[#888888] mb-6 leading-relaxed"</span>&gt;</span>
     Thank you for taking an interest in renting one of our properties. 
     Please fill in this form with the needed information.
-  <span class="hljs-tag">&lt;/p&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
 
-  <span class="hljs-tag">&lt;h4</span> <span class="hljs-attr">class=</span><span class="hljs-string">"text-lg font-semibold text-[#00ff88] mt-6 mb-4 pb-2 border-b border-dashed border-[#2a2a2a]"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h4</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-lg font-semibold text-[#00ff88] mt-6 mb-4 pb-2 border-b border-dashed border-[#2a2a2a]"</span>&gt;</span>
     Tenancy details
-  <span class="hljs-tag">&lt;/h4&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
   
   <span class="hljs-comment">&lt;!-- Property address --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>
       Property address
-    <span class="hljs-tag">&lt;/label&gt;</span>
-    <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"property_address"</span> 
-           <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Street Address"</span> 
-           <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88] focus:ring-3 focus:ring-[#00ff88]/20 mb-2"</span>
-           <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"property_address2"</span> 
-           <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Street Address Line 2"</span> 
-           <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span><span class="hljs-tag">&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"property_address"</span> 
+           <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Street Address"</span> 
+           <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200 mb-2"</span>
+           <span class="hljs-attr">required</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"property_address2"</span> 
+           <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Street Address Line 2"</span> 
+           <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- City and Region --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex gap-4 mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex-1"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>City<span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"city"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"City"</span> 
-             <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span>
-             <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex-1"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>Region<span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"region"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Region"</span> 
-             <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span>
-             <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex flex-col sm:flex-row gap-4 mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex-1"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>City<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"city"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"City"</span> 
+             <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+             <span class="hljs-attr">required</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex-1"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>Region<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"region"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Region"</span> 
+             <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+             <span class="hljs-attr">required</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- Postal Code and Country --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex gap-4 mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex-1"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>Postal Code<span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"postal_code"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Postal Code"</span> 
-             <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span>
-             <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex-1"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>Country<span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"country"</span> <span class="hljs-attr">value=</span><span class="hljs-string">"USA"</span> 
-             <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex flex-col sm:flex-row gap-4 mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex-1"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>Postal / Zip Code<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"postal_code"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Postal / Zip Code"</span> 
+             <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+             <span class="hljs-attr">required</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex-1"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>Country<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"country"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"USA"</span> 
+             <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- Commencement Date --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>
       Commencement of tenancy
-    <span class="hljs-tag">&lt;/label&gt;</span>
-    <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"commencement_date"</span> 
-           <span class="hljs-attr">placeholder=</span><span class="hljs-string">"MM/DD/YYYY"</span> 
-           <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span>
-           <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"commencement_date"</span> 
+           <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"MM/DD/YYYY"</span> 
+           <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+           <span class="hljs-attr">required</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
-  <span class="hljs-tag">&lt;h4</span> <span class="hljs-attr">class=</span><span class="hljs-string">"text-lg font-semibold text-[#00ff88] mt-6 mb-4 pb-2 border-b border-dashed border-[#2a2a2a]"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h4</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-lg font-semibold text-[#00ff88] mt-6 mb-4 pb-2 border-b border-dashed border-[#2a2a2a]"</span>&gt;</span>
     Applicant details
-  <span class="hljs-tag">&lt;/h4&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- Applicant fields --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"full_name"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Full Name"</span> 
-           <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88] mb-2"</span>
-           <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"email"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"email"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Email Address"</span> 
-           <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88] mb-2"</span>
-           <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"tel"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"phone"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Phone Number"</span> 
-           <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88] mb-2"</span>
-           <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"current_address"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Current Address"</span> 
-           <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span>
-           <span class="hljs-attr">required</span><span class="hljs-tag">&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"space-y-3 mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"full_name"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Full Name"</span> 
+           <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+           <span class="hljs-attr">required</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Email Address"</span> 
+           <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+           <span class="hljs-attr">required</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"tel"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"phone"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Phone Number"</span> 
+           <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+           <span class="hljs-attr">required</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"current_address"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Current Address"</span> 
+           <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>
+           <span class="hljs-attr">required</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- Employment Status --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-2"</span>&gt;</span>
       Employment Status
-    <span class="hljs-tag">&lt;/label&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex flex-wrap gap-4"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"inline-flex items-center gap-1 text-sm text-gray-400"</span><span class="hljs-tag">&gt;</span>
-        <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"radio"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value=</span><span class="hljs-string">"employed"</span><span class="hljs-tag">&gt;</span> Employed
-      <span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"inline-flex items-center gap-1 text-sm text-gray-400"</span><span class="hljs-tag">&gt;</span>
-        <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"radio"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value=</span><span class="hljs-string">"self-employed"</span><span class="hljs-tag">&gt;</span> Self-employed
-      <span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"inline-flex items-center gap-1 text-sm text-gray-400"</span><span class="hljs-tag">&gt;</span>
-        <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"radio"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value=</span><span class="hljs-string">"unemployed"</span><span class="hljs-tag">&gt;</span> Unemployed
-      <span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"inline-flex items-center gap-1 text-sm text-gray-400"</span><span class="hljs-tag">&gt;</span>
-        <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"radio"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value=</span><span class="hljs-string">"retired"</span><span class="hljs-tag">&gt;</span> Retired
-      <span class="hljs-tag">&lt;/label&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex flex-wrap gap-4"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#fafafa] transition-colors cursor-pointer"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"employed"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"w-4 h-4"</span>&gt;</span> Employed
+      <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#fafafa] transition-colors cursor-pointer"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"self-employed"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"w-4 h-4"</span>&gt;</span> Self-employed
+      <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#fafafa] transition-colors cursor-pointer"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"unemployed"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"w-4 h-4"</span>&gt;</span> Unemployed
+      <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#fafafa] transition-colors cursor-pointer"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"employment_status"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"retired"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"w-4 h-4"</span>&gt;</span> Retired
+      <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- Employer and Income --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex gap-4 mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex-1"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"employer"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Employer name (optional)"</span> 
-             <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex-1"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"text"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"income"</span> <span class="hljs-attr">placeholder=</span><span class="hljs-string">"$"</span> 
-             <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex flex-col sm:flex-row gap-4 mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex-1"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>Current Employer<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"employer"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Employer name (optional)"</span> 
+             <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex-1"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>Monthly Income<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"income"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"$"</span> 
+             <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- Pets --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>Pets<span class="hljs-tag">&lt;/label&gt;</span>
-    <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"flex gap-4"</span><span class="hljs-tag">&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"inline-flex items-center gap-1 text-sm text-gray-400"</span><span class="hljs-tag">&gt;</span>
-        <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"radio"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"pets"</span> <span class="hljs-attr">value=</span><span class="hljs-string">"yes"</span><span class="hljs-tag">&gt;</span> Yes
-      <span class="hljs-tag">&lt;/label&gt;</span>
-      <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"inline-flex items-center gap-1 text-sm text-gray-400"</span><span class="hljs-tag">&gt;</span>
-        <span class="hljs-tag">&lt;input</span> <span class="hljs-attr">type=</span><span class="hljs-string">"radio"</span> <span class="hljs-attr">name=</span><span class="hljs-string">"pets"</span> <span class="hljs-attr">value=</span><span class="hljs-string">"no"</span> <span class="hljs-attr">checked</span><span class="hljs-tag">&gt;</span> No
-      <span class="hljs-tag">&lt;/label&gt;</span>
-    <span class="hljs-tag">&lt;/div&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mb-4"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-2"</span>&gt;</span>Pets<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"flex gap-4"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#fafafa] transition-colors cursor-pointer"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"pets"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"yes"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"w-4 h-4"</span>&gt;</span> Yes
+      <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#fafafa] transition-colors cursor-pointer"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"radio"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"pets"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"no"</span> <span class="hljs-attr">checked</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"w-4 h-4"</span>&gt;</span> No
+      <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- Additional Notes --&gt;</span>
-  <span class="hljs-tag">&lt;div</span> <span class="hljs-attr">class=</span><span class="hljs-string">"mb-4"</span><span class="hljs-tag">&gt;</span>
-    <span class="hljs-tag">&lt;label</span> <span class="hljs-attr">class=</span><span class="hljs-string">"block text-sm font-medium text-gray-200 mb-1"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mb-6"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block text-sm font-medium text-[#e6edf3] mb-1"</span>&gt;</span>
       Additional notes
-    <span class="hljs-tag">&lt;/label&gt;</span>
-    <span class="hljs-tag">&lt;textarea</span> <span class="hljs-attr">name=</span><span class="hljs-string">"notes"</span> <span class="hljs-attr">rows=</span><span class="hljs-string">"3"</span> 
-              <span class="hljs-attr">class=</span><span class="hljs-string">"w-full px-4 py-2 bg-[#111111] border border-[#1a1a1a] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[#00ff88]"</span>
-              <span class="hljs-attr">placeholder=</span><span class="hljs-string">"Any additional information..."</span><span class="hljs-tag">&gt;&lt;/textarea&gt;</span>
-  <span class="hljs-tag">&lt;/div&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">textarea</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"notes"</span> <span class="hljs-attr">rows</span>=<span class="hljs-string">"3"</span> 
+              <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full px-4 py-3 bg-[#111111] border border-[#1a1a1a] rounded-lg text-[#fafafa] placeholder-[#555555] focus:border-[#00ff88] focus:ring-0 transition-all duration-200 resize-y"</span>
+              <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Any additional information..."</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">textarea</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
-  <span class="hljs-tag">&lt;button</span> <span class="hljs-attr">type=</span><span class="hljs-string">"submit"</span> 
-          <span class="hljs-attr">class=</span><span class="hljs-string">"w-full py-3 px-6 bg-[#00ff88] text-black font-semibold rounded-lg hover:bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ff88]/20"</span><span class="hljs-tag">&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> 
+          <span class="hljs-attr">class</span>=<span class="hljs-string">"w-full py-3 px-6 bg-[#00ff88] text-[#050505] font-semibold rounded-lg hover:bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ff88]/20"</span>&gt;</span>
     Submit Application
-  <span class="hljs-tag">&lt;/button&gt;</span>
-<span class="hljs-tag">&lt;/form&gt;</span></pre>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></pre>
                         </div>
+                    </div>
+                </div>
+
+                
                     </div>
                 </div>
             </div>

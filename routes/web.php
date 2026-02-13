@@ -106,8 +106,11 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
 Route::get('/library', [LibraryController::class, 'Library'])->name('Home.library');
 Route::get('/Application-forms', [LibraryController::class, 'ApplicationForm'])->name('Home.library.ApplicationForm');
 Route::get('/Tenant-Application-forms', [LibraryController::class, 'TenantApplicationForm'])->name('Home.library.TenantApplicationForm');
-
-
+Route::get('/Rental-Application-forms', [LibraryController::class, 'RentalApplicationForm'])->name('Home.library.RentalApplicationForm');
+Route::get('/Job-Application-forms', [LibraryController::class, 'JobApplicationForm'])->name('Home.library.JobApplicationForm');
+Route::get('/Scholarship-Application-forms', [LibraryController::class, 'ScholarshipApplicationForm'])->name('Home.library.ScholarshipApplicationForm');
+Route::get('/Vendor-Application-forms', [LibraryController::class, 'VendorApplicationForm'])->name('Home.library.VendorApplicationForm');
+Route::get('/Internship-Application-forms', [LibraryController::class, 'InternshipApplicationForm'])->name('Home.library.InternshipApplicationForm');
 
 
 
