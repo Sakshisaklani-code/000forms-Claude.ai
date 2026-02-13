@@ -16,4 +16,9 @@ class LibraryController extends Controller
     {
         return view('Library.ApplicationFormTemplates');
     }
+
+    public function TenantApplicationForm()
+    {
+        return view('Library.Tenant-ApplicationForm');
+    }
 }

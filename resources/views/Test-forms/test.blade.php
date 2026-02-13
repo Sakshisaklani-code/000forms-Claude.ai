@@ -1,524 +1,280 @@
-<form
-  action="https://formspree.io/f/{FORM_ID}"
-  class="fs-form fs-layout__2-column"
-  target="_top"
-  method="POST"
->
-  <fieldset>
-    <legend class="fs-fieldset-title">Personal details</legend>
-    <div class="fs-field">
-      <label class="fs-label" for="name">Full Name</label>
-      <input class="fs-input" id="name" name="name" required />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="dob">Date of Birth</label>
-      <input
-        class="fs-input"
-        id="dob"
-        name="dob"
-        placeholder="MM-DD-YYYY"
-        required
-      />
-    </div>
-  </fieldset>
-  <fieldset>
-    <legend class="fs-fieldset-title">Address details</legend>
-    <div class="fs-field">
-      <label class="fs-label" for="address-1">Address line 1</label>
-      <input class="fs-input" id="address-1" name="address-1" />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="address-2">Address line 2</label>
-      <input class="fs-input" id="address-2" name="address-2" />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="city">City</label>
-      <input class="fs-input" id="city" name="city" />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="state">State / Province</label>
-      <input class="fs-input" id="state" name="state" />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="zip-code">Postal / Zip Code</label>
-      <input class="fs-input" id="zip-code" name="zip-code" />
-    </div>
-  </fieldset>
-  <fieldset>
-    <legend class="fs-fieldset-title">Contact information</legend>
-    <div class="fs-field">
-      <label class="fs-label" for="email">Email</label>
-      <input class="fs-input" id="email" name="email" required />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="number">Contact Number</label>
-      <input
-        class="fs-input"
-        id="number"
-        name="number"
-        placeholder="(000) 000-0000"
-        required
-      />
-    </div>
-  </fieldset>
-  <fieldset>
-    <legend class="fs-fieldset-title">Latest role description</legend>
-    <div class="fs-field">
-      <label class="fs-label" for="previous-company">
-        Name of your latest employer
-      </label>
-      <input class="fs-input" id="previous-company" name="previous-company" />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="previous-role">Your latest role</label>
-      <input class="fs-input" id="previous-role" name="previous-role" />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="latest-role-start-date">Start date</label>
-      <input
-        class="fs-input"
-        id="latest-role-start-date"
-        name="latest-role-start-date"
-        placeholder="MM-YYYY"
-      />
-      <p class="fs-description">When did you start at your latest role?</p>
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="latest-role-end-date">End date</label>
-      <input
-        class="fs-input"
-        id="latest-role-end-date"
-        name="latest-role-end-date"
-        placeholder="MM-YYYY. Please leave blank if you are currently in the role"
-      />
-      <p class="fs-description">End date of your latest role</p>
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="role-description">Role description</label>
-      <textarea
-        class="fs-textarea"
-        id="role-description"
-        name="role-description"
-      ></textarea>
-      <p class="fs-description">
-        Please describe what you did at your latest role
-      </p>
-    </div>
-  </fieldset>
-  <fieldset>
-    <legend class="fs-fieldset-title">Job position preferences</legend>
-    <div class="fs-field">
-      <label class="fs-label" for="dates">Position you want to apply for</label>
-      <select class="fs-select" id="dates" name="dates">
-        <option value="software-engineer">Software Engineer</option>
-        <option value="senior-software-engineer">
-          Senior Software Engineer
-        </option>
-        <option value="ux-designer">UX designer</option>
-        <option value="marketing-specialist">Marketing Specialist</option>
-      </select>
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="start-date">When can you start?</label>
-      <input
-        class="fs-input"
-        id="start-date"
-        name="start-date"
-        placeholder="DD-MM-YYYY"
-        required
-      />
-    </div>
-    <div class="fs-field">
-      <label class="fs-label" for="dates">How did you learn about us?</label>
-      <select class="fs-select" id="dates" name="dates">
-        <option value="search-engines">
-          Search Engines (Google, DuckDuckGo, etc)
-        </option>
-        <option value="social-media">Social Media</option>
-        <option value="company-website">Company Website</option>
-        <option value="jobs-board">Online Jobs Board</option>
-        <option value="review-site">Review sites (G2, Capterra, etc)</option>
-      </select>
-    </div>
-  </fieldset>
-  <div class="fs-button-group">
-    <button class="fs-button" type="submit">Submit</button>
-  </div>
-</form>
-
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
-/** Variables **/
-
-:root {
-  --color-background: #e7e7e7;
-  --color-background-alt: #ba5ed7;
-  --color-border-active: #a94bc3;
-  --color-border-default: #d1d1d1;
-  --color-highlight: #e2b6f1;
-  --color-primary: #86319a;
-  --color-primary-active: #5e2768;
-  --color-text-default: #262626;
-  --color-text-muted: #4f4f4f;
-
-  --font-family-body: "Figtree", system-ui, sans-serif;
-  --font-family-display: "Poppins", system-ui, sans-serif;
+  .tenant-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #0d0d0d;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
 }
 
-/** Base **/
-
-*,
-::before,
-::after {
-  box-sizing: border-box;
-}
-
-* {
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  font-family: var(--font-family-body);
-  font-optical-sizing: auto;
-  font-style: normal;
-}
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit;
-  font-feature-settings: inherit;
-  font-variation-settings: inherit;
-  font-size: 100%;
-  font-weight: inherit;
-  line-height: inherit;
-  color: inherit;
-  margin: 0;
-  padding: 0;
-}
-
-[type="checkbox"],
-[type="radio"],
-[type="range"] {
-  appearance: none;
-  flex-shrink: 0;
-  padding: 0;
-  user-select: none;
-}
-
-[type="checkbox"]:focus,
-[type="radio"]:focus,
-[type="range"]:focus {
-  outline: none;
-}
-
-/** Components **/
-
-.fs-form {
-  display: grid;
-  row-gap: 1rem;
-}
-
-.fs-form:where(.fs-layout__2-column) {
-  column-gap: 0.75rem;
-  grid-template-columns: 1fr 1fr;
-}
-
-fieldset {
-  display: grid;
-  margin: 1rem 0;
-  row-gap: 1rem;
-}
-
-.fs-form:where(.fs-layout__2-column) fieldset {
-  column-gap: 0.75rem;
-  grid-template-columns: 1fr 1fr;
-  grid-column: 1 / -1;
-}
-
-.fs-fieldset-title {
-  color: var(--color-text-default);
-  font-family: var(--font-family-display);
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  margin-bottom: 1rem;
-  grid-column: 1 / -1;
-}
-
-.fs-field {
-  display: flex;
-  flex-direction: column;
-  row-gap: 0.5rem;
-}
-
-.fs-label {
-  color: var(--color-text-default);
-  display: block;
-  font-family: var(--font-family-display);
-  font-size: 1rem;
-  line-height: 1.25rem;
-}
-
-.fs-description {
-  color: var(--color-text-muted);
-  display: block;
-  font-size: 1rem;
-  line-height: 1.25rem;
-}
-
-.fs-button-group {
-  display: flex;
-  flex-direction: row-reverse;
-  column-gap: 0.75rem;
-}
-
-.fs-form:where(.fs-layout__2-column) .fs-button-group {
-  grid-column: 1 / -1;
-}
-
-.fs-button {
-  background-color: var(--color-primary);
-  border-radius: 9999px;
-  color: white;
-  cursor: pointer;
-  font-size: 1.125rem;
+.tenant-form h3 {
+  font-size: 1.5rem;
   font-weight: 600;
-  line-height: 1.5rem;
-  padding: 0.75rem 2rem;
-  transition-duration: 200ms;
-  transition-property: background-color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  color: #fafafa;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 }
 
-.fs-button:hover {
-  background-color: var(--color-primary-active);
+.tenant-form .form-description {
+  font-size: 0.9rem;
+  color: #888888;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
 }
 
-.fs-button:focus-visible {
-  background-color: var(--color-primary-active);
-  outline: 4px solid var(--color-highlight);
+.tenant-form h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #00ff88;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #2a2a2a;
 }
 
-.fs-input,
-.fs-select {
-  appearance: none;
-  border-radius: 9999px;
-  border-width: 0;
-  box-shadow: var(--color-border-default) 0 0 0 1px inset;
-  color: var(--color-text-default);
-  font-size: 0.875rem;
-  height: 2.5rem;
-  line-height: 1.25rem;
+.tenant-form h4:first-of-type {
+  margin-top: 0;
+}
+
+.tenant-form .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.tenant-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #e6edf3;
+  margin-bottom: 0.35rem;
+}
+
+.tenant-form input[type="text"],
+.tenant-form input[type="email"],
+.tenant-form input[type="tel"],
+.tenant-form select,
+.tenant-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #111111;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+  color: #fafafa;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.tenant-form input:focus,
+.tenant-form select:focus,
+.tenant-form textarea:focus {
   outline: none;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  border-color: #00ff88;
+  box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.15);
 }
 
-.fs-input:focus-visible,
-.fs-select:focus-visible {
-  box-shadow: var(--color-border-active) 0 0 0 1px inset;
+.tenant-form input::placeholder,
+.tenant-form textarea::placeholder {
+  color: #555555;
 }
 
-.fs-input::placeholder {
-  color: var(--color-text-muted);
-}
-
-.fs-checkbox-group,
-.fs-radio-group {
+.tenant-form .form-row {
   display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
-.fs-checkbox-field,
-.fs-radio-field {
-  column-gap: 0.5rem;
+.tenant-form .form-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.tenant-form .form-options {
   display: flex;
-}
-
-:is(.fs-checkbox-field, .fs-radio-field) .fs-label + .fs-description {
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-top: 0.25rem;
 }
 
-.fs-checkbox-wrapper,
-.fs-radio-wrapper {
+.tenant-form .form-options label {
+  display: inline-flex;
   align-items: center;
-  display: flex;
-  height: 1.25rem;
-}
-
-.fs-checkbox,
-.fs-radio {
-  background-color: #fff;
-  border: 1px solid var(--color-border-default);
-  height: 1.25rem;
-  width: 1.25rem;
-}
-
-.fs-checkbox {
-  border-radius: 0.25rem;
-}
-
-.fs-radio {
-  border-radius: 100%;
-}
-
-.fs-checkbox:checked,
-.fs-radio:checked {
-  background-color: var(--color-primary);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  border-color: transparent;
-}
-
-.fs-checkbox:checked {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-}
-
-.fs-radio:checked {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
-}
-
-.fs-checkbox:focus-visible,
-.fs-radio:focus-visible {
-  border-color: var(--color-border-active);
-  outline: 4px solid var(--color-highlight);
-  outline-offset: 0;
-}
-
-.fs-checkbox:checked:focus-visible,
-.fs-radio:checked:focus-visible {
-  border-color: transparent;
-}
-
-.fs-select {
-  background-color: #fff;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.75rem center;
-  background-repeat: no-repeat;
-  background-size: 1.625em 1.625em;
-  padding-right: 2.875rem;
-}
-
-.fs-slider {
-  background: transparent;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: normal;
+  color: #888888;
+  margin-bottom: 0;
   cursor: pointer;
-  height: 1.25rem;
-  width: 100%;
 }
 
-.fs-slider::-moz-range-track {
-  background-color: var(--color-background);
-  border-radius: 0.5rem;
-  height: 0.5rem;
+.tenant-form .form-options input[type="radio"] {
+  width: auto;
+  margin-right: 0.25rem;
+  accent-color: #00ff88;
 }
 
-.fs-slider::-webkit-slider-runnable-track {
-  background-color: var(--color-background);
-  border-radius: 0.5rem;
-  height: 0.5rem;
-}
-
-.fs-slider::-moz-range-thumb {
-  background-color: var(--color-primary);
-  border: none; /* Removes extra border that FF applies */
-  border-radius: 50%;
-  height: 1.25rem;
-  width: 1.25rem;
-}
-
-.fs-slider::-webkit-slider-thumb {
-  appearance: none;
-  background-color: var(--color-primary);
-  border-radius: 50%;
-  height: 1.25rem;
-  margin-top: -0.375rem; /* Centers thumb on the track */
-  width: 1.25rem;
-}
-
-.fs-slider:focus-visible::-moz-range-thumb {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.fs-slider:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.fs-switch {
-  background-color: var(--color-background-alt);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2.75' fill='white'/%3e%3c/svg%3e");
-  background-position: left center;
-  background-repeat: no-repeat;
-  border-radius: 1.25rem;
-  cursor: pointer;
-  height: 1.25rem;
-  transition-duration: 200ms;
-  transition-property: background-color, background-position;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  width: 2.5rem;
-}
-
-.fs-switch:checked {
-  background-color: var(--color-primary);
-  background-position: right center;
-}
-
-.fs-switch:focus-visible {
-  outline: 4px solid var(--color-highlight);
-  outline-offset: 0;
-}
-
-.fs-textarea {
-  appearance: none;
-  border-radius: 0.75rem;
-  border-width: 0;
-  box-shadow: var(--color-border-default) 0 0 0 1px inset;
-  color: var(--color-text-default);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  outline: none;
-  padding: 0.5rem 0.75rem;
+.tenant-form textarea {
   resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
 }
 
-.fs-textarea:focus-visible {
-  box-shadow: var(--color-border-active) 0 0 0 1px inset;
-}
-
-.fs-textarea::placeholder {
-  color: var(--color-text-muted);
-}
-
-/** Utilities **/
-
-.col-span-full {
-  grid-column: 1 / -1;
-}
-
-.fs-textarea::placeholder {
-  color: var(--color-text-muted);
-}
-
-.slider-label-container {
-  display: flex;
-  justify-content: space-between;
+.tenant-form .submit-btn {
   width: 100%;
-  margin-top: 0.25rem;
+  padding: 0.875rem 1.5rem;
+  background: #00ff88;
+  border: none;
+  border-radius: 8px;
+  color: #050505;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
 }
 
-.slider-label-text {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  text-align: center;
-  white-space: nowrap;
+.tenant-form .submit-btn:hover {
+  background: #fafafa;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
+}
+
+@media (max-width: 768px) {
+  .tenant-form {
+    padding: 1.5rem;
+  }
+  
+  .tenant-form .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .tenant-form .form-options {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 </style>
+<form action="https://000form.com/f/your-endpoint" method="POST" class="tenant-form">
+  <h3>Tenant Application Form</h3>
+  <p class="form-description">
+    Thank you for taking an interest in renting one of our properties. 
+    Please fill in this form with the needed information.
+  </p>
+
+  <h4>Tenancy details</h4>
+  
+  <div class="form-group">
+    <label for="property_address">Property address</label>
+    <input type="text" id="property_address" name="property_address" 
+           placeholder="Street Address" required>
+    <input type="text" id="property_address2" name="property_address2" 
+           placeholder="Street Address Line 2">
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="city">City</label>
+      <input type="text" id="city" name="city" placeholder="City" required>
+    </div>
+    <div class="form-group">
+      <label for="region">Region</label>
+      <input type="text" id="region" name="region" placeholder="Region" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="postal_code">Postal / Zip Code</label>
+      <input type="text" id="postal_code" name="postal_code" 
+             placeholder="Postal / Zip Code" required>
+    </div>
+    <div class="form-group">
+      <label for="country">Country</label>
+      <input type="text" id="country" name="country" value="USA" 
+             placeholder="Country">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="commencement_date">Commencement of tenancy</label>
+    <input type="text" id="commencement_date" name="commencement_date" 
+           placeholder="MM/DD/YYYY" required>
+  </div>
+
+  <h4>Applicant details</h4>
+
+  <div class="form-group">
+    <label for="full_name">Full Name</label>
+    <input type="text" id="full_name" name="full_name" 
+           placeholder="Full Name" required>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" 
+           placeholder="Email Address" required>
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" 
+           placeholder="Phone Number" required>
+  </div>
+
+  <div class="form-group">
+    <label for="current_address">Current Address</label>
+    <input type="text" id="current_address" name="current_address" 
+           placeholder="Current Address" required>
+  </div>
+
+  <div class="form-group">
+    <label>Employment Status</label>
+    <div class="form-options">
+      <label>
+        <input type="radio" name="employment_status" value="employed"> Employed
+      </label>
+      <label>
+        <input type="radio" name="employment_status" value="self-employed"> Self-employed
+      </label>
+      <label>
+        <input type="radio" name="employment_status" value="unemployed"> Unemployed
+      </label>
+      <label>
+        <input type="radio" name="employment_status" value="retired"> Retired
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="employer">Current Employer</label>
+    <input type="text" id="employer" name="employer" 
+           placeholder="Employer name (optional)">
+  </div>
+
+  <div class="form-group">
+    <label for="income">Monthly Income</label>
+    <input type="text" id="income" name="income" placeholder="$">
+  </div>
+
+  <div class="form-group">
+    <label>Pets</label>
+    <div class="form-options">
+      <label>
+        <input type="radio" name="pets" value="yes"> Yes
+      </label>
+      <label>
+        <input type="radio" name="pets" value="no" checked> No
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="notes">Additional notes</label>
+    <textarea id="notes" name="notes" rows="3" 
+              placeholder="Any additional information..."></textarea>
+  </div>
+
+  <button type="submit" class="submit-btn">
+    Submit Application
+  </button>
+</form>
