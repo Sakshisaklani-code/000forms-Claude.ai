@@ -145,7 +145,6 @@
                         <h2>Tenant Application Form</h2>
                         <p class="form-preview-subtitle">Thank you for taking an interest in renting one of our properties. Please fill in this form with the needed information.</p>
                     </div>
-                    <div class="form-badge-large">HTML + CSS</div>
                 </div>
                 
                 <!-- Live Form Preview -->

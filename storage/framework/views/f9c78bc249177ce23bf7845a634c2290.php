@@ -214,7 +214,6 @@
                         <h2>Job Application Form</h2>
                         <p class="form-preview-subtitle">Apply for an open position at our company. Please fill in all required information.</p>
                     </div>
-                    <div class="form-badge-large">HTML + CSS</div>
                 </div>
                 
                 <div class="live-form-preview">
