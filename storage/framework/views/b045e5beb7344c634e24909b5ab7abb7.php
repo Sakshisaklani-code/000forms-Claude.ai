@@ -118,7 +118,7 @@
                 <div class="form-preview-footer">
                     <span class="form-badge">HTML</span>
                     <span class="form-fields-count">6 fields</span>
-                    <button class="get-code-btn">Get code →</button>
+                    <a href="<?php echo e(route('Home.library.JobApplicationForm')); ?>" class="get-code-btn">Get code →</a>
                 </div>
             </div>
             

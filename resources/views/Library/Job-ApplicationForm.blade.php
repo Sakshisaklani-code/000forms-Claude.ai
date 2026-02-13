@@ -175,14 +175,16 @@
 
     .job-form-preview .form-submit {
         width: 100%;
-        padding: 0.875rem;
-        background: #00ff88;
+        padding: 0.75rem 1.5rem;
+        background: var(--accent);
         border: none;
         border-radius: 8px;
-        color: #050505;
+        color: var(--bg-primary);
         font-size: 1rem;
-        font-weight: 600;
+        font-weight: 500;
         margin-top: 0.5rem;
+        cursor: not-allowed;
+        opacity: 0.9;
     }
 </style>
 @endpush

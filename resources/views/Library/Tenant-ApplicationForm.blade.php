@@ -774,12 +774,9 @@
                         </div>
                     </div>
                 </div>
-
                 
                     </div>
                 </div>
-            </div>
-        </div>
         
         <!-- Instructions -->
         <div class="form-instructions">

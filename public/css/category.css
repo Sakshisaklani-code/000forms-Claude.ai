@@ -477,7 +477,7 @@
     opacity: 0.9;
 }
 
-.tenant-form-preview .form-note {
+ .form-note {
     display: flex;
     align-items: center;
     gap: 0.5rem;
