@@ -11,5 +11,9 @@ class LibraryController extends Controller
     {
         return view('Library.htmlTemplates');
     }
-    
+
+    public function ApplicationForm()
+    {
+        return view('Library.ApplicationFormTemplates');
+    }
 }
