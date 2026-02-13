@@ -1,404 +1,464 @@
 
 
-<?php $__env->startSection('title', 'Application Form Templates - 000form'); ?>
+<?php $__env->startSection('title', 'Application Forms - 000form Library'); ?>
 
 <?php $__env->startPush('styles'); ?>
 <link href="<?php echo e(asset('css/library.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/category.css')); ?>" rel="stylesheet">
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
 
-<!-- Library Hero Section -->
-<section class="hero">
-    <div class="hero-bg">
-        <div class="hero-gradient hero-gradient-1"></div>
-        <div class="hero-gradient hero-gradient-2"></div>
-    </div>
-    
+<!-- Category Content -->
+<section class="category-features" style="padding-top: 2rem;">
     <div class="container">
-        <div class="hero-content" style="text-align: center; max-width: 700px; margin: 0 auto;">
-            <div class="hero-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                    <path d="M2 17l10 5 10-5"/>
-                    <path d="M2 12l10 5 10-5"/>
-                </svg>
-                Form Library • Copy & Paste Ready
+        
+        <!-- Category Header -->
+        <div class="category-header">
+            <div class="category-info">
+                <h2>All Application Forms</h2>
+                <p>Choose templates, copy HTML code instantly</p>
+            </div>
+        </div>
+        
+        <!-- Templates Grid - 2 columns -->
+        <div class="application-forms-grid">
+            
+            <!-- 1. Tenant Application Form -->
+            <div class="card application-form-card">
+                <div class="form-preview-header">
+                    <h3 class="form-preview-title">Tenant Application Form</h3>
+                    <p class="form-preview-description">Thank you for taking an interest in renting one of our properties. Please fill in this form with the needed information.</p>
+                </div>
+                
+                <div class="form-preview-content">
+                    <h4 class="form-section-heading">Tenancy details</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Property address</label>
+                        <div class="form-input-placeholder">Street Address</div>
+                        <div class="form-input-placeholder">Street Address Line 2</div>
+                        
+                        <div class="form-row">
+                            <div class="form-input-placeholder">City</div>
+                            <div class="form-input-placeholder">Region</div>
+                            <div class="form-input-placeholder">Postal / Zip Code</div>
+                            <div class="form-input-placeholder">Country</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Commencement of tenancy</label>
+                        <div class="form-input-placeholder">MM/DD/YYYY</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Applicant details</label>
+                        <div class="form-input-placeholder">Full Name</div>
+                        <div class="form-input-placeholder">Email Address</div>
+                        <div class="form-input-placeholder">Phone Number</div>
+                        <div class="form-input-placeholder">Current Address</div>
+                    </div>
+                    
+                    <div class="form-submit-btn">Submit Application</div>
+                </div>
+                
+                <div class="form-preview-footer">
+                    <span class="form-badge">HTML</span>
+                    <span class="form-fields-count">12 fields</span>
+                    <button class="get-code-btn">Get code →</button>
+                </div>
             </div>
             
-            <h1 class="hero-title">
-                Form templates for <span class="highlight">every need</span>
-            </h1>
-            
-            <p class="hero-description">
-                Browse our collection of beautiful, ready-to-use form templates. 
-                Built with multiple frameworks, completely free.
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- Library Content -->
-<section class="features" style="padding-top: 0;">
-    <div class="container">
-        <div class="library-grid">
-            
-            <!-- Sidebar -->
-            <aside class="library-sidebar">
-                <div class="card sidebar-card">
-                    
-                    <!-- Framework Selector -->
-                    <div class="sidebar-section">
-                        <h3 class="sidebar-title">Technology</h3>
-                        
-                        <div class="tech-list">
-                            <a href="#" class="tech-link active">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                    <path d="M22 6l-10 7L2 6"/>
-                                </svg>
-                                HTML Forms
-                                <span class="tech-count">24</span>
-                            </a>
-                            
-                            <a href="#" class="tech-link">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
-                                    <path d="M8 8h8v8H8z"/>
-                                    <path d="M12 8v8M8 12h8"/>
-                                </svg>
-                                Tailwind Forms
-                                <span class="tech-count">18</span>
-                            </a>
-                            
-                            <a href="#" class="tech-link">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M12 8v8M8 12h8"/>
-                                </svg>
-                                React Forms
-                                <span class="tech-count">15</span>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Form Categories -->
-                    <div class="sidebar-section">
-                        <h3 class="sidebar-title">Categories</h3>
-                        
-                        <div class="category-list">
-                            <a href="#" class="category-link active">
-                                <span>All Forms</span>
-                                <span class="category-count">57</span>
-                            </a>
-                            <a href="#" class="category-link">
-                                <span>Application Forms</span>
-                            </a>
-                            <a href="#" class="category-link">
-                                <span>Contact Forms</span>
-                            </a>
-                            <a href="#" class="category-link">
-                                <span>Donation Forms</span>
-                            </a>
-                            <a href="#" class="category-link">
-                                <span>Feedback Forms</span>
-                            </a>
-                            <a href="#" class="category-link">
-                                <span>Order Forms</span>
-                            </a>
-                            <a href="#" class="category-link">
-                                <span>Registration Forms</span>
-                            </a>
-                            <a href="#" class="category-link">
-                                <span>Request Forms</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-            
-            <!-- Main Content -->
-            <main class="library-main">
-                <!-- Filter Bar -->
-                <div class="filter-bar">
-                    <div class="filter-tags">
-                        <span class="filter-tag active">Most Popular</span>
-                        <span class="filter-tag">Recently Added</span>
-                        <span class="filter-tag">Most Used</span>
-                    </div>
-                    
-                    <div class="results-count">
-                        Showing 24 forms
-                    </div>
+            <!-- 2. Job Application Form -->
+            <div class="card application-form-card">
+                <div class="form-preview-header">
+                    <h3 class="form-preview-title">Job Application Form</h3>
+                    <p class="form-preview-description">Apply for an open position at our company. Please fill in all required information.</p>
                 </div>
                 
-                <!-- Forms Grid -->
-                <div class="forms-grid">
+                <div class="form-preview-content">
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Full Name:</label>
+                        <div class="form-input-placeholder-light">Enter your name</div>
+                    </div>
                     
-                    <!-- Application Form Card -->
-                    <div class="form-card-wrapper">
-                        <div class="card form-card">
-                            <div class="form-card-header">
-                                <span class="form-badge">Application Form</span>
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Email:</label>
+                        <div class="form-input-placeholder-light">Enter your email</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Position:</label>
+                        <div class="form-select-placeholder">Select a position</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Availability:</label>
+                        <div class="form-checkbox-group">
+                            <div class="form-checkbox-item">
+                                <span class="form-checkbox-box">□</span>
+                                <span class="form-checkbox-label">Full-Time</span>
                             </div>
-                            
-                            <div class="form-preview">
-                                <pre><span class="form-tag">&lt;form&gt;</span>
-  <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"text"</span> <span class="form-attr">placeholder=</span><span class="form-string">"Full Name"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"email"</span> <span class="form-attr">placeholder=</span><span class="form-string">"Email"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"tel"</span> <span class="form-attr">placeholder=</span><span class="form-string">"Phone"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;button&gt;</span>Apply Now<span class="form-tag">&lt;/button&gt;</span>
-<span class="form-tag">&lt;/form&gt;</span></pre>
+                            <div class="form-checkbox-item">
+                                <span class="form-checkbox-box">□</span>
+                                <span class="form-checkbox-label">Part-Time</span>
                             </div>
-                            
-                            <div class="form-card-footer">
-                                <div class="form-stats">
-                                    <span class="form-stat">4 fields</span>
-                                </div>
-                                <button class="copy-btn">Copy</button>
-                            </div>
-                        </div>
-                        <div class="form-type-link">
-                            <span class="form-type">Application Forms</span>
-                            <a href="#" class="view-more-link">
-                                View 12+ templates
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </a>
                         </div>
                     </div>
                     
-                    <!-- Contact Form Card -->
-                    <div class="form-card-wrapper">
-                        <div class="card form-card">
-                            <div class="form-card-header">
-                                <span class="form-badge">Contact Form</span>
-                            </div>
-                            
-                            <div class="form-preview">
-                                <pre><span class="form-tag">&lt;form</span> <span class="form-attr">class=</span><span class="form-string">"space-y-4"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;input</span> <span class="form-attr">class=</span><span class="form-string">"w-full px-4 py-2 rounded border"</span> 
-         <span class="form-attr">placeholder=</span><span class="form-string">"Your Name"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;input</span> <span class="form-attr">class=</span><span class="form-string">"w-full px-4 py-2 rounded border"</span> 
-         <span class="form-attr">placeholder=</span><span class="form-string">"Email"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;textarea</span> <span class="form-attr">class=</span><span class="form-string">"w-full px-4 py-2 rounded border"</span> 
-            <span class="form-attr">placeholder=</span><span class="form-string">"Message"</span><span class="form-tag">&gt;&lt;/textarea&gt;</span>
-  <span class="form-tag">&lt;button</span> <span class="form-attr">class=</span><span class="form-string">"bg-blue-500 text-white px-6 py-2 rounded"</span><span class="form-tag">&gt;</span>
-    Send Message
-  <span class="form-tag">&lt;/button&gt;</span>
-<span class="form-tag">&lt;/form&gt;</span></pre>
-                            </div>
-                            
-                            <div class="form-card-footer">
-                                <div class="form-stats">
-                                    <span class="form-stat">3 fields</span>
-                                </div>
-                                <button class="copy-btn">Copy</button>
-                            </div>
-                        </div>
-                        <div class="form-type-link">
-                            <span class="form-type">Contact Forms</span>
-                            <a href="#" class="view-more-link">
-                                View 8+ templates
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </a>
-                        </div>
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Why do you want this job?</label>
+                        <div class="form-textarea-placeholder">Write your motivation</div>
                     </div>
                     
-                    <!-- Donation Form Card -->
-                    <div class="form-card-wrapper">
-                        <div class="card form-card">
-                            <div class="form-card-header">
-                                <span class="form-badge">Donation Form</span>
-                            </div>
-                            
-                            <div class="form-preview">
-                                <pre><span class="form-property">const</span> <span class="form-tag">DonationForm</span> = () =&gt; {
-  <span class="form-property">const</span> [amount, setAmount] = <span class="form-tag">useState</span>('');
-  
-  <span class="form-property">return</span> (
-    <span class="form-tag">&lt;form</span> <span class="form-attr">onSubmit=</span><span class="form-string">{handleSubmit}</span><span class="form-tag">&gt;</span>
-      <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"number"</span> 
-             <span class="form-attr">value=</span><span class="form-string">{amount}</span>
-             <span class="form-attr">onChange=</span><span class="form-string">{(e) => setAmount(e.target.value)}</span>
-             <span class="form-attr">placeholder=</span><span class="form-string">"Amount"</span><span class="form-tag">/&gt;</span>
-      <span class="form-tag">&lt;button</span> <span class="form-attr">type=</span><span class="form-string">"submit"</span><span class="form-tag">&gt;</span>Donate<span class="form-tag">&lt;/button&gt;</span>
-    <span class="form-tag">&lt;/form&gt;</span>
-  )
-}</pre>
-                            </div>
-                            
-                            <div class="form-card-footer">
-                                <div class="form-stats">
-                                    <span class="form-stat">2 fields</span>
-                                </div>
-                                <button class="copy-btn">Copy</button>
-                            </div>
-                        </div>
-                        <div class="form-type-link">
-                            <span class="form-type">Donation Forms</span>
-                            <a href="#" class="view-more-link">
-                                View 6+ templates
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Feedback Form Card -->
-                    <div class="form-card-wrapper">
-                        <div class="card form-card">
-                            <div class="form-card-header">
-                                <span class="form-badge">Feedback Form</span>
-                            </div>
-                            
-                            <div class="form-preview">
-                                <pre><span class="form-tag">&lt;form&gt;</span>
-  <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"text"</span> <span class="form-attr">placeholder=</span><span class="form-string">"Name"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;select&gt;</span>
-    <span class="form-tag">&lt;option&gt;</span>Rating<span class="form-tag">&lt;/option&gt;</span>
-    <span class="form-tag">&lt;option&gt;</span>5 - Excellent<span class="form-tag">&lt;/option&gt;</span>
-    <span class="form-tag">&lt;option&gt;</span>4 - Good<span class="form-tag">&lt;/option&gt;</span>
-    <span class="form-tag">&lt;option&gt;</span>3 - Average<span class="form-tag">&lt;/option&gt;</span>
-  <span class="form-tag">&lt;/select&gt;</span>
-  <span class="form-tag">&lt;textarea</span> <span class="form-attr">placeholder=</span><span class="form-string">"Your feedback"</span><span class="form-tag">&gt;&lt;/textarea&gt;</span>
-  <span class="form-tag">&lt;button&gt;</span>Submit Feedback<span class="form-tag">&lt;/button&gt;</span>
-<span class="form-tag">&lt;/form&gt;</span></pre>
-                            </div>
-                            
-                            <div class="form-card-footer">
-                                <div class="form-stats">
-                                    <span class="form-stat">3 fields</span>
-                                </div>
-                                <button class="copy-btn">Copy</button>
-                            </div>
-                        </div>
-                        <div class="form-type-link">
-                            <span class="form-type">Feedback Forms</span>
-                            <a href="#" class="view-more-link">
-                                View 10+ templates
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Order Form Card -->
-                    <div class="form-card-wrapper">
-                        <div class="card form-card">
-                            <div class="form-card-header">
-                                <span class="form-badge">Order Form</span>
-                            </div>
-                            
-                            <div class="form-preview">
-                                <pre><span class="form-tag">&lt;form</span> <span class="form-attr">class=</span><span class="form-string">"space-y-4 max-w-md"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;div</span> <span class="form-attr">class=</span><span class="form-string">"flex gap-4"</span><span class="form-tag">&gt;</span>
-    <span class="form-tag">&lt;input</span> <span class="form-attr">class=</span><span class="form-string">"flex-1 px-4 py-2 border rounded"</span> 
-           <span class="form-attr">placeholder=</span><span class="form-string">"Product"</span><span class="form-tag">&gt;</span>
-    <span class="form-tag">&lt;input</span> <span class="form-attr">class=</span><span class="form-string">"w-24 px-4 py-2 border rounded"</span> 
-           <span class="form-attr">placeholder=</span><span class="form-string">"Qty"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;/div&gt;</span>
-  <span class="form-tag">&lt;input</span> <span class="form-attr">class=</span><span class="form-string">"w-full px-4 py-2 border rounded"</span> 
-         <span class="form-attr">placeholder=</span><span class="form-string">"Email"</span><span class="form-tag">&gt;</span>
-  <span class="form-tag">&lt;button</span> <span class="form-attr">class=</span><span class="form-string">"w-full bg-green-500 text-white py-2 rounded"</span><span class="form-tag">&gt;</span>
-    Place Order
-  <span class="form-tag">&lt;/button&gt;</span>
-<span class="form-tag">&lt;/form&gt;</span></pre>
-                            </div>
-                            
-                            <div class="form-card-footer">
-                                <div class="form-stats">
-                                    <span class="form-stat">3 fields</span>
-                                </div>
-                                <button class="copy-btn">Copy</button>
-                            </div>
-                        </div>
-                        <div class="form-type-link">
-                            <span class="form-type">Order Forms</span>
-                            <a href="#" class="view-more-link">
-                                View 9+ templates
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Registration Form Card -->
-                    <div class="form-card-wrapper">
-                        <div class="card form-card">
-                            <div class="form-card-header">
-                                <span class="form-badge">Registration Form</span>
-                            </div>
-                            
-                            <div class="form-preview">
-                                <pre><span class="form-property">const</span> <span class="form-tag">RegisterForm</span> = () =&gt; {
-  <span class="form-property">return</span> (
-    <span class="form-tag">&lt;form&gt;</span>
-      <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"text"</span> <span class="form-attr">placeholder=</span><span class="form-string">"Username"</span> <span class="form-tag">/&gt;</span>
-      <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"email"</span> <span class="form-attr">placeholder=</span><span class="form-string">"Email"</span> <span class="form-tag">/&gt;</span>
-      <span class="form-tag">&lt;input</span> <span class="form-attr">type=</span><span class="form-string">"password"</span> <span class="form-attr">placeholder=</span><span class="form-string">"Password"</span> <span class="form-tag">/&gt;</span>
-      <span class="form-tag">&lt;button</span> <span class="form-attr">type=</span><span class="form-string">"submit"</span><span class="form-tag">&gt;</span>
-        Register
-      <span class="form-tag">&lt;/button&gt;</span>
-    <span class="form-tag">&lt;/form&gt;</span>
-  )
-}</pre>
-                            </div>
-                            
-                            <div class="form-card-footer">
-                                <div class="form-stats">
-                                    <span class="form-stat">3 fields</span>
-                                </div>
-                                <button class="copy-btn">Copy</button>
-                            </div>
-                        </div>
-                        <div class="form-type-link">
-                            <span class="form-type">Registration Forms</span>
-                            <a href="#" class="view-more-link">
-                                View 15+ templates
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    
+                    <div class="form-submit-btn">Submit Application</div>
                 </div>
                 
-                <!-- View All Categories -->
-                <div class="view-all-categories">
-                    <a href="#" class="view-all-link">
-                        <span>Browse all form categories</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
+                <div class="form-preview-footer">
+                    <span class="form-badge">HTML</span>
+                    <span class="form-fields-count">6 fields</span>
+                    <button class="get-code-btn">Get code →</button>
                 </div>
-            </main>
+            </div>
+            
+            <!-- 3. Rental Application Form -->
+            <div class="card application-form-card">
+                <div class="form-preview-header">
+                    <h3 class="form-preview-title">Rental Application Form</h3>
+                    <p class="form-preview-description">Please complete this rental application form to begin the tenant screening process.</p>
+                </div>
+                
+                <div class="form-preview-content">
+                    <h4 class="form-section-heading">Personal details</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Full Name</label>
+                        <div class="form-input-placeholder">Enter your full name</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Date of Birth</label>
+                        <div class="form-input-placeholder">MM/DD/YYYY</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Phone Number</label>
+                        <div class="form-input-placeholder">Enter your phone number</div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Current address</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Street Address</label>
+                        <div class="form-input-placeholder">Street Address</div>
+                        <div class="form-input-placeholder">Apt/Suite (optional)</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label">City</label>
+                            <div class="form-input-placeholder">City</div>
+                        </div>
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label">State</label>
+                            <div class="form-input-placeholder">State</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label">ZIP Code</label>
+                            <div class="form-input-placeholder">ZIP Code</div>
+                        </div>
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label">Country</label>
+                            <div class="form-input-placeholder">USA</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Employment</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Current Employer</label>
+                        <div class="form-input-placeholder">Employer name</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Monthly Income</label>
+                        <div class="form-input-placeholder">$</div>
+                    </div>
+                    
+                    <div class="form-submit-btn">Submit Application</div>
+                </div>
+                
+                <div class="form-preview-footer">
+                    <span class="form-badge">HTML</span>
+                    <span class="form-fields-count">14 fields</span>
+                    <button class="get-code-btn">Get code →</button>
+                </div>
+            </div>
+            
+            <!-- 4. Vendor Application Form -->
+            <div class="card application-form-card">
+                <div class="form-preview-header">
+                    <h3 class="form-preview-title">Vendor Application Form</h3>
+                    <p class="form-preview-description">Register your business as a vendor or supplier for our company.</p>
+                </div>
+                
+                <div class="form-preview-content">
+                    <h4 class="form-section-heading">Company information</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Company Name:</label>
+                        <div class="form-input-placeholder-light">Enter your company name</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Business Type:</label>
+                        <div class="form-select-placeholder">Select business type</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Tax ID / EIN:</label>
+                        <div class="form-input-placeholder-light">XX-XXXXXXX</div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Contact person</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Full Name:</label>
+                        <div class="form-input-placeholder-light">Enter contact name</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Email:</label>
+                        <div class="form-input-placeholder-light">Enter email address</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Phone:</label>
+                        <div class="form-input-placeholder-light">Enter phone number</div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Business address</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Street Address:</label>
+                        <div class="form-input-placeholder-light">Street address</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label-bold">City:</label>
+                            <div class="form-input-placeholder-light">City</div>
+                        </div>
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label-bold">State:</label>
+                            <div class="form-input-placeholder-light">State</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label-bold">ZIP Code:</label>
+                            <div class="form-input-placeholder-light">ZIP Code</div>
+                        </div>
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label-bold">Country:</label>
+                            <div class="form-input-placeholder-light">USA</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-submit-btn">Submit Vendor Application</div>
+                </div>
+                
+                <div class="form-preview-footer">
+                    <span class="form-badge">HTML</span>
+                    <span class="form-fields-count">11 fields</span>
+                    <button class="get-code-btn">Get code →</button>
+                </div>
+            </div>
+            
+            <!-- 5. Scholarship Application Form -->
+            <div class="card application-form-card">
+                <div class="form-preview-header">
+                    <h3 class="form-preview-title">Scholarship Application Form</h3>
+                    <p class="form-preview-description">Apply for educational scholarships and financial aid opportunities.</p>
+                </div>
+                
+                <div class="form-preview-content">
+                    <h4 class="form-section-heading">Student information</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Full Name</label>
+                        <div class="form-input-placeholder">Enter your full name</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Date of Birth</label>
+                        <div class="form-input-placeholder">MM/DD/YYYY</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Email Address</label>
+                        <div class="form-input-placeholder">Enter your email</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Phone Number</label>
+                        <div class="form-input-placeholder">Enter your phone number</div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Academic information</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">School/University</label>
+                        <div class="form-input-placeholder">Name of institution</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label">Graduation Year</label>
+                            <div class="form-input-placeholder">YYYY</div>
+                        </div>
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label">GPA</label>
+                            <div class="form-input-placeholder">0.0 - 4.0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Major/Field of Study</label>
+                        <div class="form-input-placeholder">Your major</div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Scholarship details</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Scholarship Name</label>
+                        <div class="form-input-placeholder">Name of scholarship</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Amount Requested</label>
+                        <div class="form-input-placeholder">$</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label">Personal Statement</label>
+                        <div class="form-textarea-placeholder">Write your personal statement here...</div>
+                    </div>
+                    
+                    <div class="form-submit-btn">Submit Scholarship Application</div>
+                </div>
+                
+                <div class="form-preview-footer">
+                    <span class="form-badge">HTML</span>
+                    <span class="form-fields-count">13 fields</span>
+                    <button class="get-code-btn">Get code →</button>
+                </div>
+            </div>
+            
+            <!-- 6. Internship Application Form -->
+            <div class="card application-form-card">
+                <div class="form-preview-header">
+                    <h3 class="form-preview-title">Internship Application Form</h3>
+                    <p class="form-preview-description">Apply for internship positions at our company.</p>
+                </div>
+                
+                <div class="form-preview-content">
+                    <h4 class="form-section-heading">Personal information</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Full Name:</label>
+                        <div class="form-input-placeholder-light">Enter your full name</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Email:</label>
+                        <div class="form-input-placeholder-light">Enter your email</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Phone:</label>
+                        <div class="form-input-placeholder-light">Enter your phone number</div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Education</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">University:</label>
+                        <div class="form-input-placeholder-light">Name of university</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label-bold">Major:</label>
+                            <div class="form-input-placeholder-light">Your major</div>
+                        </div>
+                        <div class="form-field-group" style="flex: 1;">
+                            <label class="form-visual-label-bold">Graduation:</label>
+                            <div class="form-input-placeholder-light">MM/YYYY</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="form-section-heading">Internship details</h4>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Position:</label>
+                        <div class="form-select-placeholder">Select a position</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Availability:</label>
+                        <div class="form-checkbox-group">
+                            <div class="form-checkbox-item">
+                                <span class="form-checkbox-box">□</span>
+                                <span class="form-checkbox-label">Full-Time</span>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <span class="form-checkbox-box">□</span>
+                                <span class="form-checkbox-label">Part-Time</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Start Date:</label>
+                        <div class="form-input-placeholder-light">MM/DD/YYYY</div>
+                    </div>
+                    
+                    <div class="form-field-group">
+                        <label class="form-visual-label-bold">Why are you interested in this internship?</label>
+                        <div class="form-textarea-placeholder">Write your motivation</div>
+                    </div>
+                    
+                    <div class="form-submit-btn">Submit Internship Application</div>
+                </div>
+                
+                <div class="form-preview-footer">
+                    <span class="form-badge">HTML</span>
+                    <span class="form-fields-count">12 fields</span>
+                    <button class="get-code-btn">Get code →</button>
+                </div>
+            </div>
+            
         </div>
+        
     </div>
 </section>
 
 <!-- CTA Section -->
-<section class="features">
+<section class="features" style="background: var(--bg-secondary);">
     <div class="container">
-        <div class="card" style="text-align: center; padding: 4rem 2rem;">
-            <h2 style="margin-bottom: 1rem; font-size: 2rem;">Ready to use these forms?</h2>
-            <p style="max-width: 500px; margin: 0 auto 2rem; color: var(--text-secondary);">
-                Connect any of these forms to your 000form endpoint and start receiving submissions instantly. 
-                Forever free, no credit card required.
+        <div class="card" style="text-align: center; padding: 3rem 2rem;">
+            <h2 style="margin-bottom: 0.75rem; font-size: 1.75rem;">Need a different application form?</h2>
+            <p style="max-width: 500px; margin: 0 auto 1.5rem; color: var(--text-secondary);">
+                Create your own form endpoint in seconds and customize any template.
             </p>
-            <a href="#" class="btn btn-primary btn-lg">
-                Get Started Free
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
+            <a href="#" class="btn btn-primary">
+                Create Your Form →
             </a>
         </div>
     </div>
