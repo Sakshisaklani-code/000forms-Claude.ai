@@ -90,7 +90,7 @@
                             <span>All Forms</span>
                             <span class="category-count">57</span>
                         </a>
-                        <a href="#" class="category-link">
+                        <a href="{{ route('Home.library.ApplicationForm') }}" class="category-link">
                             <span>Application Forms</span>
                         </a>
                         <a href="#" class="category-link">
