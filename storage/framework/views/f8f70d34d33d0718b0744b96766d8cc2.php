@@ -521,4 +521,4 @@ fieldset {
   text-align: center;
   white-space: nowrap;
 }
-</style>
+</style><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/test.blade.php ENDPATH**/ ?>
