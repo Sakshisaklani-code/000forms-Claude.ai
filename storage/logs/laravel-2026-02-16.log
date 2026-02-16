@@ -251,3 +251,49 @@
 [2026-02-16 06:49:21] local.INFO: Sending email WITHOUT attachment  
 [2026-02-16 06:49:25] local.INFO: Email sent successfully to: tsaklani2drish@gmail.com  
 [2026-02-16 06:49:27] local.INFO: ✅ Auto-response sent to: tsaklani2drish@gmail.com  
+[2026-02-16 09:10:29] local.ERROR: No arguments expected for "optimize" command, got "clear". {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): No arguments expected for \"optimize\" command, got \"clear\". at C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Input/ArgvInput.php:199)
+[stacktrace]
+#0 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Input/ArgvInput.php(92): Symfony/Component/Console/Input/ArgvInput->parseArgument('clear')
+#1 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Input/ArgvInput.php(77): Symfony/Component/Console/Input/ArgvInput->parseToken('clear', true)
+#2 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Input/Input.php(53): Symfony/Component/Console/Input/ArgvInput->parse()
+#3 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Command/Command.php(295): Symfony/Component/Console/Input/Input->bind(Object(Symfony/Component/Console/Input/InputDefinition))
+#4 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#5 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Application.php(1102): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#6 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Foundation/Console/OptimizeCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#7 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#8 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#9 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#10 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/artisan(11): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#11 {main}
+"} 
+[2026-02-16 12:02:01] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["upload"]} 
+[2026-02-16 12:02:01] local.INFO: File detected in field: upload  
+[2026-02-16 12:02:02] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"3.png","stored_as":"1771243321_6993073977fa1_3.png","size":"955807 bytes","field":"upload"} 
+[2026-02-16 12:02:02] local.INFO: Total files uploaded: 1  
+[2026-02-16 12:02:02] local.INFO: VALID SUBMISSION {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-16 12:02:02] local.INFO: Submission created: ID a117f8e7-34a2-4eb3-b608-bb7740f61583 with 1 file(s)  
+[2026-02-16 12:02:03] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","has_attachments":true,"attachment_count":1,"has_subject":false,"subject_value":"not set","template":"basic"} 
+[2026-02-16 12:02:03] local.INFO: Email template selected: basic  
+[2026-02-16 12:02:03] local.INFO: Attachments to process: 1  
+[2026-02-16 12:02:03] local.INFO: Sending email WITH 1 attachment(s)  
+[2026-02-16 12:02:03] local.INFO: Attaching file: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\storage\app/public\uploads/a1177428-bf51-44b8-8b45-e5ad34c834a7/1771243321_6993073977fa1_3.png  
+[2026-02-16 12:02:03] local.INFO: Total attachments added: 1  
+[2026-02-16 12:02:15] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-16 12:02:17] local.INFO: ✅ Auto-response sent to: tsaklani2drish@gmail.com  
+[2026-02-16 12:04:09] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["uploads"]} 
+[2026-02-16 12:04:09] local.INFO: File detected in field: uploads  
+[2026-02-16 12:04:09] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"about-1.jpg","stored_as":"1771243449_699307b9a3042_about-1.jpg","size":"43233 bytes","field":"uploads"} 
+[2026-02-16 12:04:09] local.INFO: File detected in field: uploads  
+[2026-02-16 12:04:09] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"about-2.jpg","stored_as":"1771243449_699307b9a5c85_about-2.jpg","size":"51703 bytes","field":"uploads"} 
+[2026-02-16 12:04:09] local.INFO: Total files uploaded: 2  
+[2026-02-16 12:04:09] local.INFO: VALID SUBMISSION {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-16 12:04:09] local.INFO: Submission created: ID a117f9a9-be71-4ea0-8eaa-baf29ea921a2 with 2 file(s)  
+[2026-02-16 12:04:10] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","has_attachments":true,"attachment_count":2,"has_subject":false,"subject_value":"not set","template":"basic"} 
+[2026-02-16 12:04:10] local.INFO: Email template selected: basic  
+[2026-02-16 12:04:10] local.INFO: Attachments to process: 2  
+[2026-02-16 12:04:10] local.INFO: Sending email WITH 2 attachment(s)  
+[2026-02-16 12:04:10] local.INFO: Attaching file: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\storage\app/public\uploads/a1177428-bf51-44b8-8b45-e5ad34c834a7/1771243449_699307b9a3042_about-1.jpg  
+[2026-02-16 12:04:10] local.INFO: Attaching file: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\storage\app/public\uploads/a1177428-bf51-44b8-8b45-e5ad34c834a7/1771243449_699307b9a5c85_about-2.jpg  
+[2026-02-16 12:04:10] local.INFO: Total attachments added: 2  
+[2026-02-16 12:04:15] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-16 12:04:16] local.INFO: ✅ Auto-response sent to: tsaklani2drish@gmail.com  

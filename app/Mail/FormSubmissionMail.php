@@ -20,8 +20,8 @@ class FormSubmissionMail extends Mailable
     public Form $form;
     public array $submissionData;
     public ?Submission $submission;
-    public ?string $attachmentPath;
-    public ?array $attachmentMetadata;
+    public array $attachmentPaths;
+    public array $attachmentMetadata;
     public string $template;
 
     /**
@@ -31,13 +31,13 @@ class FormSubmissionMail extends Mailable
         Form $form,
         array $submissionData,
         ?Submission $submission = null,
-        ?string $attachmentPath = null,
-        ?array $attachmentMetadata = null
+        array $attachmentPaths = [],
+        array $attachmentMetadata = []
     ) {
         $this->form = $form;
         $this->submissionData = $submissionData;
         $this->submission = $submission;
-        $this->attachmentPath = $attachmentPath;
+        $this->attachmentPaths = $attachmentPaths;
         $this->attachmentMetadata = $attachmentMetadata;
         
         // Determine template: _template parameter, or default to 'basic'
@@ -49,6 +49,7 @@ class FormSubmissionMail extends Mailable
         }
         
         Log::info('Email template selected: ' . $this->template);
+        Log::info('Attachments to process: ' . count($this->attachmentPaths));
     }
 
     /**
@@ -100,9 +101,9 @@ class FormSubmissionMail extends Mailable
                 'form' => $this->form,
                 'data' => $this->getCleanedData(),
                 'submission' => $this->submission,
-                'hasAttachment' => $this->attachmentPath !== null,
-                'attachmentName' => $this->attachmentMetadata['name'] ?? null,
-                'attachmentSize' => $this->formatFileSize($this->attachmentMetadata['size'] ?? 0),
+                'hasAttachment' => !empty($this->attachmentPaths),
+                'attachmentCount' => count($this->attachmentPaths),
+                'attachments' => $this->getAttachmentInfo(),
             ],
         );
     }
@@ -114,13 +115,24 @@ class FormSubmissionMail extends Mailable
     {
         $attachments = [];
         
-        if ($this->attachmentPath && file_exists($this->attachmentPath)) {
-            Log::info('Attaching file: ' . $this->attachmentPath);
-            
-            $attachments[] = Attachment::fromPath($this->attachmentPath)
-                ->as($this->attachmentMetadata['name'] ?? 'attachment')
-                ->withMime($this->attachmentMetadata['type'] ?? 'application/octet-stream');
+        foreach ($this->attachmentPaths as $index => $filePath) {
+            if (file_exists($filePath)) {
+                Log::info('Attaching file: ' . $filePath);
+                
+                $metadata = $this->attachmentMetadata[$index] ?? [];
+                
+                $attachments[] = Attachment::fromPath($filePath)
+                    ->as($metadata['name'] ?? 'attachment_' . ($index + 1))
+                    ->withMime($metadata['type'] ?? 'application/octet-stream');
+            } else {
+                Log::warning('File not found for attachment', [
+                    'path' => $filePath,
+                    'index' => $index,
+                ]);
+            }
         }
+        
+        Log::info('Total attachments added: ' . count($attachments));
         
         return $attachments;
     }
@@ -133,8 +145,8 @@ class FormSubmissionMail extends Mailable
         $cleaned = [];
         
         foreach ($this->submissionData as $key => $value) {
-            // Skip internal fields and upload metadata
-            if (str_starts_with($key, '_') || $key === 'upload') {
+            // Skip internal fields, upload metadata, and uploads array
+            if (str_starts_with($key, '_') || $key === 'upload' || $key === 'uploads') {
                 continue;
             }
             
@@ -147,6 +159,25 @@ class FormSubmissionMail extends Mailable
         }
         
         return $cleaned;
+    }
+
+    /**
+     * Get attachment information for email display
+     */
+    protected function getAttachmentInfo(): array
+    {
+        $info = [];
+        
+        foreach ($this->attachmentMetadata as $metadata) {
+            $info[] = [
+                'name' => $metadata['name'] ?? 'Unknown',
+                'size' => $this->formatFileSize($metadata['size'] ?? 0),
+                'type' => $metadata['type'] ?? 'application/octet-stream',
+                'extension' => $metadata['extension'] ?? '',
+            ];
+        }
+        
+        return $info;
     }
 
     /**

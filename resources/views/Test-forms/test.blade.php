@@ -4,10 +4,13 @@
       enctype="multipart/form-data">
   
   <input type="email" name="email" placeholder="Your email" required>
-  <input type="text" name="name" placeholder="Your name" required>
-  <input type="hidden" name="_subject" value="Form Created 16 February- New submission!">
-  <input type="hidden" name="_template" value="table"> 
+  
   <textarea name="message" placeholder="Your message"></textarea>
+  
+  <input type="file" 
+         name="uploads[]" 
+         multiple
+         placeholder="Choose file to upload">
   
     <!-- Honeypot (spam protection) -->
   <input type="text" name="honeypot_FZvnAP9m" style="display:none">

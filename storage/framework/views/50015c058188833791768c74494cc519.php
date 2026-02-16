@@ -85,6 +85,29 @@
                 </tbody>
             </table>
         </section>
+
+        <!-- Email Templates -->
+        <section class="card mb-3">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Email Templates</h2>
+            <p class="text-muted mb-3">Use the different Email Templates available for Form Submission:</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">HTML</span>
+                    <button class="code-copy">Copy</button>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">&lt;!-- Add this hidden field to your form --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_template"</span> <span class="attr">value</span>=<span class="string">"basic"</span><span class="tag">&gt;</span></pre>
+<pre>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_template"</span> <span class="attr">value</span>=<span class="string">"box"</span><span class="tag">&gt;</span></pre>
+
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_template"</span> <span class="attr">value</span>=<span class="string">"table"</span><span class="tag">&gt;</span></pre>
+<pre><span class="comment">&lt;!-- If no template is applied, the system defaults to the Basic style.  --&gt;</span>
+                </div>
+            </div>            
+            <p class="text-muted mt-3">The email submission style is determined by the selected template. Available options include basic, box, and table.</p>
+        </section>
         
         <!-- Spam Protection -->
         <section class="card mb-3">

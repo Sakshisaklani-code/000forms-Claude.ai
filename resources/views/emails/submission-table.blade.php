@@ -109,13 +109,39 @@
             border-radius: 4px;
         }
         .attachment-info p {
-            margin: 0;
+            margin: 0 0 8px 0;
             font-size: 14px;
             color: #fafafa;
+        }
+        .attachment-info p:last-child {
+            margin-bottom: 0;
         }
         .attachment-icon {
             display: inline-block;
             margin-right: 8px;
+        }
+        .attachment-list {
+            margin-top: 12px;
+            padding-left: 0;
+            list-style: none;
+        }
+        .attachment-list li {
+            padding: 8px 0;
+            color: #fafafa;
+            font-size: 13px;
+            border-bottom: 1px solid #222222;
+        }
+        .attachment-list li:last-child {
+            border-bottom: none;
+        }
+        .attachment-list .file-name {
+            color: #00ff88;
+            font-weight: 500;
+        }
+        .attachment-list .file-meta {
+            color: #888888;
+            font-size: 12px;
+            margin-left: 8px;
         }
         .cta-button {
             display: inline-block;
@@ -189,12 +215,20 @@
                 </tbody>
             </table>
             
-            @if($hasAttachment)
+            @if($hasAttachment && $attachmentCount > 0)
                 <div class="attachment-info">
                     <p>
                         <span class="attachment-icon">📎</span>
-                        <strong>Attachment:</strong> {{ $attachmentName }} ({{ $attachmentSize }})
+                        <strong>{{ $attachmentCount }} Attachment{{ $attachmentCount > 1 ? 's' : '' }}:</strong>
                     </p>
+                    <ul class="attachment-list">
+                        @foreach($attachments as $attachment)
+                            <li>
+                                <span class="file-name">{{ $attachment['name'] }}</span>
+                                <span class="file-meta">({{ $attachment['size'] }})</span>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
             

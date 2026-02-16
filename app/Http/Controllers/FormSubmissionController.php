@@ -60,96 +60,101 @@ class FormSubmissionController extends Controller
             }
         }
 
-        // FILE UPLOAD HANDLING - Store file and metadata
-        $uploadedFilePath = null;
-        $uploadMetadata = null;
+        // ============ MULTIPLE FILE UPLOAD HANDLING ============
+        $uploadedFiles = [];
+        $uploadMetadata = [];
         
         Log::info('FILE UPLOAD CHECK', [
             'form_allows_upload' => $form->allow_file_upload ?? false,
-            'has_upload_file' => $request->hasFile('upload'),
             'all_files' => array_keys($request->allFiles()),
         ]);
         
-        // Check for file upload - look for ANY file field, not just 'upload'
-        $uploadedFile = null;
-        $uploadFieldName = null;
+        // Limit total number of files (optional)
+        $maxFiles = $form->max_files ?? 5;
+        $totalFiles = 0;
         
-        // First, try the standard 'upload' field
-        if ($request->hasFile('upload')) {
-            $uploadedFile = $request->file('upload');
-            $uploadFieldName = 'upload';
-        } else {
-            // Check for any other file fields
-            foreach ($request->allFiles() as $fieldName => $file) {
-                if (!in_array($fieldName, $internalFields)) {
-                    $uploadedFile = $file;
-                    $uploadFieldName = $fieldName;
-                    break;
+        foreach ($request->allFiles() as $files) {
+            $totalFiles += is_array($files) ? count($files) : 1;
+        }
+        
+        if ($totalFiles > $maxFiles) {
+            return $this->errorResponse($request, "Maximum {$maxFiles} files allowed. You uploaded {$totalFiles} files.", 422);
+        }
+        
+        // Check for file uploads in any field
+        foreach ($request->allFiles() as $fieldName => $files) {
+            // Skip internal fields
+            if (in_array($fieldName, $internalFields)) {
+                continue;
+            }
+            
+            // Handle both single file and multiple files (files[])
+            $filesArray = is_array($files) ? $files : [$files];
+            
+            foreach ($filesArray as $uploadedFile) {
+                if (!$uploadedFile || !$uploadedFile->isValid()) {
+                    continue;
+                }
+                
+                Log::info('File detected in field: ' . $fieldName);
+                
+                // ============ FILE SIZE VALIDATION (Like FormSubmit.co) ============
+                // Default max file size: 10MB (Free tier) - can be configurable per form
+                $maxFileSize = ($form->max_file_size ?? 10) * 1024 * 1024; // Convert MB to bytes
+                $fileSize = $uploadedFile->getSize();
+                
+                // Check file size only - no MIME/type restrictions (like FormSubmit.co)
+                if ($fileSize > $maxFileSize) {
+                    $maxSizeMB = $maxFileSize / 1024 / 1024;
+                    $error = "File too large. Maximum size is {$maxSizeMB}MB. Your file: " . round($fileSize / 1024 / 1024, 2) . "MB";
+                    Log::error($error);
+                    
+                    return $this->errorResponse($request, $error, 422);
+                }
+                
+                // Generate unique filename - sanitize to prevent path traversal
+                $originalName = $uploadedFile->getClientOriginalName();
+                $safeName = preg_replace('/[^a-zA-Z0-9_.-]/', '_', $originalName);
+                $filename = time() . '_' . uniqid() . '_' . $safeName;
+                
+                // Store the file
+                try {
+                    $path = $uploadedFile->storeAs('uploads/' . $form->id, $filename, 'public');
+                    
+                    // Get absolute path
+                    $absolutePath = Storage::disk('public')->path($path);
+                    
+                    // Store metadata
+                    $metadata = [
+                        'name' => $originalName,
+                        'filename' => $filename,
+                        'path' => $path,
+                        'absolute_path' => $absolutePath,
+                        'size' => $fileSize,
+                        'type' => $uploadedFile->getMimeType(),
+                        'extension' => $uploadedFile->getClientOriginalExtension(),
+                        'field_name' => $fieldName,
+                    ];
+                    
+                    // Add to arrays
+                    $uploadedFiles[] = $absolutePath;
+                    $uploadMetadata[] = $metadata;
+                    
+                    Log::info('FILE UPLOADED SUCCESSFULLY', [
+                        'original_name' => $metadata['name'],
+                        'stored_as' => $metadata['filename'],
+                        'size' => $metadata['size'] . ' bytes',
+                        'field' => $fieldName,
+                    ]);
+                    
+                } catch (\Exception $e) {
+                    Log::error('Failed to store file: ' . $e->getMessage());
+                    return $this->errorResponse($request, 'Failed to upload file. Please try again.', 500);
                 }
             }
         }
         
-        if ($uploadedFile && $uploadedFile->isValid()) {
-            Log::info('File detected in field: ' . $uploadFieldName);
-            
-            // ============ FILE SIZE VALIDATION (Like FormSubmit.co) ============
-            // Default max file size: 10MB (Free tier) - can be configurable per form
-            $maxFileSize = ($form->max_file_size ?? 10) * 1024 * 1024; // Convert MB to bytes
-            $fileSize = $uploadedFile->getSize();
-            $fileName = $uploadedFile->getClientOriginalName();
-            
-            // Check file size only - no MIME/type restrictions (like FormSubmit.co)
-            if ($fileSize > $maxFileSize) {
-                $maxSizeMB = $maxFileSize / 1024 / 1024;
-                $error = "File too large. Maximum size is {$maxSizeMB}MB. Your file: " . round($fileSize / 1024 / 1024, 2) . "MB";
-                Log::error($error);
-                
-                return $this->errorResponse($request, $error, 422);
-            }
-            
-            // Generate unique filename - sanitize to prevent path traversal
-            $originalName = $uploadedFile->getClientOriginalName();
-            $safeName = preg_replace('/[^a-zA-Z0-9_.-]/', '_', $originalName);
-            $filename = time() . '_' . $safeName;
-            
-            // Store the file
-            try {
-                $path = $uploadedFile->storeAs('uploads/' . $form->id, $filename, 'public');
-                
-                // Get absolute path
-                $absolutePath = Storage::disk('public')->path($path);
-                
-                // Store metadata
-                $uploadMetadata = [
-                    'name' => $originalName,
-                    'filename' => $filename,
-                    'path' => $path,
-                    'absolute_path' => $absolutePath,
-                    'size' => $fileSize,
-                    'type' => $uploadedFile->getMimeType(), // Just for reference, not used for validation
-                    'extension' => $uploadedFile->getClientOriginalExtension(),
-                ];
-                
-                // Store the absolute path for email attachment
-                $uploadedFilePath = $absolutePath;
-                
-                // Store metadata in submission data
-                $submissionData['upload'] = $uploadMetadata;
-                
-                Log::info('FILE UPLOADED SUCCESSFULLY', [
-                    'original_name' => $uploadMetadata['name'],
-                    'stored_as' => $uploadMetadata['filename'],
-                    'size' => $uploadMetadata['size'] . ' bytes',
-                ]);
-                
-            } catch (\Exception $e) {
-                Log::error('Failed to store file: ' . $e->getMessage());
-                return $this->errorResponse($request, 'Failed to upload file. Please try again.', 500);
-            }
-            
-        } else {
-            Log::info('No valid file uploaded');
-        }
+        Log::info('Total files uploaded: ' . count($uploadedFiles));
 
         // Check for spam
         $spamCheck = $this->spamDetector->isSpam($form, $request, $allData);
@@ -157,13 +162,18 @@ class FormSubmissionController extends Controller
         // Create submission record
         $submission = null;
         if ($form->store_submissions) {
+            // Store file metadata in submission data
+            if (!empty($uploadMetadata)) {
+                $submissionData['uploads'] = $uploadMetadata;
+            }
+            
             $metadata = [
                 'subject' => $allData['_subject'] ?? null,
                 'replyto' => $allData['_replyto'] ?? $allData['email'] ?? null,
                 'template' => $allData['_template'] ?? 'basic',
-                'has_attachment' => $uploadedFilePath !== null,
-                'attachment_name' => $uploadMetadata['name'] ?? null,
-                'attachment_size' => $uploadMetadata['size'] ?? null,
+                'has_attachment' => !empty($uploadedFiles),
+                'attachment_count' => count($uploadedFiles),
+                'attachments' => $uploadMetadata,
             ];
             
             $submission = Submission::create([
@@ -177,7 +187,7 @@ class FormSubmissionController extends Controller
                 'spam_reason' => $spamCheck['is_spam'] ? implode(', ', $spamCheck['reasons']) : null,
             ]);
             
-            Log::info('Submission created: ID ' . $submission->id);
+            Log::info('Submission created: ID ' . $submission->id . ' with ' . count($uploadedFiles) . ' file(s)');
         }
 
         // Update form stats
@@ -188,20 +198,20 @@ class FormSubmissionController extends Controller
             try {
                 Log::info('Preparing to send email', [
                     'to' => $form->recipient_email,
-                    'has_attachment' => $uploadedFilePath !== null,
-                    'attachment_name' => $uploadMetadata['name'] ?? null,
+                    'has_attachments' => !empty($uploadedFiles),
+                    'attachment_count' => count($uploadedFiles),
                     'has_subject' => isset($submissionData['_subject']),
                     'subject_value' => $submissionData['_subject'] ?? 'not set',
                     'template' => $submissionData['_template'] ?? 'basic',
                 ]);
                 
-                // Pass the absolute file path directly to the mail class
+                // Pass arrays of file paths and metadata
                 $mail = new FormSubmissionMail(
                     $form, 
-                    $submissionData, // This includes _subject, _replyto, and _template now
+                    $submissionData,
                     $submission,
-                    $uploadedFilePath,  // Pass the actual file path
-                    $uploadMetadata     // Pass metadata for display
+                    $uploadedFiles,      // Array of file paths
+                    $uploadMetadata      // Array of metadata
                 );
                 
                 $ccEmails = [];
@@ -217,7 +227,8 @@ class FormSubmissionController extends Controller
                     }));
                 }
                 
-                Log::info('Sending email ' . ($uploadedFilePath ? 'WITH' : 'WITHOUT') . ' attachment');
+                $attachmentText = count($uploadedFiles) > 0 ? 'WITH ' . count($uploadedFiles) . ' attachment(s)' : 'WITHOUT attachments';
+                Log::info('Sending email ' . $attachmentText);
                 
                 if (!empty($ccEmails)) {
                     Mail::to($form->recipient_email)->cc($ccEmails)->send($mail);
@@ -319,13 +330,21 @@ class FormSubmissionController extends Controller
     public function downloadFile(Request $request, $formId, $submissionId)
     {
         $submission = Submission::where('form_id', $formId)->findOrFail($submissionId);
-        $fieldName = $request->input('field_name', 'upload');
+        
+        // Get file index (for multiple files)
+        $fileIndex = $request->input('file_index', 0);
         
         // Get the file metadata from submission data
-        $fileData = $submission->data[$fieldName] ?? null;
+        $uploads = $submission->data['uploads'] ?? null;
         
-        if (!$fileData || !is_array($fileData) || !isset($fileData['absolute_path'])) {
+        if (!$uploads || !is_array($uploads) || !isset($uploads[$fileIndex])) {
             abort(404, 'File not found');
+        }
+        
+        $fileData = $uploads[$fileIndex];
+        
+        if (!isset($fileData['absolute_path'])) {
+            abort(404, 'File path not found');
         }
         
         $filePath = $fileData['absolute_path'];
@@ -351,5 +370,4 @@ class FormSubmissionController extends Controller
             ]
         );
     }
-
 }

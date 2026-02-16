@@ -149,7 +149,7 @@ class DashboardController extends Controller
             $lineData[] = $dailySubmissions->firstWhere('date', $date)->count ?? 0;
         }
 
-        // 📊 Bar Graph Data
+        // Bar Graph Data
         $validCount = $form->submissions()->where('is_spam', false)->count();
         $spamCount = $form->submissions()->where('is_spam', true)->count();
 

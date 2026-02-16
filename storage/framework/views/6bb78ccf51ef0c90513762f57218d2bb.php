@@ -95,7 +95,7 @@
             display: inline-block;
             padding: 12px 24px;
             background-color: #00ff88;
-             color: #ffffff!important;
+            color: #000000!important;
             text-decoration: none;
             font-weight: 700;
             border-radius: 6px;
