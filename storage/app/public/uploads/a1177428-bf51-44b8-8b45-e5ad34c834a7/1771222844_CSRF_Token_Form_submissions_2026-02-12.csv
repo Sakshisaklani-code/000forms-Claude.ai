@@ -1,0 +1,26 @@
+"Submitted At","IP Address",name,email,message,upload
+"2026-02-12 05:09:56",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"Attaching a file in the email.",about-1.jpg
+"2026-02-11 12:43:41",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"test input file",testimonial-2.jpg
+"2026-02-11 12:39:18",127.0.0.1,"Tanuja Saklani",tsaklani2drish@gmail.com,"Testing the file upload functionality.",about-1.jpg
+"2026-02-11 12:27:00",127.0.0.1,"Tanuja Saklani",tsaklani2drish@gmail.com,"Test email","about-1.jpg, uploads/a10db2be-5116-4852-8c8f-fea756b9e128/NxhilPVFwNL6wXHEeghrAo23Te4fjiGTUG7atQZX.jpg, 43233, image/jpeg, jpg"
+"2026-02-11 12:25:25",127.0.0.1,"Tanuja Saklani",tsaklani2drish@gmail.com,"Test Input","about-1.jpg, uploads/a10db2be-5116-4852-8c8f-fea756b9e128/AiI8xeDx8yVHyDN1JsDj5QjwzoQ9NrO3fCidsoX8.jpg, 43233, image/jpeg, jpg"
+"2026-02-11 12:12:18",127.0.0.1,Sakshi,tsaklani2drish@gmail.com,Test,about-2.jpg
+"2026-02-11 12:09:08",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"File upload code.",about-1.jpg
+"2026-02-11 12:06:39",127.0.0.1,"Test User",test@example.com,Test,"test-image.jpg, uploads/a10db2be-5116-4852-8c8f-fea756b9e128/F6VJdUQ8k12RyN16YMlSotcnzNfARKBlxfYJPNYW.jpg, 512000, image/jpeg"
+"2026-02-11 12:05:51",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"Upload file code.",about-1.jpg
+"2026-02-11 11:59:36",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"File Upload",testimonial-1.jpg
+"2026-02-11 11:53:17",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"File Upload test",about-1.jpg
+"2026-02-11 11:48:36",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,Test,about-1.jpg
+"2026-02-11 11:47:01",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"Input file code testing.",project-1.jpg
+"2026-02-11 11:25:13",127.0.0.1,"sakshi saklani",tsaklani2drish@gmail.com,"File uploads",Overall-Report.png
+"2026-02-11 11:10:00",127.0.0.1,"sakshi saklani",sakshiisaklanii@gmail.com,"HTML with Ajax testing.",
+"2026-02-11 10:25:15",127.0.0.1,,tsaklani2drish@gmail.com,"AUTO RESPONSE Claude.ai",
+"2026-02-11 10:21:29",127.0.0.1,,tsaklani2drish@gmail.com,"SAKSHI AUTO RESPONSE.",
+"2026-02-11 10:16:49",127.0.0.1,,sakshi.saklani@drishinfo.com,"TESING THE AUTO RESPONSE EMAIL TO USER.",
+"2026-02-11 10:13:24",127.0.0.1,,sakshi.saklani@drishinfo.com,"TESTING AUT RESPONSE EMAIL TO USER.",
+"2026-02-11 10:09:14",127.0.0.1,,sakshi.saklani@drishinfo.com,"TESTING THE AUTO RESPONSE",
+"2026-02-11 10:03:39",127.0.0.1,,tsaklani2drish@gmail.com,"AUTO RESPONSE AND CC EMAIL.",
+"2026-02-11 10:00:12",127.0.0.1,,sakshi.saklani@drishinfo.com,"AUTO RESPONSE AND CC EMAIL.",
+"2026-02-11 09:59:53",127.0.0.1,,sakshi.saklani@drishinfo.com,"AUTO RESPONSE AND CC EMAIL.",
+"2026-02-11 09:41:02",127.0.0.1,,tsaklani2drish@gmail.com,"Testing the CSRF token and CC email.",
+"2026-02-11 09:32:03",127.0.0.1,,tsaklani2drish@gmail.com,"CSRF Token form Submission",

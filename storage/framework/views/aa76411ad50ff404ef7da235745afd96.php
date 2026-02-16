@@ -1,9 +1,9 @@
-@extends('layouts.app')
 
-@section('title', 'Library - 000form')
 
-@push('styles')
-<link href="{{ asset('css/library.css') }}" rel="stylesheet">
+<?php $__env->startSection('title', 'Library - 000form'); ?>
+
+<?php $__env->startPush('styles'); ?>
+<link href="<?php echo e(asset('css/library.css')); ?>" rel="stylesheet">
 <style>
     /* Additional styles for form previews */
     .form-preview {
@@ -165,9 +165,9 @@
         margin-top: auto;
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <!-- Library Hero Section -->
 <section class="library-hero">
@@ -251,7 +251,7 @@
                             <span>All Forms</span>
                             <span class="category-count">57</span>
                         </a>
-                        <a href="{{ route('Home.library.ApplicationForm') }}" class="category-link">
+                        <a href="<?php echo e(route('Home.library.ApplicationForm')); ?>" class="category-link">
                             <span>Application Forms</span>
                             <span class="category-count">6</span>
                         </a>
@@ -311,7 +311,7 @@
                             <div class="form-card-header">
                                 <span class="form-badge">Application Forms</span>
                             </div>
-                            <a href="{{ route('Home.library.ApplicationForm') }}" class="view-more-link">
+                            <a href="<?php echo e(route('Home.library.ApplicationForm')); ?>" class="view-more-link">
                                 View 6 templates
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -541,4 +541,5 @@
     </div>
 </section>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views\Library\htmlTemplates.blade.php ENDPATH**/ ?>
