@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Documentation - 000form'); ?>
 
-@section('title', 'Documentation - 000form')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
 <div style="padding: 8rem 0 4rem;">
@@ -16,7 +14,7 @@
             <p class="text-muted mb-3">Get forms working in under 2 minutes:</p>
             
             <ol style="color: var(--text-secondary); padding-left: 1.5rem; line-height: 2;">
-                <li><a href="{{ route('signup') }}">Create an account</a> (free, no credit card)</li>
+                <li><a href="<?php echo e(route('signup')); ?>">Create an account</a> (free, no credit card)</li>
                 <li>Create a new form and note your endpoint URL</li>
                 <li>Point your HTML form's <code>action</code> attribute to your endpoint</li>
                 <li>That's it! Submissions go to your email and dashboard</li>
@@ -230,10 +228,12 @@
         
         <div class="text-center mt-4">
             <p class="text-muted mb-3">Ready to get started?</p>
-            <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">Create Free Account</a>
+            <a href="<?php echo e(route('signup')); ?>" class="btn btn-primary btn-lg">Create Free Account</a>
         </div>
     </div>
 </div>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/pages/docs.blade.php ENDPATH**/ ?>

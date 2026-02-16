@@ -6,6 +6,7 @@
   <input type="email" name="email" placeholder="Your email" required>
   <input type="text" name="name" placeholder="Your name" required>
   <input type="hidden" name="_subject" value="Form Created 16 February- New submission!">
+  <input type="hidden" name="_template" value="table"> 
   <textarea name="message" placeholder="Your message"></textarea>
   
     <!-- Honeypot (spam protection) -->
