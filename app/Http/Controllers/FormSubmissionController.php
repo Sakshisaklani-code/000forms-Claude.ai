@@ -46,7 +46,7 @@ class FormSubmissionController extends Controller
         $allData = $request->except(['_token']);
         
         // SIMPLE FIX: Only exclude honeypot and gotcha from submission data
-        // Keep _subject and _replyto in the data so email can use them
+        // Keep _subject, _replyto, and _template in the data so email can use them
         $internalFields = ['_gotcha', '_honeypot', '_next', '_format', '_form_load_time'];
         $submissionData = [];
         
@@ -160,6 +160,7 @@ class FormSubmissionController extends Controller
             $metadata = [
                 'subject' => $allData['_subject'] ?? null,
                 'replyto' => $allData['_replyto'] ?? $allData['email'] ?? null,
+                'template' => $allData['_template'] ?? 'basic',
                 'has_attachment' => $uploadedFilePath !== null,
                 'attachment_name' => $uploadMetadata['name'] ?? null,
                 'attachment_size' => $uploadMetadata['size'] ?? null,
@@ -191,12 +192,13 @@ class FormSubmissionController extends Controller
                     'attachment_name' => $uploadMetadata['name'] ?? null,
                     'has_subject' => isset($submissionData['_subject']),
                     'subject_value' => $submissionData['_subject'] ?? 'not set',
+                    'template' => $submissionData['_template'] ?? 'basic',
                 ]);
                 
                 // Pass the absolute file path directly to the mail class
                 $mail = new FormSubmissionMail(
                     $form, 
-                    $submissionData, // This includes _subject and _replyto now
+                    $submissionData, // This includes _subject, _replyto, and _template now
                     $submission,
                     $uploadedFilePath,  // Pass the actual file path
                     $uploadMetadata     // Pass metadata for display
