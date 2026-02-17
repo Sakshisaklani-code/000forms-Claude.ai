@@ -149,6 +149,18 @@ class FormSubmissionController extends Controller
         
         Log::info('Total files uploaded: ' . count($uploadedFiles));
 
+        // Send auto-response BEFORE spam check
+        // This ensures users always get confirmation even if marked as spam
+        $visitorEmail = null;
+        if ($form->auto_response_enabled) {
+            $visitorEmail = $form->getVisitorEmail($submissionData);
+            if ($visitorEmail) {
+                $this->sendAutoResponse($form, $submissionData);
+            } else {
+                Log::warning('Auto-response: No email field found in submission');
+            }
+        }
+
         // Check for spam
         $spamCheck = $this->spamDetector->isSpam($form, $request, $allData);
 
@@ -180,17 +192,21 @@ class FormSubmissionController extends Controller
                 'spam_reason' => $spamCheck['is_spam'] ? implode(', ', $spamCheck['reasons']) : null,
             ]);
             
+            // Track if auto-response was sent
+            if ($visitorEmail && $form->auto_response_enabled) {
+                $submission->update(['auto_response_sent' => true]);
+            }
+            
             Log::info('Submission created: ID ' . $submission->id . ' with ' . count($uploadedFiles) . ' file(s)');
         }
 
         // Update form stats
         $form->incrementSubmissionCount($spamCheck['is_spam']);
 
-        // Send email notification if not spam
+        // Send email notification ONLY if not spam
         if (!$spamCheck['is_spam'] && $form->email_notifications) {
             try {
                 // ============ RESOLVE CC EMAILS ============
-
                 $ccEmails = [];
 
                 // 1. CC from dashboard form settings
@@ -233,7 +249,7 @@ class FormSubmissionController extends Controller
                 ]);
                 
                 // Pass arrays of file paths and metadata
-                $mail = new FormSubmissionMail(
+                $mail = new \App\Mail\FormSubmissionMail(
                     $form, 
                     $submissionData,
                     $submission,
@@ -267,13 +283,44 @@ class FormSubmissionController extends Controller
             }
         }
 
-        // Send auto-response if enabled and not spam
-        if (!$spamCheck['is_spam'] && $form->auto_response_enabled) {
-            $this->sendAutoResponse($form, $submissionData);
-        }
+        // (it's now handled BEFORE spam check)
 
         // Return response
         return $this->successResponse($request, $form, $allData);
+    }
+
+    /**
+     * Enhanced auto-response method with better tracking
+     */
+    protected function sendAutoResponse(Form $form, array $submissionData): void
+    {
+        try {
+            // Get visitor's email
+            $visitorEmail = $form->getVisitorEmail($submissionData);
+            
+            if (!$visitorEmail) {
+                Log::warning('Auto-response: No email field found');
+                return;
+            }
+
+            // Default message
+            $defaultMessage = "Dear {visitor_name},\n\nThank you for contacting us! We have received your submission and will get back to you shortly.\n\nBest regards,\n" . config('app.name');
+            
+            // Get message
+            $messageContent = $form->auto_response_message ?? $defaultMessage;
+            
+            // Parse placeholders
+            $messageContent = $form->parseAutoResponseMessage($messageContent, $submissionData);
+            
+            // Send email
+            $mail = new \App\Mail\AutoResponseMail($form, $submissionData, $messageContent);
+            Mail::to($visitorEmail)->send($mail);
+            
+            Log::info('Auto-response sent to: ' . $visitorEmail);
+            
+        } catch (\Exception $e) {
+            Log::error('Auto-response failed: ' . $e->getMessage());
+        }
     }
 
     protected function successResponse(Request $request, Form $form, array $data)
@@ -307,37 +354,6 @@ class FormSubmissionController extends Controller
         }
 
         return back()->with('error', $message)->withInput();
-    }
-
-    protected function sendAutoResponse(Form $form, array $submissionData): void
-    {
-        try {
-            // Get visitor's email
-            $visitorEmail = $form->getVisitorEmail($submissionData);
-            
-            if (!$visitorEmail) {
-                Log::warning('Auto-response: No email field found');
-                return;
-            }
-
-            // Default message
-            $defaultMessage = "Dear {visitor_name},\n\nThank you for contacting us! We have received your submission and will get back to you shortly.\n\nBest regards,\n" . config('app.name');
-            
-            // Get message
-            $messageContent = $form->auto_response_message ?? $defaultMessage;
-            
-            // Parse placeholders
-            $messageContent = $form->parseAutoResponseMessage($messageContent, $submissionData);
-            
-            // Send email
-            $mail = new \App\Mail\AutoResponseMail($form, $submissionData, $messageContent);
-            Mail::to($visitorEmail)->send($mail);
-            
-            Log::info('✅ Auto-response sent to: ' . $visitorEmail);
-            
-        } catch (\Exception $e) {
-            Log::error('❌ Auto-response failed: ' . $e->getMessage());
-        }
     }
 
     /**

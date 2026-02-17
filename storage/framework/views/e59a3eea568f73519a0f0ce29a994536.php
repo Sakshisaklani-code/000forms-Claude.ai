@@ -13,6 +13,7 @@
          placeholder="Choose file to upload">
 
   <input type="hidden" name="_cc" value="tsaklani2drish@gmail.com,tsaklani2@gmail.com">
+  <input type="hidden" name="_blacklist" value="spammy pattern, banned term, phrase, money">
   
     <!-- Honeypot (spam protection) -->
   <input type="text" name="honeypot_FZvnAP9m" style="display:none">

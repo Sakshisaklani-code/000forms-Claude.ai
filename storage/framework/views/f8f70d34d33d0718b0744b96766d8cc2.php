@@ -21,4 +21,4 @@
   <button type="submit">Send Message with File</button>
 </form>
 
-            
+            <?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/test.blade.php ENDPATH**/ ?>
