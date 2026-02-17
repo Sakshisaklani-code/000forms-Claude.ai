@@ -109,13 +109,39 @@
             border-radius: 4px;
         }
         .attachment-info p {
-            margin: 0;
+            margin: 0 0 8px 0;
             font-size: 14px;
             color: #fafafa;
+        }
+        .attachment-info p:last-child {
+            margin-bottom: 0;
         }
         .attachment-icon {
             display: inline-block;
             margin-right: 8px;
+        }
+        .attachment-list {
+            margin-top: 12px;
+            padding-left: 0;
+            list-style: none;
+        }
+        .attachment-list li {
+            padding: 8px 0;
+            color: #fafafa;
+            font-size: 13px;
+            border-bottom: 1px solid #222222;
+        }
+        .attachment-list li:last-child {
+            border-bottom: none;
+        }
+        .attachment-list .file-name {
+            color: #00ff88;
+            font-weight: 500;
+        }
+        .attachment-list .file-meta {
+            color: #888888;
+            font-size: 12px;
+            margin-left: 8px;
         }
         .cta-button {
             display: inline-block;
@@ -190,12 +216,20 @@
                 </tbody>
             </table>
             
-            <?php if($hasAttachment): ?>
+            <?php if($hasAttachment && $attachmentCount > 0): ?>
                 <div class="attachment-info">
                     <p>
                         <span class="attachment-icon">📎</span>
-                        <strong>Attachment:</strong> <?php echo e($attachmentName); ?> (<?php echo e($attachmentSize); ?>)
+                        <strong><?php echo e($attachmentCount); ?> Attachment<?php echo e($attachmentCount > 1 ? 's' : ''); ?>:</strong>
                     </p>
+                    <ul class="attachment-list">
+                        <?php $__currentLoopData = $attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li>
+                                <span class="file-name"><?php echo e($attachment['name']); ?></span>
+                                <span class="file-meta">(<?php echo e($attachment['size']); ?>)</span>
+                            </li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
                 </div>
             <?php endif; ?>
             
