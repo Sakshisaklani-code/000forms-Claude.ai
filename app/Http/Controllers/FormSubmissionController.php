@@ -45,9 +45,9 @@ class FormSubmissionController extends Controller
         // Get form data
         $allData = $request->except(['_token']);
         
-        // SIMPLE FIX: Only exclude honeypot and gotcha from submission data
+        // Only exclude honeypot and gotcha from submission data
         // Keep _subject, _replyto, and _template in the data so email can use them
-        $internalFields = ['_gotcha', '_honeypot', '_next', '_format', '_form_load_time'];
+        $internalFields = ['_gotcha', '_honeypot', '_next', '_format', '_form_load_time', '_cc'];
         $submissionData = [];
         
         // Process regular fields - EXCLUDE file uploads
@@ -69,7 +69,7 @@ class FormSubmissionController extends Controller
             'all_files' => array_keys($request->allFiles()),
         ]);
         
-        // Limit total number of files (optional)
+        // Limit total number of files
         $maxFiles = $form->max_files ?? 5;
         $totalFiles = 0;
         
@@ -98,17 +98,14 @@ class FormSubmissionController extends Controller
                 
                 Log::info('File detected in field: ' . $fieldName);
                 
-                // ============ FILE SIZE VALIDATION (Like FormSubmit.co) ============
-                // Default max file size: 10MB (Free tier) - can be configurable per form
+                // FILE SIZE VALIDATION
                 $maxFileSize = ($form->max_file_size ?? 10) * 1024 * 1024; // Convert MB to bytes
                 $fileSize = $uploadedFile->getSize();
                 
-                // Check file size only - no MIME/type restrictions (like FormSubmit.co)
                 if ($fileSize > $maxFileSize) {
                     $maxSizeMB = $maxFileSize / 1024 / 1024;
                     $error = "File too large. Maximum size is {$maxSizeMB}MB. Your file: " . round($fileSize / 1024 / 1024, 2) . "MB";
                     Log::error($error);
-                    
                     return $this->errorResponse($request, $error, 422);
                 }
                 
@@ -120,11 +117,8 @@ class FormSubmissionController extends Controller
                 // Store the file
                 try {
                     $path = $uploadedFile->storeAs('uploads/' . $form->id, $filename, 'public');
-                    
-                    // Get absolute path
                     $absolutePath = Storage::disk('public')->path($path);
                     
-                    // Store metadata
                     $metadata = [
                         'name' => $originalName,
                         'filename' => $filename,
@@ -136,7 +130,6 @@ class FormSubmissionController extends Controller
                         'field_name' => $fieldName,
                     ];
                     
-                    // Add to arrays
                     $uploadedFiles[] = $absolutePath;
                     $uploadMetadata[] = $metadata;
                     
@@ -168,22 +161,22 @@ class FormSubmissionController extends Controller
             }
             
             $metadata = [
-                'subject' => $allData['_subject'] ?? null,
-                'replyto' => $allData['_replyto'] ?? $allData['email'] ?? null,
-                'template' => $allData['_template'] ?? 'basic',
-                'has_attachment' => !empty($uploadedFiles),
+                'subject'          => $allData['_subject'] ?? null,
+                'replyto'          => $allData['_replyto'] ?? $allData['email'] ?? null,
+                'template'         => $allData['_template'] ?? 'basic',
+                'has_attachment'   => !empty($uploadedFiles),
                 'attachment_count' => count($uploadedFiles),
-                'attachments' => $uploadMetadata,
+                'attachments'      => $uploadMetadata,
             ];
             
             $submission = Submission::create([
-                'form_id' => $form->id,
-                'data' => $submissionData,
-                'metadata' => $metadata,
-                'ip_address' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'referrer' => $request->header('Referer'),
-                'is_spam' => $spamCheck['is_spam'],
+                'form_id'     => $form->id,
+                'data'        => $submissionData,
+                'metadata'    => $metadata,
+                'ip_address'  => $request->ip(),
+                'user_agent'  => $request->userAgent(),
+                'referrer'    => $request->header('Referer'),
+                'is_spam'     => $spamCheck['is_spam'],
                 'spam_reason' => $spamCheck['is_spam'] ? implode(', ', $spamCheck['reasons']) : null,
             ]);
             
@@ -196,13 +189,47 @@ class FormSubmissionController extends Controller
         // Send email notification if not spam
         if (!$spamCheck['is_spam'] && $form->email_notifications) {
             try {
+                // ============ RESOLVE CC EMAILS ============
+
+                $ccEmails = [];
+
+                // 1. CC from dashboard form settings
+                if (!empty($form->cc_emails)) {
+                    if (is_string($form->cc_emails)) {
+                        $ccEmails = array_map('trim', explode(',', $form->cc_emails));
+                    } elseif (is_array($form->cc_emails)) {
+                        $ccEmails = $form->cc_emails;
+                    }
+                }
+
+                // 2. CC from hidden _cc input field (single or comma-separated)
+                if (!empty($allData['_cc'])) {
+                    $fieldCcEmails = array_map('trim', explode(',', $allData['_cc']));
+                    $ccEmails = array_merge($ccEmails, $fieldCcEmails);
+                }
+
+                // 3. Validate all emails and remove duplicates
+                $ccEmails = array_values(array_unique(
+                    array_filter($ccEmails, function ($email) {
+                        return !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL);
+                    })
+                ));
+
+                Log::info('CC Emails resolved', [
+                    'from_dashboard' => $form->cc_emails ?? [],
+                    'from_field'     => $allData['_cc'] ?? 'none',
+                    'final_list'     => $ccEmails,
+                ]);
+
+                // ==========================================
+
                 Log::info('Preparing to send email', [
-                    'to' => $form->recipient_email,
-                    'has_attachments' => !empty($uploadedFiles),
+                    'to'               => $form->recipient_email,
+                    'cc_count'         => count($ccEmails),
+                    'has_attachments'  => !empty($uploadedFiles),
                     'attachment_count' => count($uploadedFiles),
-                    'has_subject' => isset($submissionData['_subject']),
-                    'subject_value' => $submissionData['_subject'] ?? 'not set',
-                    'template' => $submissionData['_template'] ?? 'basic',
+                    'subject_value'    => $submissionData['_subject'] ?? 'not set',
+                    'template'         => $submissionData['_template'] ?? 'basic',
                 ]);
                 
                 // Pass arrays of file paths and metadata
@@ -210,24 +237,13 @@ class FormSubmissionController extends Controller
                     $form, 
                     $submissionData,
                     $submission,
-                    $uploadedFiles,      // Array of file paths
-                    $uploadMetadata      // Array of metadata
+                    $uploadedFiles,
+                    $uploadMetadata
                 );
-                
-                $ccEmails = [];
-                if (!empty($form->cc_emails)) {
-                    if (is_string($form->cc_emails)) {
-                        $ccEmails = array_map('trim', explode(',', $form->cc_emails));
-                    } elseif (is_array($form->cc_emails)) {
-                        $ccEmails = $form->cc_emails;
-                    }
-                    
-                    $ccEmails = array_values(array_filter($ccEmails, function($email) {
-                        return !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL);
-                    }));
-                }
-                
-                $attachmentText = count($uploadedFiles) > 0 ? 'WITH ' . count($uploadedFiles) . ' attachment(s)' : 'WITHOUT attachments';
+
+                $attachmentText = count($uploadedFiles) > 0
+                    ? 'WITH ' . count($uploadedFiles) . ' attachment(s)'
+                    : 'WITHOUT attachments';
                 Log::info('Sending email ' . $attachmentText);
                 
                 if (!empty($ccEmails)) {
@@ -238,7 +254,7 @@ class FormSubmissionController extends Controller
 
                 if ($submission) {
                     $submission->update([
-                        'email_sent' => true,
+                        'email_sent'    => true,
                         'email_sent_at' => now(),
                     ]);
                 }

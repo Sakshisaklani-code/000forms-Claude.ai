@@ -1,0 +1,44 @@
+[2026-02-17 05:20:42] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["uploads"]} 
+[2026-02-17 05:20:42] local.INFO: File detected in field: uploads  
+[2026-02-17 05:20:42] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"project-1.jpg","stored_as":"1771305642_6993faaa0acf3_project-1.jpg","size":"61670 bytes","field":"uploads"} 
+[2026-02-17 05:20:42] local.INFO: Total files uploaded: 1  
+[2026-02-17 05:20:42] local.INFO: VALID SUBMISSION {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-17 05:20:44] local.INFO: Submission created: ID a1196c5e-1d09-41df-8150-a1a47236616c with 1 file(s)  
+[2026-02-17 05:20:44] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","has_attachments":true,"attachment_count":1,"has_subject":false,"subject_value":"not set","template":"basic"} 
+[2026-02-17 05:20:44] local.INFO: Email template selected: basic  
+[2026-02-17 05:20:44] local.INFO: Attachments to process: 1  
+[2026-02-17 05:20:44] local.INFO: Sending email WITH 1 attachment(s)  
+[2026-02-17 05:20:45] local.INFO: Attaching file: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\storage\app/public\uploads/a1177428-bf51-44b8-8b45-e5ad34c834a7/1771305642_6993faaa0acf3_project-1.jpg  
+[2026-02-17 05:20:45] local.INFO: Total attachments added: 1  
+[2026-02-17 05:20:51] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-17 05:20:52] local.INFO: ✅ Auto-response sent to: tsaklani2drish@gmail.com  
+[2026-02-17 05:36:45] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["uploads"]} 
+[2026-02-17 05:36:45] local.INFO: File detected in field: uploads  
+[2026-02-17 05:36:45] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"hero-slider-1.jpg","stored_as":"1771306605_6993fe6ded1e3_hero-slider-1.jpg","size":"74161 bytes","field":"uploads"} 
+[2026-02-17 05:36:45] local.INFO: Total files uploaded: 1  
+[2026-02-17 05:36:45] local.INFO: VALID SUBMISSION {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-17 05:36:46] local.INFO: Submission created: ID a119721a-9708-46a8-856d-0ad8fa4bb326 with 1 file(s)  
+[2026-02-17 05:36:46] local.INFO: CC Emails resolved {"from_dashboard":[],"from_field":"tsaklani2drish@email.com,tsaklani2@email.com","final_list":["tsaklani2drish@email.com","tsaklani2@email.com"]} 
+[2026-02-17 05:36:46] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","cc_count":2,"has_attachments":true,"attachment_count":1,"subject_value":"not set","template":"basic"} 
+[2026-02-17 05:36:46] local.INFO: Email template selected: basic  
+[2026-02-17 05:36:46] local.INFO: Attachments to process: 1  
+[2026-02-17 05:36:46] local.INFO: Sending email WITH 1 attachment(s)  
+[2026-02-17 05:36:46] local.INFO: Attaching file: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\storage\app/public\uploads/a1177428-bf51-44b8-8b45-e5ad34c834a7/1771306605_6993fe6ded1e3_hero-slider-1.jpg  
+[2026-02-17 05:36:46] local.INFO: Total attachments added: 1  
+[2026-02-17 05:36:52] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-17 05:36:53] local.INFO: ✅ Auto-response sent to: tsaklani2drish@gmail.com  
+[2026-02-17 05:39:42] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["uploads"]} 
+[2026-02-17 05:39:42] local.INFO: File detected in field: uploads  
+[2026-02-17 05:39:42] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"testimonial-1.jpg","stored_as":"1771306782_6993ff1ee3c89_testimonial-1.jpg","size":"44273 bytes","field":"uploads"} 
+[2026-02-17 05:39:42] local.INFO: Total files uploaded: 1  
+[2026-02-17 05:39:42] local.INFO: VALID SUBMISSION {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-17 05:39:43] local.INFO: Submission created: ID a1197328-a327-4408-9a64-140b88de2c38 with 1 file(s)  
+[2026-02-17 05:39:43] local.INFO: CC Emails resolved {"from_dashboard":[],"from_field":"tsaklani2drish@gmail.com,tsaklani2@gmail.com","final_list":["tsaklani2drish@gmail.com","tsaklani2@gmail.com"]} 
+[2026-02-17 05:39:43] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","cc_count":2,"has_attachments":true,"attachment_count":1,"subject_value":"not set","template":"basic"} 
+[2026-02-17 05:39:43] local.INFO: Email template selected: basic  
+[2026-02-17 05:39:43] local.INFO: Attachments to process: 1  
+[2026-02-17 05:39:43] local.INFO: Sending email WITH 1 attachment(s)  
+[2026-02-17 05:39:43] local.INFO: Attaching file: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\storage\app/public\uploads/a1177428-bf51-44b8-8b45-e5ad34c834a7/1771306782_6993ff1ee3c89_testimonial-1.jpg  
+[2026-02-17 05:39:43] local.INFO: Total attachments added: 1  
+[2026-02-17 05:39:48] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-17 05:39:50] local.INFO: ✅ Auto-response sent to: tsaklani2drish@gmail.com  
