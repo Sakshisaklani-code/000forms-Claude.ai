@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Methods Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .section {
+            background: #2d2d2d;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #00ff88;
+        }
+        button {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #00cc6a;
+        }
+        pre {
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Test All AJAX Methods</h1>
+    <p>Click each button to test different AJAX submission methods</p>
+
+    <!-- Method 1: Fetch API -->
+    <div class="section">
+        <h2>1. Fetch API</h2>
+        <button onclick="testFetch()">Test Fetch</button>
+        <button onclick="testFetchWithForm()">Test Fetch with Form</button>
+        <div id="fetchResult" class="result">Ready to test...</div>
+    </div>
+
+    <!-- Method 2: Axios -->
+    <div class="section">
+        <h2>2. Axios</h2>
+        <button onclick="testAxios()">Test Axios</button>
+        <button onclick="testAxiosWithForm()">Test Axios with Form</button>
+        <div id="axiosResult" class="result">Ready to test...</div>
+    </div>
+
+    <!-- Method 3: jQuery -->
+    <div class="section">
+        <h2>3. jQuery</h2>
+        <button onclick="testJQuery()">Test jQuery</button>
+        <button onclick="testJQueryWithForm()">Test jQuery with Form</button>
+        <div id="jqueryResult" class="result">Ready to test...</div>
+    </div>
+
+    <!-- Test Form -->
+    <div class="section">
+        <h2>Test Form Data</h2>
+        <form id="testForm">
+            <div style="margin-bottom: 10px;">
+                <label>Name:</label>
+                <input type="text" id="name" value="John Doe" style="width: 100%; padding: 8px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label>Email:</label>
+                <input type="email" id="email" value="john@example.com" style="width: 100%; padding: 8px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label>Message:</label>
+                <textarea id="message" style="width: 100%; padding: 8px;">Hello World!</textarea>
+            </div>
+        </form>
+    </div>
+
+    <!-- Load required libraries -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // Test API endpoints (free test APIs)
+        const TEST_API_1 = 'https://jsonplaceholder.typicode.com/posts';
+        const TEST_API_2 = 'https://httpbin.org/post';
+        
+        // Helper to get form data
+        function getFormData() {
+            return {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        // Helper to display results
+        function displayResult(elementId, method, data, success = true) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <div style="color: ${success ? '#00ff88' : '#ff4444'}; font-weight: bold;">
+                    ${method} ${success ? '✓ Success' : '✗ Error'}
+                </div>
+                <pre style="margin-top: 10px;">${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+
+        // ========== FETCH API TESTS ==========
+        function testFetch() {
+            const data = getFormData();
+            
+            fetch(TEST_API_1, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => displayResult('fetchResult', 'Fetch API', data))
+            .catch(error => displayResult('fetchResult', 'Fetch API', error, false));
+        }
+
+        function testFetchWithForm() {
+            const form = document.getElementById('testForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            
+            fetch(TEST_API_2, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => displayResult('fetchResult', 'Fetch API (Form)', data))
+            .catch(error => displayResult('fetchResult', 'Fetch API (Form)', error, false));
+        }
+
+        // ========== AXIOS TESTS ==========
+        function testAxios() {
+            const data = getFormData();
+            
+            axios.post(TEST_API_1, data)
+                .then(response => displayResult('axiosResult', 'Axios', response.data))
+                .catch(error => displayResult('axiosResult', 'Axios', error, false));
+        }
+
+        function testAxiosWithForm() {
+            const form = document.getElementById('testForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            
+            axios.post(TEST_API_2, data)
+                .then(response => displayResult('axiosResult', 'Axios (Form)', response.data))
+                .catch(error => displayResult('axiosResult', 'Axios (Form)', error, false));
+        }
+
+        // ========== JQUERY TESTS ==========
+        function testJQuery() {
+            const data = getFormData();
+            
+            $.ajax({
+                url: TEST_API_1,
+                method: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function(response) {
+                    displayResult('jqueryResult', 'jQuery', response);
+                },
+                error: function(error) {
+                    displayResult('jqueryResult', 'jQuery', error, false);
+                }
+            });
+        }
+
+        function testJQueryWithForm() {
+            const data = getFormData();
+            
+            $.post(TEST_API_2, data)
+                .done(function(response) {
+                    displayResult('jqueryResult', 'jQuery (Form)', response);
+                })
+                .fail(function(error) {
+                    displayResult('jqueryResult', 'jQuery (Form)', error, false);
+                });
+        }
+    </script>
+</body>
+</html>

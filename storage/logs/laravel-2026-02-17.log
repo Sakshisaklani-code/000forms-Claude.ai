@@ -815,3 +815,41 @@ Did you mean one of these?
 #53 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://Git-folders//...')
 #54 {main}
 "} 
+[2026-02-17 10:04:25] local.ERROR: Supabase signout error: Client error: `POST https://zpqlkncexstlodwcneuq.supabase.co/auth/v1/logout` resulted in a `403 Forbidden` response:
+{"code":403,"error_code":"bad_jwt","msg":"invalid JWT: unable to parse or verify signature, token has invalid claims: to (truncated...)
+  
+[2026-02-17 10:33:33] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":[]} 
+[2026-02-17 10:33:33] local.INFO: Total files uploaded: 0  
+[2026-02-17 10:33:36] local.INFO: Auto-response sent to: john@example.com  
+[2026-02-17 10:33:36] local.INFO: VALID SUBMISSION {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-17 10:33:37] local.INFO: Submission created: ID a119dc44-0665-4d8e-a0f1-1e5fbb6f7bf6 with 0 file(s)  
+[2026-02-17 10:33:37] local.INFO: CC Emails resolved {"from_dashboard":[],"from_field":"none","final_list":[]} 
+[2026-02-17 10:33:37] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","cc_count":0,"has_attachments":false,"attachment_count":0,"subject_value":"not set","template":"basic"} 
+[2026-02-17 10:33:37] local.INFO: Email template selected: basic  
+[2026-02-17 10:33:37] local.INFO: Attachments to process: 0  
+[2026-02-17 10:33:37] local.INFO: Sending email WITHOUT attachments  
+[2026-02-17 10:33:37] local.INFO: Total attachments added: 0  
+[2026-02-17 10:33:39] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-17 10:33:57] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":[]} 
+[2026-02-17 10:33:57] local.INFO: Total files uploaded: 0  
+[2026-02-17 10:34:01] local.INFO: Auto-response sent to: john@example.com  
+[2026-02-17 10:34:01] local.INFO: VALID SUBMISSION {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-17 10:34:01] local.INFO: Submission created: ID a119dc69-a750-4163-bc6e-13a9687d2b33 with 0 file(s)  
+[2026-02-17 10:34:02] local.INFO: CC Emails resolved {"from_dashboard":[],"from_field":"none","final_list":[]} 
+[2026-02-17 10:34:02] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","cc_count":0,"has_attachments":false,"attachment_count":0,"subject_value":"not set","template":"basic"} 
+[2026-02-17 10:34:02] local.INFO: Email template selected: basic  
+[2026-02-17 10:34:02] local.INFO: Attachments to process: 0  
+[2026-02-17 10:34:02] local.INFO: Sending email WITHOUT attachments  
+[2026-02-17 10:34:02] local.INFO: Total attachments added: 0  
+[2026-02-17 10:34:04] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-17 10:39:38] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":[]} 
+[2026-02-17 10:39:38] local.INFO: Total files uploaded: 0  
+[2026-02-17 10:39:38] local.INFO: VALID SUBMISSION {"form_id":"a10d87d5-b920-4539-aa57-b19184312874","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-17 10:39:38] local.INFO: Submission created: ID a119de6b-9930-457a-97a5-4b30ad442cfc with 0 file(s)  
+[2026-02-17 10:39:39] local.INFO: CC Emails resolved {"from_dashboard":[],"from_field":"none","final_list":[]} 
+[2026-02-17 10:39:39] local.INFO: Preparing to send email {"to":"tsaklani2drish@gmail.com","cc_count":0,"has_attachments":false,"attachment_count":0,"subject_value":"not set","template":"basic"} 
+[2026-02-17 10:39:39] local.INFO: Email template selected: basic  
+[2026-02-17 10:39:39] local.INFO: Attachments to process: 0  
+[2026-02-17 10:39:39] local.INFO: Sending email WITHOUT attachments  
+[2026-02-17 10:39:39] local.INFO: Total attachments added: 0  
+[2026-02-17 10:39:43] local.INFO: Email sent successfully to: tsaklani2drish@gmail.com  

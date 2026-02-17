@@ -710,4 +710,4 @@ xhr.<span class="fn">send</span>(<span class="kw">new</span> <span class="fn">Fo
   }
 </script>
 </body>
-</html>
+</html><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/test.blade.php ENDPATH**/ ?>
