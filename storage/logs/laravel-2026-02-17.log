@@ -187,3 +187,53 @@ HINT:  No function matches the given name and argument types. You might need to 
 #64 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://Git-folders//...')
 #65 {main}
 "} 
+[2026-02-17 06:45:05] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["uploads"]} 
+[2026-02-17 06:45:05] local.INFO: File detected in field: uploads  
+[2026-02-17 06:45:05] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"about-1.jpg","stored_as":"1771310705_69940e71843df_about-1.jpg","size":"43233 bytes","field":"uploads"} 
+[2026-02-17 06:45:05] local.INFO: Total files uploaded: 1  
+[2026-02-17 06:45:05] local.INFO: Checking _blacklist field {"blacklist_length":42,"preview":"spammy pattern, banned term, phrase, money"} 
+[2026-02-17 06:45:05] local.INFO: Blacklist check started {"phrases_count":4,"phrases":["spammy pattern","banned term","phrase","money"]} 
+[2026-02-17 06:45:05] local.WARNING: BLACKLIST MATCH! {"field":"message","phrase":"money","value_preview":"money..."} 
+[2026-02-17 06:45:05] local.WARNING: BLACKLIST TRIGGERED {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","matched_phrases":["Blacklisted phrase: 'money' found in 'message'"]} 
+[2026-02-17 06:45:05] local.INFO: MARKED AS SPAM {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":true,"reasons":["Blacklisted phrase: 'money' found in 'message'"]} 
+[2026-02-17 06:45:06] local.INFO: Submission created: ID a1198a8a-d0cd-4beb-832d-877e87094de2 with 1 file(s)  
+[2026-02-17 06:47:04] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["uploads"]} 
+[2026-02-17 06:47:04] local.INFO: File detected in field: uploads  
+[2026-02-17 06:47:04] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"about-1.jpg","stored_as":"1771310824_69940ee8cce6d_about-1.jpg","size":"43233 bytes","field":"uploads"} 
+[2026-02-17 06:47:04] local.INFO: Total files uploaded: 1  
+[2026-02-17 06:47:04] local.INFO: Checking _blacklist field {"blacklist_length":42,"preview":"spammy pattern, banned term, phrase, money"} 
+[2026-02-17 06:47:04] local.INFO: Blacklist check started {"phrases_count":4,"phrases":["spammy pattern","banned term","phrase","money"]} 
+[2026-02-17 06:47:04] local.WARNING: BLACKLIST MATCH! {"field":"message","phrase":"banned term","value_preview":"banned term..."} 
+[2026-02-17 06:47:04] local.WARNING: BLACKLIST TRIGGERED {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","matched_phrases":["Blacklisted phrase: 'banned term' found in 'message'"]} 
+[2026-02-17 06:47:04] local.INFO: MARKED AS SPAM {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":true,"reasons":["Blacklisted phrase: 'banned term' found in 'message'"]} 
+[2026-02-17 06:47:05] local.INFO: Submission created: ID a1198b40-10b3-4b09-a2ba-21c07211e1cc with 1 file(s)  
+[2026-02-17 06:56:01] local.ERROR: Command "cache:" is ambiguous.
+Did you mean one of these?
+    cache:clear            Flush the application cache
+    cache:forget           Remove an item from the cache
+    cache:prune-stale-tags Prune stale cache tags from the cache (Redis only)
+    cache:table            Create a migration for the cache database table. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"cache:\" is ambiguous.
+Did you mean one of these?
+    cache:clear            Flush the application cache
+    cache:forget           Remove an item from the cache
+    cache:prune-stale-tags Prune stale cache tags from the cache (Redis only)
+    cache:table            Create a migration for the cache database table. at C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Application.php:800)
+[stacktrace]
+#0 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Application.php(298): Symfony/Component/Console/Application->find('cache:')
+#1 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#2 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#3 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#4 C:/Git-folders/000FORMS-Claude.ai/000forms-Claude.ai/artisan(11): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#5 {main}
+"} 
+[2026-02-17 06:57:03] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":["uploads"]} 
+[2026-02-17 06:57:03] local.INFO: File detected in field: uploads  
+[2026-02-17 06:57:03] local.INFO: FILE UPLOADED SUCCESSFULLY {"original_name":"about-1.jpg","stored_as":"1771311423_6994113fb9e79_about-1.jpg","size":"43233 bytes","field":"uploads"} 
+[2026-02-17 06:57:03] local.INFO: Total files uploaded: 1  
+[2026-02-17 06:57:08] local.INFO: Auto-response sent to: sakshi.saklani@drishinfo.com  
+[2026-02-17 06:57:08] local.INFO: Checking _blacklist field {"blacklist_length":42,"preview":"spammy pattern, banned term, phrase, money"} 
+[2026-02-17 06:57:08] local.INFO: Blacklist check started {"phrases_count":4,"phrases":["spammy pattern","banned term","phrase","money"]} 
+[2026-02-17 06:57:08] local.WARNING: BLACKLIST MATCH! {"field":"message","phrase":"money","value_preview":"money..."} 
+[2026-02-17 06:57:08] local.WARNING: BLACKLIST TRIGGERED {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","matched_phrases":["Blacklisted phrase: 'money' found in 'message'"]} 
+[2026-02-17 06:57:08] local.INFO: MARKED AS SPAM {"form_id":"a1177428-bf51-44b8-8b45-e5ad34c834a7","ip":"127.0.0.1","is_spam":true,"reasons":["Blacklisted phrase: 'money' found in 'message'"]} 
+[2026-02-17 06:57:08] local.INFO: Submission created: ID a1198ed9-1d93-45bf-93b2-0442d8f4c81d with 1 file(s)  
