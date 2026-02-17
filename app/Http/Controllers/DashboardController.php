@@ -120,18 +120,40 @@ class DashboardController extends Controller
     }
 
     /**
-     * Show form details.
+     * Show form details with filtered/tabbed submissions.
      */
     public function showForm(string $id)
     {
         $form = Auth::user()->forms()->findOrFail($id);
 
-        $submissions = $form->submissions()
-            ->where('is_spam', false)
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $tab    = request('tab', 'valid');
+        $search = trim(request('search', ''));
+        $panel  = request('panel', 'submissions');
 
-        // Line Graph Data (Last 7 Days)
+        $submissions = $form->submissions()
+            ->when($tab === 'spam',  fn($q) => $q->where('is_spam', true))
+            ->when($tab === 'valid', fn($q) => $q->where('is_spam', false))
+            ->when($search !== '', function ($q) use ($search) {
+                $lower = '%' . strtolower($search) . '%';
+                $q->where(function ($query) use ($lower) {
+                    // PostgreSQL JSONB operators
+                    $query->whereRaw("LOWER(data->>'name')    LIKE ?", [$lower])
+                        ->orWhereRaw("LOWER(data->>'email')   LIKE ?", [$lower])
+                        ->orWhereRaw("LOWER(data->>'message') LIKE ?", [$lower])
+                        ->orWhereRaw("LOWER(data->>'phone')   LIKE ?", [$lower])
+                        // Fallback: search entire JSON as text (catches any field)
+                        ->orWhereRaw("LOWER(data::text) LIKE ?", [$lower]);
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // Tab counts — unaffected by search
+        $validCount = $form->submissions()->where('is_spam', false)->count();
+        $spamCount  = $form->submissions()->where('is_spam', true)->count();
+
+        // Line Chart — last 7 days
         $dailySubmissions = $form->submissions()
             ->where('is_spam', false)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
@@ -141,25 +163,16 @@ class DashboardController extends Controller
             ->get();
 
         $lineLabels = [];
-        $lineData = [];
-
+        $lineData   = [];
         for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i)->format('Y-m-d');
+            $date         = now()->subDays($i)->format('Y-m-d');
             $lineLabels[] = now()->subDays($i)->format('M d');
-            $lineData[] = $dailySubmissions->firstWhere('date', $date)->count ?? 0;
+            $lineData[]   = $dailySubmissions->firstWhere('date', $date)->count ?? 0;
         }
 
-        // Bar Graph Data
-        $validCount = $form->submissions()->where('is_spam', false)->count();
-        $spamCount = $form->submissions()->where('is_spam', true)->count();
-
         return view('dashboard.forms.show', compact(
-            'form',
-            'submissions',
-            'lineLabels',
-            'lineData',
-            'validCount',
-            'spamCount'
+            'form', 'submissions', 'validCount', 'spamCount',
+            'lineLabels', 'lineData', 'tab', 'search', 'panel'
         ));
     }
     

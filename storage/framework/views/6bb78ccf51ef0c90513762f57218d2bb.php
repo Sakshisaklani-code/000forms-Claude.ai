@@ -54,17 +54,17 @@
             font-size: 14px;
             color: #888888;
         }
-        .field-box {
-            background-color: #1a1a1a;
-            border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid #222222;
+        .field-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .field-item:last-child {
+            border-bottom: none;
         }
         .field-label {
             font-weight: 500;
             color: #a7a6a6;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -83,13 +83,39 @@
             border-radius: 4px;
         }
         .attachment-info p {
-            margin: 0;
+            margin: 0 0 8px 0;
             font-size: 14px;
             color: #fafafa;
+        }
+        .attachment-info p:last-child {
+            margin-bottom: 0;
         }
         .attachment-icon {
             display: inline-block;
             margin-right: 8px;
+        }
+        .attachment-list {
+            margin-top: 12px;
+            padding-left: 0;
+            list-style: none;
+        }
+        .attachment-list li {
+            padding: 8px 0;
+            color: #fafafa;
+            font-size: 13px;
+            border-bottom: 1px solid #222222;
+        }
+        .attachment-list li:last-child {
+            border-bottom: none;
+        }
+        .attachment-list .file-name {
+            color: #00ff88;
+            font-weight: 500;
+        }
+        .attachment-list .file-meta {
+            color: #888888;
+            font-size: 12px;
+            margin-left: 8px;
         }
         .cta-button {
             display: inline-block;
@@ -148,18 +174,26 @@
             <p class="submission-intro">Here's what they had to say:</p>
             
             <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div class="field-box">
+                <div class="field-item">
                     <div class="field-label"><?php echo e(str_replace('_', ' ', $key)); ?></div>
                     <div class="field-value"><?php echo nl2br(e($value)); ?></div>
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             
-            <?php if($hasAttachment): ?>
+            <?php if($hasAttachment && $attachmentCount > 0): ?>
                 <div class="attachment-info">
                     <p>
                         <span class="attachment-icon">📎</span>
-                        <strong>Attachment:</strong> <?php echo e($attachmentName); ?> (<?php echo e($attachmentSize); ?>)
+                        <strong><?php echo e($attachmentCount); ?> Attachment<?php echo e($attachmentCount > 1 ? 's' : ''); ?>:</strong>
                     </p>
+                    <ul class="attachment-list">
+                        <?php $__currentLoopData = $attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li>
+                                <span class="file-name"><?php echo e($attachment['name']); ?></span>
+                                <span class="file-meta">(<?php echo e($attachment['size']); ?>)</span>
+                            </li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
                 </div>
             <?php endif; ?>
             

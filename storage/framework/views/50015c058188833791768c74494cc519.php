@@ -86,6 +86,22 @@
             </table>
         </section>
 
+        <!-- Multiple file Upload -->
+        <section class="card mb-3">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Multiple file Upload</h2>
+            <p class="text-muted mb-3">Use the below code for multiple file uploads for Form Submission:</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">HTML</span>
+                    <button class="code-copy">Copy</button>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">&lt;!-- Add this hidden field to your form --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"uploads[]"</span> <span class="attr">multiple</span>&gt;</span></pre>
+<pre>
+        </section>
+
         <!-- Email Templates -->
         <section class="card mb-3">
             <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Email Templates</h2>
