@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/docs', [PageController::class, 'docs'])->name('docs');
 Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
+Route::get('/ajax', [PageController::class, 'ajax'])->name('ajax');
 
 /*
 |--------------------------------------------------------------------------

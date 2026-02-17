@@ -29,4 +29,9 @@ class PageController extends Controller
     {
         return view('pages.pricing');
     }
+
+    public function ajax()
+    {
+        return view('pages.ajax');
+    }
 }

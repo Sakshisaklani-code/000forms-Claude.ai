@@ -607,7 +607,7 @@ code, .mono {
    ============================================ */
 
 .footer {
-    padding: 4rem 0 2rem;
+    padding: 1rem 0 1rem;
     border-top: 1px solid var(--border-color);
 }
 
