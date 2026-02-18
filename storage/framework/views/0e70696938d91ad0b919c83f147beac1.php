@@ -60,23 +60,24 @@
                             Copy
                         </button>
                     </div>
-                    <textarea id="htmlEditor" class="code-editor" spellcheck="false">&lt;form id="playgroundForm" class="preview-form" method="POST"&gt;
-    &lt;div class="form-group"&gt;
-        &lt;label for="name"&gt;Name *&lt;/label&gt;
-        &lt;input type="text" id="name" name="name" required placeholder="Enter your name"&gt;
+                    <textarea id="htmlEditor" class="code-editor" spellcheck="false">&lt;!-- Paste this anywhere — replace YOUR@EMAIL.COM with your verified email --&gt;
+&lt;form action="<?php echo e(config('app.url')); ?>/f/YOUR@EMAIL.COM" method="POST" class="preview-form"&gt;
+
+    &lt;div class="form-row"&gt;
+        &lt;div class="col"&gt;
+            &lt;input type="text" name="name" placeholder="Full Name" required&gt;
+        &lt;/div&gt;
+        &lt;div class="col"&gt;
+            &lt;input type="email" name="email" placeholder="Email Address" required&gt;
+        &lt;/div&gt;
     &lt;/div&gt;
 
     &lt;div class="form-group"&gt;
-        &lt;label for="email"&gt;Email *&lt;/label&gt;
-        &lt;input type="email" id="email" name="email" required placeholder="Enter your email"&gt;
+        &lt;textarea name="message" placeholder="Your Message" rows="6" required&gt;&lt;/textarea&gt;
     &lt;/div&gt;
 
-    &lt;div class="form-group"&gt;
-        &lt;label for="message"&gt;Message *&lt;/label&gt;
-        &lt;textarea id="message" name="message" required placeholder="Enter your message" rows="4"&gt;&lt;/textarea&gt;
-    &lt;/div&gt;
+    &lt;button type="submit" class="submit-btn"&gt;Submit Form&lt;/button&gt;
 
-    &lt;button type="submit" class="submit-btn"&gt;Send Message&lt;/button&gt;
 &lt;/form&gt;</textarea>
                 </div>
 
@@ -97,8 +98,20 @@
     font-family: sans-serif;
 }
 
+/* Two-column row */
+.form-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.form-row .col {
+    flex: 1;
+    min-width: 0;
+}
+
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .form-group label {
@@ -106,32 +119,59 @@
     margin-bottom: 0.4rem;
     font-weight: 500;
     color: #e5e7eb;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
+.form-row input,
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+textarea {
     width: 100%;
     padding: 0.65rem 0.9rem;
     border: 1px solid #2d2d2d;
     border-radius: 6px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     background: #1a1a1a;
     color: #ffffff;
     transition: border-color 0.2s;
+    box-sizing: border-box;
 }
 
+.form-row input:focus,
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+input:focus,
+textarea:focus {
     outline: none;
     border-color: #00ff88;
+    box-shadow: 0 0 0 3px rgba(0,255,136,0.1);
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: #555;
 }
 
+textarea {
+    resize: vertical;
+}
+
+select {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid #2d2d2d;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: #1a1a1a;
+    color: #ffffff;
+    box-sizing: border-box;
+}
+
+button[type="submit"],
 .submit-btn {
     background: #00ff88;
     color: #050505;
@@ -143,11 +183,17 @@
     cursor: pointer;
     width: 100%;
     transition: all 0.2s;
+    margin-top: 0.5rem;
 }
 
+button[type="submit"]:hover,
 .submit-btn:hover {
     background: #00cc6a;
     transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+    .form-row { flex-direction: column; gap: 0.5rem; }
 }</textarea>
                 </div>
             </div>
@@ -935,40 +981,66 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ============================================================
        Form Submit Handler
+       Intercepts ANY form in the preview — works with:
+         action="/f/your@email.com"   (our URL pattern)
+         action="https://yourapp.com/f/your@email.com"
+         or falls back to the recipientEmail input
     ============================================================ */
     function attachFormHandler() {
-        const form = document.getElementById('playgroundForm');
-        if (!form) return;
-        form.removeEventListener('submit', handleSubmit);
-        form.addEventListener('submit', handleSubmit);
+        // Intercept every <form> inside the preview, not just #playgroundForm
+        const forms = formPreview.querySelectorAll('form');
+        forms.forEach(form => {
+            form.removeEventListener('submit', handleSubmit);
+            form.addEventListener('submit', handleSubmit);
+        });
+    }
+
+    function resolveRecipientEmail(form) {
+        // 1. Try to extract email from action URL: /f/email@example.com
+        const action = form.getAttribute('action') || '';
+        const match = action.match(/\/f\/([^\s/?#]+@[^\s/?#]+\.[^\s/?#]+)/i);
+        if (match) return decodeURIComponent(match[1]);
+
+        // 2. Fall back to the recipient email input on the page
+        const inputVal = recipientEmail.value.trim();
+        if (inputVal) return inputVal;
+
+        return null;
     }
 
     function handleSubmit(e) {
         e.preventDefault();
 
-        const email = recipientEmail.value.trim();
+        const form = e.target;
         const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!email || !emailRx.test(email)) {
-            showResponse('Please enter a valid recipient email address.', 'error');
+        // Resolve where to send the submission
+        const targetEmail = resolveRecipientEmail(form);
+
+        if (!targetEmail || !emailRx.test(targetEmail)) {
+            showResponse('⚠️ No valid recipient email found. Set the form <code>action="/f/your@email.com"</code> or enter an email above.', 'error');
             return;
         }
 
+        // Verify the target email has been confirmed
         if (!isVerified) {
-            showResponse('⚠️ Please verify your email address first before submitting.', 'error');
-            recipientEmail.focus();
-            return;
+            // Check if the resolved email matches the verified one
+            const verifiedEmail = recipientEmail.value.trim().toLowerCase();
+            const resolvedLower = targetEmail.toLowerCase();
+            if (resolvedLower !== verifiedEmail || !isVerified) {
+                showResponse(`⚠️ Please verify <strong>${targetEmail}</strong> first. Enter it in the field above and click Verify.`, 'error');
+                recipientEmail.value = targetEmail;
+                recipientEmail.focus();
+                return;
+            }
         }
 
-        const form = e.target;
         const formData = new FormData(form);
         formData.append('_token', '<?php echo e(csrf_token()); ?>');
-        formData.append('recipient_email', email);
+        formData.append('recipient_email', targetEmail);
 
-        const submitBtn = form.querySelector('.submit-btn') || form.querySelector('[type="submit"]');
-        const originalText = submitBtn ? submitBtn.textContent : '';
+        const submitBtn = form.querySelector('[type="submit"]');
         if (submitBtn) { submitBtn.classList.add('loading'); submitBtn.disabled = true; }
-
         responseDiv.className = 'response-message';
 
         fetch('<?php echo e(route("playground.submit")); ?>', {
@@ -982,7 +1054,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(r => r.json())
         .then(data => {
             if (data.success) {
-                showResponse(`✅ Submission sent to ${email}`, 'success');
+                showResponse(`✅ Submission sent to <strong>${targetEmail}</strong>`, 'success');
                 form.reset();
                 showToast('Form submitted!');
             } else {

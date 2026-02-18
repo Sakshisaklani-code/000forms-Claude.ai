@@ -22,8 +22,145 @@ class PlaygroundController extends Controller
     }
 
     /**
-     * Send a verification email to the recipient before allowing submissions.
+     * GET /f/{email}
+     * Shown when someone visits the endpoint directly in a browser.
+     * If email not verified → show activation instructions.
+     * If verified → show a simple "endpoint active" page.
      */
+    public function formEndpointInfo(string $email)
+    {
+        $email    = strtolower($email);
+        $cacheKey = 'playground_verify_' . md5($email);
+        $data     = Cache::get($cacheKey);
+        $verified = $data && ($data['verified'] ?? false);
+
+        return view('pages.form-endpoint-info', compact('email', 'verified'));
+    }
+
+    /**
+     * POST /f/{email}
+     * The standalone form endpoint — works like formsubmit.co.
+     * Any HTML form with action="https://yourapp.com/f/your@email.com" hits this.
+     */
+    public function formEndpoint(Request $request, string $email)
+    {
+        $email = strtolower($email);
+
+        // Check email is verified
+        $cacheKey = 'playground_verify_' . md5($email);
+        $data     = Cache::get($cacheKey);
+
+        if (!$data || empty($data['verified'])) {
+            // Not verified yet — send verification email automatically (first time)
+            if (!$data) {
+                $this->sendVerification($email);
+            }
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Email not verified. Check your inbox for a verification link.',
+                ], 403);
+            }
+
+            // Redirect to activation page
+            return redirect()->route('form.info', $email)
+                ->with('warning', 'Please verify your email before submissions are accepted.');
+        }
+
+        // Collect all submitted fields (exclude internal Laravel fields)
+        $skip = ['_token', '_method', '_next', '_subject', '_captcha'];
+        $fields = [];
+        foreach ($request->except($skip) as $key => $value) {
+            if (!str_starts_with($key, '_')) {
+                $fields[$key] = $value;
+            }
+        }
+
+        // Build formData for the email
+        $formData = [
+            'name'            => $fields['name'] ?? $fields['full_name'] ?? 'Anonymous',
+            'sender_email'    => $fields['email'] ?? $fields['email_address'] ?? 'noreply@unknown.com',
+            'message'         => $fields['message'] ?? $fields['body'] ?? json_encode($fields),
+            'recipient_email' => $email,
+            'submitted_at'    => now()->format('Y-m-d H:i:s'),
+            'app_url'         => config('app.url'),
+            'extra_fields'    => array_filter($fields, fn($k) =>
+                !in_array($k, ['name', 'full_name', 'email', 'email_address', 'message', 'body']),
+                ARRAY_FILTER_USE_KEY
+            ),
+        ];
+
+        // Handle file uploads
+        $fileAttachments = [];
+        foreach ($request->allFiles() as $file) {
+            if (!is_array($file)) $file = [$file];
+            foreach ($file as $f) {
+                $fileAttachments[] = [
+                    'file' => $f->path(),
+                    'name' => $f->getClientOriginalName(),
+                    'mime' => $f->getMimeType(),
+                ];
+            }
+        }
+
+        try {
+            Mail::to($email)->send(new PlaygroundFormSubmissionMail($formData, $fileAttachments));
+
+            Log::info('Form endpoint submission', ['recipient' => $email, 'fields' => array_keys($fields)]);
+
+        } catch (\Exception $e) {
+            Log::error('Form endpoint submission failed: ' . $e->getMessage());
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Failed to send.'], 500);
+            }
+
+            return redirect()->back()->with('error', 'Failed to send your message. Please try again.');
+        }
+
+        // Determine where to redirect after success
+        $next = $request->input('_next', route('form.submitted'));
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Submission received!']);
+        }
+
+        return redirect($next)->with('success', 'Your message has been sent!');
+    }
+
+    /**
+     * GET /form-submitted
+     * Default success page after a standalone form submission.
+     */
+    public function formSubmitted()
+    {
+        return view('pages.form-submitted');
+    }
+
+    /**
+     * Send a verification email to the given address.
+     */
+    protected function sendVerification(string $email): void
+    {
+        $token    = Str::random(32);
+        $cacheKey = 'playground_verify_' . md5($email);
+
+        Cache::put($cacheKey, ['token' => $token, 'verified' => false], now()->addMinutes(15));
+
+        $verifyUrl = route('playground.confirm-email', ['email' => $email, 'token' => $token]);
+
+        try {
+            Mail::to($email)->send(new PlaygroundVerificationMail($email, $verifyUrl));
+        } catch (\Exception $e) {
+            Log::error('Auto-verification email failed: ' . $e->getMessage());
+        }
+    }
+
+    // =========================================================
+    //  Playground page routes (existing)
+    // =========================================================
+
     public function verifyEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -31,17 +168,12 @@ class PlaygroundController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid email address.',
-            ], 422);
+            return response()->json(['success' => false, 'message' => 'Invalid email address.'], 422);
         }
 
-        $email = strtolower($request->email);
-
-        // Rate-limit: max 3 verification attempts per email per 10 minutes
-        $rateLimitKey = 'playground_verify_limit_' . md5($email);
-        $attempts = Cache::get($rateLimitKey, 0);
+        $email        = strtolower($request->email);
+        $limitKey     = 'playground_verify_limit_' . md5($email);
+        $attempts     = Cache::get($limitKey, 0);
 
         if ($attempts >= 3) {
             return response()->json([
@@ -50,55 +182,19 @@ class PlaygroundController extends Controller
             ], 429);
         }
 
-        Cache::put($rateLimitKey, $attempts + 1, now()->addMinutes(10));
+        Cache::put($limitKey, $attempts + 1, now()->addMinutes(10));
 
-        // Generate a short token
-        $token = Str::random(32);
+        $this->sendVerification($email);
 
-        // Store token in cache for 15 minutes
-        $cacheKey = 'playground_verify_' . md5($email);
-        Cache::put($cacheKey, [
-            'token'    => $token,
-            'verified' => false,
-        ], now()->addMinutes(15));
-
-        // Build the verification URL
-        $verifyUrl = route('playground.confirm-email', [
-            'email' => $email,
-            'token' => $token,
-        ]);
-
-        // Send verification email
-        try {
-            Mail::to($email)->send(new PlaygroundVerificationMail($email, $verifyUrl));
-        } catch (\Exception $e) {
-            Log::error('Playground verification email failed: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to send verification email: ' . $e->getMessage(),
-            ], 500);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Verification email sent.',
-        ]);
+        return response()->json(['success' => true, 'message' => 'Verification email sent.']);
     }
 
-    /**
-     * Handle the verification link click (from email).
-     */
     public function confirmEmail(Request $request)
     {
-        $email = strtolower($request->query('email'));
-        $token = $request->query('token');
-
-        if (!$email || !$token) {
-            abort(400, 'Invalid verification link.');
-        }
-
+        $email    = strtolower($request->query('email', ''));
+        $token    = $request->query('token', '');
         $cacheKey = 'playground_verify_' . md5($email);
-        $data = Cache::get($cacheKey);
+        $data     = Cache::get($cacheKey);
 
         if (!$data || $data['token'] !== $token) {
             return view('pages.playground-verify-result', [
@@ -108,7 +204,6 @@ class PlaygroundController extends Controller
             ]);
         }
 
-        // Mark as verified (extend expiry to 60 min from now)
         Cache::put($cacheKey, array_merge($data, ['verified' => true]), now()->addMinutes(60));
 
         return view('pages.playground-verify-result', [
@@ -118,23 +213,15 @@ class PlaygroundController extends Controller
         ]);
     }
 
-    /**
-     * Poll endpoint — JS checks if the email has been verified.
-     */
     public function checkVerified(Request $request)
     {
         $email    = strtolower($request->query('email', ''));
         $cacheKey = 'playground_verify_' . md5($email);
         $data     = Cache::get($cacheKey);
 
-        $verified = $data && ($data['verified'] ?? false);
-
-        return response()->json(['verified' => $verified]);
+        return response()->json(['verified' => $data && ($data['verified'] ?? false)]);
     }
 
-    /**
-     * Process the form submission (only allowed for verified emails).
-     */
     public function submit(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -145,16 +232,12 @@ class PlaygroundController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors'  => $validator->errors(),
-            ], 422);
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
-        // Verify the recipient email was confirmed
         $recipientEmail = strtolower($request->recipient_email);
-        $cacheKey = 'playground_verify_' . md5($recipientEmail);
-        $data = Cache::get($cacheKey);
+        $cacheKey       = 'playground_verify_' . md5($recipientEmail);
+        $data           = Cache::get($cacheKey);
 
         if (!$data || empty($data['verified'])) {
             return response()->json([
@@ -171,19 +254,13 @@ class PlaygroundController extends Controller
                 'recipient_email' => $recipientEmail,
                 'submitted_at'    => now()->format('Y-m-d H:i:s'),
                 'app_url'         => config('app.url'),
+                'extra_fields'    => array_filter(
+                    $request->except(['name', 'email', 'message', 'recipient_email', '_token', '_method']),
+                    fn($k) => !str_starts_with($k, '_'),
+                    ARRAY_FILTER_USE_KEY
+                ),
             ];
 
-            // Collect any extra fields beyond the standard ones
-            $standardFields = ['name', 'email', 'message', 'recipient_email', '_token', '_method'];
-            $extraFields = [];
-            foreach ($request->except($standardFields) as $key => $value) {
-                if (!str_starts_with($key, '_')) {
-                    $extraFields[$key] = $value;
-                }
-            }
-            $formData['extra_fields'] = $extraFields;
-
-            // Handle file attachments — stored in $fileAttachments to avoid Mailable conflict
             $fileAttachments = [];
             if ($request->hasFile('attachments')) {
                 foreach ($request->file('attachments') as $file) {
@@ -197,19 +274,12 @@ class PlaygroundController extends Controller
 
             Mail::to($recipientEmail)->send(new PlaygroundFormSubmissionMail($formData, $fileAttachments));
 
-            Log::info('Playground submission sent', [
-                'sender'    => $request->email,
-                'recipient' => $recipientEmail,
-            ]);
+            Log::info('Playground submission sent', ['recipient' => $recipientEmail]);
 
-            return response()->json([
-                'success' => true,
-                'message' => '✅ Message sent successfully!',
-            ]);
+            return response()->json(['success' => true, 'message' => '✅ Message sent successfully!']);
 
         } catch (\Exception $e) {
             Log::error('Playground submission failed: ' . $e->getMessage());
-
             return response()->json([
                 'success' => false,
                 'message' => '❌ Failed to send: ' . $e->getMessage(),

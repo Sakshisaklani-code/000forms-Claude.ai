@@ -27,23 +27,25 @@ Route::get('/ajax', [PageController::class, 'ajax'])->name('ajax');
 | Playground Page
 |--------------------------------------------------------------------------
 */
-// Route::get('/form-playground', [PlaygroundController::class, 'index'])->name('playground.index');
-// Route::post('/form-playground/submit', [PlaygroundController::class, 'submit'])->name('playground.submit');
-
 Route::prefix('playground')->name('playground.')->group(function () {
-
-    // Page
-    Route::get('/', [PlaygroundController::class, 'index'])->name('index');
-
-    // Email verification flow
-    Route::post('/verify-email', [PlaygroundController::class, 'verifyEmail'])->name('verify');
-    Route::get('/confirm-email', [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
-    Route::get('/check-verified', [PlaygroundController::class, 'checkVerified'])->name('check-verified');
-
-    // Form submission
-    Route::post('/submit', [PlaygroundController::class, 'submit'])->name('submit');
-
+    Route::get('/',                [PlaygroundController::class, 'index'])->name('index');
+    Route::post('/verify-email',   [PlaygroundController::class, 'verifyEmail'])->name('verify');
+    Route::get('/confirm-email',   [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
+    Route::get('/check-verified',  [PlaygroundController::class, 'checkVerified'])->name('check-verified');
+    Route::post('/submit',         [PlaygroundController::class, 'submit'])->name('submit');
 });
+
+// ============================================================
+// Standalone form endpoint — works exactly like formsubmit.co
+// Usage in any HTML form:
+//   <form action="https://yourapp.com/f/your@email.com" method="POST">
+//
+// Supports:
+//   GET  /f/{email}  → shows activation page if not yet verified
+//   POST /f/{email}  → processes submission & redirects (or JSON)
+// ============================================================
+Route::get('/f/{email}', [PlaygroundController::class, 'formEndpointInfo'])->name('playground.endpoint.info');
+Route::get('/form-submitted', [PlaygroundController::class, 'formSubmitted'])->name('playground.form.submitted');
 
 /*
 |--------------------------------------------------------------------------
