@@ -924,3 +924,4 @@
 [2026-02-18 09:06:33] local.ERROR: Form endpoint submission failed: htmlspecialchars(): Argument #1 ($string) must be of type string, Illuminate\Mail\Message given (View: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views\pages\thank-you.blade.php)  
 [2026-02-18 09:06:53] local.INFO: Form endpoint hit {"email":"sakshi.saklani@drishinfo.com","method":"POST","ip":"127.0.0.1"} 
 [2026-02-18 09:06:57] local.INFO: Form endpoint submission successful {"recipient":"sakshi.saklani@drishinfo.com"} 
+[2026-02-18 09:47:38] local.INFO: Verification email sent {"email":"tsaklani2drish@gmail.com","token":"QM0i3AG4ZW1zIirQC7sojexhNOdPdrut"} 
