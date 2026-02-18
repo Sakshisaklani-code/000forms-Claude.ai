@@ -925,3 +925,38 @@
 [2026-02-18 09:06:53] local.INFO: Form endpoint hit {"email":"sakshi.saklani@drishinfo.com","method":"POST","ip":"127.0.0.1"} 
 [2026-02-18 09:06:57] local.INFO: Form endpoint submission successful {"recipient":"sakshi.saklani@drishinfo.com"} 
 [2026-02-18 09:47:38] local.INFO: Verification email sent {"email":"tsaklani2drish@gmail.com","token":"QM0i3AG4ZW1zIirQC7sojexhNOdPdrut"} 
+[2026-02-18 11:36:38] local.INFO: Form endpoint hit {"email":"f_bvu9lkeq","method":"POST","ip":"127.0.0.1"} 
+[2026-02-18 11:36:38] local.ERROR: Verification email failed: Email "f_bvu9lkeq" does not comply with addr-spec of RFC 2822.  
+[2026-02-18 11:36:38] local.INFO: Unverified email attempt {"email":"f_bvu9lkeq"} 
+[2026-02-18 11:36:38] local.ERROR: Verification email failed: Email "f_bvu9lkeq" does not comply with addr-spec of RFC 2822.  
+[2026-02-18 11:59:13] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":[]} 
+[2026-02-18 11:59:13] local.INFO: Total files uploaded: 0  
+[2026-02-18 11:59:17] local.INFO: Auto-response sent to: tsaklani2drish@gmail.com  
+[2026-02-18 11:59:17] local.INFO: VALID SUBMISSION {"form_id":"a11bf44e-0cce-4a7d-9479-d810b994d952","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-18 11:59:17] local.INFO: Submission created: ID a11bfde3-b7ff-4f2c-a1b5-58c93969afdb with 0 file(s)  
+[2026-02-18 11:59:18] local.INFO: CC Emails resolved {"from_dashboard":[],"from_field":"none","final_list":[]} 
+[2026-02-18 11:59:18] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","cc_count":0,"has_attachments":false,"attachment_count":0,"subject_value":"not set","template":"basic"} 
+[2026-02-18 11:59:18] local.INFO: Email template selected: basic  
+[2026-02-18 11:59:18] local.INFO: Attachments to process: 0  
+[2026-02-18 11:59:18] local.INFO: Sending email WITHOUT attachments  
+[2026-02-18 11:59:18] local.INFO: Total attachments added: 0  
+[2026-02-18 11:59:20] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  
+[2026-02-18 12:02:13] local.INFO: Playground: verification email sent {"email":"tsaklani2drish@gmail.com"} 
+[2026-02-18 12:02:16] local.INFO: Playground: email verified {"email":"tsaklani2drish@gmail.com"} 
+[2026-02-18 12:06:52] local.INFO: Playground: verification email sent {"email":"tsaklani2drish@gmail.com"} 
+[2026-02-18 12:06:57] local.INFO: Playground: email verified {"email":"tsaklani2drish@gmail.com"} 
+[2026-02-18 12:11:19] local.INFO: Playground: verification email sent {"email":"tsaklani2drish@gmail.com"} 
+[2026-02-18 12:11:22] local.INFO: Playground: email verified {"email":"tsaklani2drish@gmail.com"} 
+[2026-02-18 12:11:45] local.INFO: Playground: submission sent {"recipient":"tsaklani2drish@gmail.com"} 
+[2026-02-18 12:12:21] local.INFO: FILE UPLOAD CHECK {"form_allows_upload":false,"all_files":[]} 
+[2026-02-18 12:12:21] local.INFO: Total files uploaded: 0  
+[2026-02-18 12:12:25] local.INFO: Auto-response sent to: tsaklani2drish@gmail.com  
+[2026-02-18 12:12:25] local.INFO: VALID SUBMISSION {"form_id":"a11bf44e-0cce-4a7d-9479-d810b994d952","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-18 12:12:25] local.INFO: Submission created: ID a11c0295-9707-4794-ae8e-3b032ab9d31e with 0 file(s)  
+[2026-02-18 12:12:25] local.INFO: CC Emails resolved {"from_dashboard":[],"from_field":"none","final_list":[]} 
+[2026-02-18 12:12:25] local.INFO: Preparing to send email {"to":"sakshi.saklani@drishinfo.com","cc_count":0,"has_attachments":false,"attachment_count":0,"subject_value":"not set","template":"basic"} 
+[2026-02-18 12:12:25] local.INFO: Email template selected: basic  
+[2026-02-18 12:12:25] local.INFO: Attachments to process: 0  
+[2026-02-18 12:12:25] local.INFO: Sending email WITHOUT attachments  
+[2026-02-18 12:12:25] local.INFO: Total attachments added: 0  
+[2026-02-18 12:12:28] local.INFO: Email sent successfully to: sakshi.saklani@drishinfo.com  

@@ -5,4 +5,4 @@
     <!-- Honeypot (spam protection) -->
   <input type="text" name="honeypot_Ma35wvTf" style="display:none">
     <button type="submit">Send Message</button>
-</form>
+</form><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/test.blade.php ENDPATH**/ ?>
