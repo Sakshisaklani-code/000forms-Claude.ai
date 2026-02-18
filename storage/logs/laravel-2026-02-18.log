@@ -911,3 +911,16 @@
 #35 {main}
 "} 
 [2026-02-18 06:25:17] local.INFO: Playground submission sent {"recipient":"sakshi.saklani@drishinfo.com"} 
+[2026-02-18 08:57:59] local.INFO: Verification email sent {"email":"sakshi.saklani@drishinfo.com","token":"Deg3oCCan8IHQTMX3rB1QFXJLq1UlQw6"} 
+[2026-02-18 08:58:09] local.INFO: Confirm email attempt {"email":"sakshi.saklani@drishinfo.com","token_provided":"Deg3oCCan8IHQTMX3rB1QFXJLq1UlQw6","token_stored":"Deg3oCCan8IHQTMX3rB1QFXJLq1UlQw6","data_exists":true} 
+[2026-02-18 08:58:09] local.INFO: Email verified successfully {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-18 08:59:31] local.INFO: Verification email sent {"email":"sakshi.saklani@drishinfo.com","token":"E5DwWR4YgTvcXScIbqdbqupCLZbsG5yl"} 
+[2026-02-18 08:59:47] local.INFO: Confirm email attempt {"email":"sakshi.saklani@drishinfo.com","token_provided":"E5DwWR4YgTvcXScIbqdbqupCLZbsG5yl","token_stored":"E5DwWR4YgTvcXScIbqdbqupCLZbsG5yl","data_exists":true} 
+[2026-02-18 08:59:47] local.INFO: Email verified successfully {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-18 09:00:21] local.INFO: Playground submission sent {"recipient":"sakshi.saklani@drishinfo.com"} 
+[2026-02-18 09:01:16] local.INFO: Form endpoint hit {"email":"sakshi.saklani@drishinfo.com","method":"POST","ip":"127.0.0.1"} 
+[2026-02-18 09:01:19] local.INFO: Form endpoint submission successful {"recipient":"sakshi.saklani@drishinfo.com"} 
+[2026-02-18 09:06:33] local.INFO: Form endpoint hit {"email":"sakshi.saklani@drishinfo.com","method":"POST","ip":"127.0.0.1"} 
+[2026-02-18 09:06:33] local.ERROR: Form endpoint submission failed: htmlspecialchars(): Argument #1 ($string) must be of type string, Illuminate\Mail\Message given (View: C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views\pages\thank-you.blade.php)  
+[2026-02-18 09:06:53] local.INFO: Form endpoint hit {"email":"sakshi.saklani@drishinfo.com","method":"POST","ip":"127.0.0.1"} 
+[2026-02-18 09:06:57] local.INFO: Form endpoint submission successful {"recipient":"sakshi.saklani@drishinfo.com"} 
