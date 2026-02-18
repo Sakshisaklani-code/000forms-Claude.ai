@@ -799,377 +799,440 @@ button[type="submit"]:hover,
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-        /* ============================================================
-        Elements
-        ============================================================ */
-        const htmlEditor      = document.getElementById('htmlEditor');
-        const cssEditor       = document.getElementById('cssEditor');
-        const formPreview     = document.getElementById('formPreview');
-        const responseDiv     = document.getElementById('responseMessage');
-        const recipientEmail  = document.getElementById('recipientEmail');
-        const verifyBtn       = document.getElementById('verifyEmailBtn');
-        const emailStatus     = document.getElementById('emailStatus');
-        const toast           = document.getElementById('toast');
+    /* ============================================================
+       Elements
+    ============================================================ */
+    const htmlEditor      = document.getElementById('htmlEditor');
+    const cssEditor       = document.getElementById('cssEditor');
+    const formPreview     = document.getElementById('formPreview');
+    const responseDiv     = document.getElementById('responseMessage');
+    const recipientEmail  = document.getElementById('recipientEmail');
+    const verifyBtn       = document.getElementById('verifyEmailBtn');
+    const emailStatus     = document.getElementById('emailStatus');
+    const toast           = document.getElementById('toast');
 
-        let isVerified        = false;
-        let injectedStyle     = null;
-        let verifiedEmail     = localStorage.getItem('playground_verified_email') || '';
+    let isVerified        = false;
+    let injectedStyle     = null;
+    let verifiedEmail     = localStorage.getItem('playground_verified_email') || '';
 
-        /* ============================================================
-        Tab Switching
-        ============================================================ */
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tab = btn.dataset.tab;
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById('tab-' + tab).classList.add('active');
-            });
+    /* ============================================================
+       Tab Switching
+    ============================================================ */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = btn.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
         });
+    });
 
-        /* ============================================================
-        Copy Buttons
-        ============================================================ */
-        function setupCopy(btnId, getContent) {
-            const btn = document.getElementById(btnId);
-            if (!btn) return;
-            btn.addEventListener('click', () => {
-                navigator.clipboard.writeText(getContent()).then(() => {
-                    btn.innerHTML = '✓ Copied!';
-                    btn.classList.add('copied');
-                    setTimeout(() => {
-                        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/></svg> Copy`;
-                        btn.classList.remove('copied');
-                    }, 2000);
-                }).catch(() => showToast('Failed to copy'));
+    /* ============================================================
+       Copy Buttons
+    ============================================================ */
+    function setupCopy(btnId, getContent) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+            navigator.clipboard.writeText(getContent()).then(() => {
+                btn.innerHTML = '✓ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/></svg> Copy`;
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(() => showToast('Failed to copy'));
+        });
+    }
+
+    setupCopy('copyHtml', () => htmlEditor.value);
+    setupCopy('copyCss',  () => cssEditor.value);
+
+    /* ============================================================
+       Live Preview — HTML + scoped CSS injection
+    ============================================================ */
+    function decodeHtml(html) {
+        const t = document.createElement('textarea');
+        t.innerHTML = html;
+        return t.value;
+    }
+
+    function injectCss(css) {
+        if (injectedStyle) injectedStyle.remove();
+        try {
+            const scoped = css.replace(/(^|\})\s*([^{@][^{]*)\{/g, (match, closing, selector) => {
+                const scopedSelector = selector
+                    .split(',')
+                    .map(s => '.preview-content ' + s.trim())
+                    .join(', ');
+                return (closing || '') + ' ' + scopedSelector + ' {';
             });
-        }
+            injectedStyle = document.createElement('style');
+            injectedStyle.id = 'playground-user-css';
+            injectedStyle.textContent = scoped;
+            document.head.appendChild(injectedStyle);
+        } catch(e) {}
+    }
 
-        setupCopy('copyHtml', () => htmlEditor.value);
-        setupCopy('copyCss',  () => cssEditor.value);
+    function updatePreview() {
+        const decoded = decodeHtml(htmlEditor.value);
+        formPreview.innerHTML = decoded;
+        injectCss(cssEditor.value);
+        attachFormHandler();
+    }
 
-        /* ============================================================
-        Live Preview — HTML + scoped CSS injection
-        ============================================================ */
-        function decodeHtml(html) {
-            const t = document.createElement('textarea');
-            t.innerHTML = html;
-            return t.value;
-        }
+    let previewTimer;
+    function scheduleUpdate() {
+        clearTimeout(previewTimer);
+        previewTimer = setTimeout(updatePreview, 250);
+    }
 
-        function injectCss(css) {
-            if (injectedStyle) injectedStyle.remove();
-            try {
-                const scoped = css.replace(/(^|\})\s*([^{@][^{]*)\{/g, (match, closing, selector) => {
-                    const scopedSelector = selector
-                        .split(',')
-                        .map(s => '.preview-content ' + s.trim())
-                        .join(', ');
-                    return (closing || '') + ' ' + scopedSelector + ' {';
-                });
-                injectedStyle = document.createElement('style');
-                injectedStyle.id = 'playground-user-css';
-                injectedStyle.textContent = scoped;
-                document.head.appendChild(injectedStyle);
-            } catch(e) {}
-        }
+    htmlEditor.addEventListener('input', scheduleUpdate);
+    cssEditor.addEventListener('input', scheduleUpdate);
+    updatePreview();
 
-        function updatePreview() {
-            const decoded = decodeHtml(htmlEditor.value);
-            formPreview.innerHTML = decoded;
-            injectCss(cssEditor.value);
-            attachFormHandler();
-        }
-
-        let previewTimer;
-        function scheduleUpdate() {
-            clearTimeout(previewTimer);
-            previewTimer = setTimeout(updatePreview, 250);
-        }
-
-        htmlEditor.addEventListener('input', scheduleUpdate);
-        cssEditor.addEventListener('input', scheduleUpdate);
-        updatePreview();
-
-        /* ============================================================
-        Email Verification Functions
-        ============================================================ */
+    /* ============================================================
+       Email Verification Functions
+    ============================================================ */
+    
+    function updateHtmlCodeWithEmail(email) {
+        let currentHtml = htmlEditor.value;
+        // Replace YOUR@EMAIL.COM or any email in the action attribute
+        const actionRegex = /(action=["'].*\/f\/)([^"']+)(["'])/;
+        const match = currentHtml.match(actionRegex);
         
-        function checkEmailVerification(email) {
-            return fetch('{{ route("playground.check-verified") }}?email=' + encodeURIComponent(email), {
-                headers: { 'Accept': 'application/json' }
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.verified) {
-                    isVerified = true;
-                    verifiedEmail = email;
-                    localStorage.setItem('playground_verified_email', email);
-                    setEmailStatus('✅ Email verified! You can now submit the form.', 'verified');
-                    verifyBtn.innerHTML = '✓ Verified';
-                    verifyBtn.style.background = 'var(--success)';
-                    verifyBtn.disabled = false;
-                } else {
-                    isVerified = false;
-                }
-                return data.verified;
-            })
-            .catch(() => {
-                isVerified = false;
-                return false;
-            });
-        }
-
-        function setEmailStatus(msg, type) {
-            emailStatus.textContent = msg;
-            emailStatus.className = 'email-status' + (type ? ' ' + type : '');
-        }
-
-        function pollVerification(email) {
-            let attempts = 0;
-            const max = 40;
+        if (match) {
+            // Update the email in the action attribute
+            const newHtml = currentHtml.replace(actionRegex, `$1${email}$3`);
+            htmlEditor.value = newHtml;
             
-            if (window.verificationInterval) {
-                clearInterval(window.verificationInterval);
+            // Also update the preview
+            scheduleUpdate();
+            
+            // Highlight the change briefly
+            const placeholder = document.getElementById('heroEmailPlaceholder');
+            if (placeholder) {
+                placeholder.textContent = email;
+                placeholder.classList.add('email-highlight');
+                setTimeout(() => {
+                    placeholder.classList.remove('email-highlight');
+                }, 1000);
             }
             
-            window.verificationInterval = setInterval(() => {
-                attempts++;
+            showToast(`Email updated in HTML code`);
+        }
+    }
+
+    function checkEmailVerification(email) {
+        return fetch('{{ route("playground.check-verified") }}?email=' + encodeURIComponent(email), {
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.verified) {
+                isVerified = true;
+                verifiedEmail = email;
+                localStorage.setItem('playground_verified_email', email);
+                setEmailStatus('✅ Email verified! You can now submit the form.', 'verified');
+                verifyBtn.innerHTML = '✓ Verified';
+                verifyBtn.style.background = 'var(--success)';
+                verifyBtn.disabled = false;
                 
-                if (attempts > max) {
-                    clearInterval(window.verificationInterval);
-                    setEmailStatus('Verification timed out. Please try again.', 'error');
-                    verifyBtn.disabled = false;
-                    verifyBtn.innerHTML = 'Verify';
-                    return;
-                }
+                // Update HTML code with verified email
+                updateHtmlCodeWithEmail(email);
+            } else {
+                isVerified = false;
+            }
+            return data.verified;
+        })
+        .catch(() => {
+            isVerified = false;
+            return false;
+        });
+    }
 
-                checkEmailVerification(email).then(verified => {
-                    if (verified) {
-                        clearInterval(window.verificationInterval);
-                    }
-                });
-            }, 3000);
+    function setEmailStatus(msg, type) {
+        emailStatus.textContent = msg;
+        emailStatus.className = 'email-status' + (type ? ' ' + type : '');
+    }
+
+    function pollVerification(email) {
+        let attempts = 0;
+        const max = 40;
+        
+        if (window.verificationInterval) {
+            clearInterval(window.verificationInterval);
         }
-
-        /* ============================================================
-        Verify Button Click Handler
-        ============================================================ */
-        verifyBtn.addEventListener('click', () => {
-            const email = recipientEmail.value.trim();
-            const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if (!email) {
-                setEmailStatus('Please enter an email address', 'error');
-                return;
-            }
-            if (!emailRx.test(email)) {
-                setEmailStatus('Enter a valid email address', 'error');
-                return;
-            }
-
-            verifyBtn.disabled = true;
-            verifyBtn.innerHTML = 'Sending…';
-            setEmailStatus('', '');
-
-            fetch('{{ route("playground.verify") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ email })
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    setEmailStatus('✅ Verification email sent! Check your inbox and click the link.', 'pending');
-                    pollVerification(email);
-                } else {
-                    setEmailStatus(data.message || 'Failed to send verification', 'error');
-                    verifyBtn.disabled = false;
-                    verifyBtn.innerHTML = 'Verify';
-                }
-            })
-            .catch(() => {
-                setEmailStatus('Network error. Please try again.', 'error');
+        
+        setEmailStatus(`⏳ Verification email sent to ${email}. Check your inbox and click the link...`, 'pending');
+        
+        window.verificationInterval = setInterval(() => {
+            attempts++;
+            
+            if (attempts > max) {
+                clearInterval(window.verificationInterval);
+                setEmailStatus('Verification timed out. Please try again.', 'error');
                 verifyBtn.disabled = false;
                 verifyBtn.innerHTML = 'Verify';
-            });
-        });
-
-        /* ============================================================
-        Form Submit Handler
-        ============================================================ */
-        function resolveRecipientEmail(form) {
-            // Try to extract email from action URL: /f/email@example.com
-            const action = form.getAttribute('action') || '';
-            const match = action.match(/\/f\/([^\s/?#]+@[^\s/?#]+\.[^\s/?#]+)/i);
-            if (match) return decodeURIComponent(match[1]);
-
-            // Try to find an email input in the form
-            const emailInput = form.querySelector('input[type="email"]');
-            if (emailInput && emailInput.value) return emailInput.value;
-
-            // Fall back to the recipient email input on the page
-            const inputVal = recipientEmail.value.trim();
-            if (inputVal) return inputVal;
-
-            return null;
-        }
-
-        function handleSubmit(e) {
-            e.preventDefault();
-
-            const form = e.target;
-            const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            // Resolve where to send the submission
-            const targetEmail = resolveRecipientEmail(form);
-
-            if (!targetEmail || !emailRx.test(targetEmail)) {
-                showResponse('⚠️ No valid recipient email found. Set the form <code>action="/f/your@email.com"</code> or enter an email above.', 'error');
                 return;
             }
 
-            // Show loading state
-            const submitBtn = form.querySelector('[type="submit"]');
-            if (submitBtn) { 
-                submitBtn.classList.add('loading'); 
-                submitBtn.disabled = true; 
-            }
-            responseDiv.className = 'response-message';
-
-            // First check if the email is verified
-            checkEmailVerification(targetEmail).then(verified => {
-                if (!verified) {
-                    showResponse(`⚠️ Please verify <strong>${targetEmail}</strong> first. Click Verify above.`, 'error');
-                    recipientEmail.value = targetEmail;
-                    recipientEmail.focus();
-                    if (submitBtn) { 
-                        submitBtn.classList.remove('loading'); 
-                        submitBtn.disabled = false; 
-                    }
-                    return;
+            checkEmailVerification(email).then(verified => {
+                if (verified) {
+                    clearInterval(window.verificationInterval);
                 }
-
-                // Proceed with form submission
-                const formData = new FormData(form);
-                formData.append('_token', '{{ csrf_token() }}');
-                formData.append('recipient_email', targetEmail);
-
-                // Log what we're sending
-                console.log('Submitting to:', targetEmail);
-
-                fetch('{{ route("playground.submit") }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                })
-                .then(async r => {
-                    const data = await r.json();
-                    if (!r.ok) {
-                        throw new Error(data.message || 'Submission failed');
-                    }
-                    return data;
-                })
-                .then(data => {
-                    if (data.success) {
-                        showResponse(`✅ Submission sent to <strong>${targetEmail}</strong>`, 'success');
-                        form.reset();
-                        showToast('Form submitted!');
-                    } else {
-                        showResponse(data.message || 'An error occurred.', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Submission error:', error);
-                    showResponse(error.message || 'Network error. Please try again.', 'error');
-                })
-                .finally(() => {
-                    if (submitBtn) { 
-                        submitBtn.classList.remove('loading'); 
-                        submitBtn.disabled = false; 
-                    }
-                });
             });
+        }, 3000);
+    }
+
+    /* ============================================================
+       Verify Button Click Handler
+    ============================================================ */
+    verifyBtn.addEventListener('click', () => {
+        const email = recipientEmail.value.trim();
+        const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email) {
+            setEmailStatus('Please enter an email address', 'error');
+            recipientEmail.focus();
+            return;
+        }
+        if (!emailRx.test(email)) {
+            setEmailStatus('Enter a valid email address', 'error');
+            recipientEmail.focus();
+            return;
         }
 
-        function attachFormHandler() {
-            const forms = formPreview.querySelectorAll('form');
-            forms.forEach(form => {
-                form.removeEventListener('submit', handleSubmit);
-                form.addEventListener('submit', handleSubmit);
-            });
-        }
+        // Immediately update HTML code with the email being verified
+        updateHtmlCodeWithEmail(email);
 
-        /* ============================================================
-        UI Helpers
-        ============================================================ */
-        function showResponse(msg, type) {
-            responseDiv.innerHTML = msg;
-            responseDiv.className = 'response-message show ' + type;
-            if (type === 'success') {
-                setTimeout(() => responseDiv.classList.remove('show'), 5000);
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = 'Sending…';
+        setEmailStatus('', '');
+
+        fetch('{{ route("playground.verify") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                setEmailStatus(`✅ Verification email sent to ${email}! Check your inbox and click the link.`, 'pending');
+                pollVerification(email);
+            } else {
+                setEmailStatus(data.message || 'Failed to send verification', 'error');
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = 'Verify';
             }
-        }
-
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-
-        /* ============================================================
-        Initialize - Check for previously verified email
-        ============================================================ */
-        if (verifiedEmail) {
-            recipientEmail.value = verifiedEmail;
-            checkEmailVerification(verifiedEmail);
-        }
-
-        // Add a manual check button or auto-check when email input changes
-        recipientEmail.addEventListener('blur', function() {
-            const email = this.value.trim();
-            if (email) {
-                checkEmailVerification(email);
-            }
+        })
+        .catch(() => {
+            setEmailStatus('Network error. Please try again.', 'error');
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = 'Verify';
         });
+    });
 
-        // Update the HTML editor default to use the current domain
-        const currentDomain = window.location.origin;
-        const defaultHtml = `<!-- Paste this anywhere — replace YOUR@EMAIL.COM with your verified email -->
-    <form action="${currentDomain}/f/YOUR@EMAIL.COM" method="POST" class="preview-form">
+    // Update HTML code as user types email (real-time)
+    recipientEmail.addEventListener('input', function() {
+        const email = this.value.trim();
+        if (email && email.includes('@')) {
+            // Update HTML code in real-time as user types
+            updateHtmlCodeWithEmail(email);
+        }
+    });
 
-        <div class="form-row">
-            <div class="col">
-                <input type="text" name="name" placeholder="Full Name" required>
-            </div>
-            <div class="col">
-                <input type="email" name="email" placeholder="Email Address" required>
-            </div>
-        </div>
+    /* ============================================================
+       Form Submit Handler
+    ============================================================ */
+    function resolveRecipientEmail(form) {
+        // Try to extract email from action URL: /f/email@example.com
+        const action = form.getAttribute('action') || '';
+        const match = action.match(/\/f\/([^\s/?#]+@[^\s/?#]+\.[^\s/?#]+)/i);
+        if (match) return decodeURIComponent(match[1]);
 
-        <div class="form-group">
-            <textarea name="message" placeholder="Your Message" rows="6" required></textarea>
-        </div>
+        // Try to find an email input in the form
+        const emailInput = form.querySelector('input[type="email"]');
+        if (emailInput && emailInput.value) return emailInput.value;
 
-        <button type="submit" class="submit-btn">Submit Form</button>
+        // Fall back to the recipient email input on the page
+        const inputVal = recipientEmail.value.trim();
+        if (inputVal) return inputVal;
 
-    </form>`;
-        
-        if (htmlEditor.value.includes('{{ config')) {
-            htmlEditor.value = defaultHtml;
+        return null;
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Resolve where to send the submission
+        const targetEmail = resolveRecipientEmail(form);
+
+        if (!targetEmail || !emailRx.test(targetEmail)) {
+            showResponse('⚠️ No valid recipient email found. Set the form <code>action="/f/your@email.com"</code> or enter an email above.', 'error');
+            return;
         }
 
-        console.log('Playground initialized');
+        // Show loading state
+        const submitBtn = form.querySelector('[type="submit"]');
+        if (submitBtn) { 
+            submitBtn.classList.add('loading'); 
+            submitBtn.disabled = true; 
+        }
+        responseDiv.className = 'response-message';
+
+        // First check if the email is verified
+        checkEmailVerification(targetEmail).then(verified => {
+            if (!verified) {
+                showResponse(`⚠️ Please verify <strong>${targetEmail}</strong> first. Click Verify above.`, 'error');
+                recipientEmail.value = targetEmail;
+                recipientEmail.focus();
+                if (submitBtn) { 
+                    submitBtn.classList.remove('loading'); 
+                    submitBtn.disabled = false; 
+                }
+                return;
+            }
+
+            // Proceed with form submission
+            const formData = new FormData(form);
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('recipient_email', targetEmail);
+
+            // Log what we're sending
+            console.log('Submitting to:', targetEmail);
+
+            fetch('{{ route("playground.submit") }}', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(async r => {
+                const data = await r.json();
+                if (!r.ok) {
+                    throw new Error(data.message || 'Submission failed');
+                }
+                return data;
+            })
+            .then(data => {
+                if (data.success) {
+                    showResponse(`✅ Submission sent to <strong>${targetEmail}</strong>`, 'success');
+                    form.reset();
+                    showToast('Form submitted!');
+                } else {
+                    showResponse(data.message || 'An error occurred.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Submission error:', error);
+                showResponse(error.message || 'Network error. Please try again.', 'error');
+            })
+            .finally(() => {
+                if (submitBtn) { 
+                    submitBtn.classList.remove('loading'); 
+                    submitBtn.disabled = false; 
+                }
+            });
+        });
+    }
+
+    function attachFormHandler() {
+        const forms = formPreview.querySelectorAll('form');
+        forms.forEach(form => {
+            form.removeEventListener('submit', handleSubmit);
+            form.addEventListener('submit', handleSubmit);
+        });
+    }
+
+    /* ============================================================
+       UI Helpers
+    ============================================================ */
+    function showResponse(msg, type) {
+        responseDiv.innerHTML = msg;
+        responseDiv.className = 'response-message show ' + type;
+        if (type === 'success') {
+            setTimeout(() => responseDiv.classList.remove('show'), 5000);
+        }
+    }
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    /* ============================================================
+       Initialize - Check for previously verified email
+    ============================================================ */
+    if (verifiedEmail) {
+        recipientEmail.value = verifiedEmail;
+        checkEmailVerification(verifiedEmail).then(() => {
+            // Update HTML code with verified email
+            updateHtmlCodeWithEmail(verifiedEmail);
+        });
+    }
+
+    // Auto-check when email input loses focus
+    recipientEmail.addEventListener('blur', function() {
+        const email = this.value.trim();
+        if (email && email.includes('@')) {
+            checkEmailVerification(email);
+        }
     });
+
+    // Update the HTML editor default to use the current domain
+    const currentDomain = window.location.origin;
+    const defaultHtml = `<!-- Paste this anywhere — replace YOUR@EMAIL.COM with your verified email -->
+<form action="${currentDomain}/f/YOUR@EMAIL.COM" method="POST" class="preview-form">
+
+    <div class="form-row">
+        <div class="col">
+            <input type="text" name="name" placeholder="Full Name" required>
+        </div>
+        <div class="col">
+            <input type="email" name="email" placeholder="Email Address" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <textarea name="message" placeholder="Your Message" rows="6" required></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit Form</button>
+
+</form>`;
+    
+    if (htmlEditor.value.includes('{{ config')) {
+        htmlEditor.value = defaultHtml;
+    }
+
+    // Add a helper to show that email updates in real-time
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes highlight {
+            0% { background-color: rgba(0, 255, 136, 0.3); }
+            100% { background-color: transparent; }
+        }
+        .email-highlight {
+            animation: highlight 1s ease;
+        }
+    `;
+    document.head.appendChild(style);
+
+    console.log('Playground initialized with auto-email update');
+});
 </script>
 @endpush
