@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test AJAX Submission</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <button id="sendData">Send Data</button>
+
+  <script>
+    document.getElementById("sendData").addEventListener("click", function() {
+      $.ajax({
+        method: 'POST',
+        url: 'http://127.0.0.1:8000/f/f_l63kxxnb',
+        data: JSON.stringify({
+          name: "Sakshi",
+          email: "sakshi@example.com",
+          message: "Hello, posting to my local DB!"
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(response) {
+          console.log("Success:", response);
+          alert("Data posted successfully!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+          alert("Something went wrong: " + error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

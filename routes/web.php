@@ -5,8 +5,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\FormSubmissionController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\PlaygroundController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,30 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/docs', [PageController::class, 'docs'])->name('docs');
 Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
 Route::get('/ajax', [PageController::class, 'ajax'])->name('ajax');
+
+
+/*
+|--------------------------------------------------------------------------
+| Playground Page
+|--------------------------------------------------------------------------
+*/
+// Route::get('/form-playground', [PlaygroundController::class, 'index'])->name('playground.index');
+// Route::post('/form-playground/submit', [PlaygroundController::class, 'submit'])->name('playground.submit');
+
+Route::prefix('playground')->name('playground.')->group(function () {
+
+    // Page
+    Route::get('/', [PlaygroundController::class, 'index'])->name('index');
+
+    // Email verification flow
+    Route::post('/verify-email', [PlaygroundController::class, 'verifyEmail'])->name('verify');
+    Route::get('/confirm-email', [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
+    Route::get('/check-verified', [PlaygroundController::class, 'checkVerified'])->name('check-verified');
+
+    // Form submission
+    Route::post('/submit', [PlaygroundController::class, 'submit'])->name('submit');
+
+});
 
 /*
 |--------------------------------------------------------------------------
