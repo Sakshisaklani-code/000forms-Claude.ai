@@ -41,9 +41,9 @@
             <div class="footer-inner">
                 <div class="nav-logo"><span>000</span>form</div>
                 <ul class="footer-links">
-                    <li><a href="/ajax">ajax</a></li>
-                    <!-- <li><a href="{{ route('pricing') }}">Pricing</a></li>
-                    <li><a href="mailto:support@000form.com">Support</a></li> -->
+                    <li><a href="/ajax">AJAX</a></li>
+                    <li><a href="{{ route('playground.index') }}">Playground</a></li>
+                    <!-- <li><a href="mailto:support@000form.com">Support</a></li> -->
                 </ul>
                 <p class="footer-copy">&copy; {{ date('Y') }} 000form</p>
             </div>

@@ -43,7 +43,7 @@
     width: 240px;
     flex-shrink: 0;
     border-right: 1px solid var(--border);
-    padding: 28px 14px;
+    padding: 6rem 14px;
     position: sticky;
     top: 0;
     height: 100vh;
@@ -118,7 +118,7 @@
   ════════════════════════════════ */
   .ajax-main {
     flex: 1;
-    padding: 32px 30px 80px;
+    padding: 6rem 30px 20px;
     max-width: 880px;
   }
 
