@@ -32,7 +32,7 @@
                                         <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td>
-                                                    <span style="font-size: 13px; font-weight: 600; color: #fafafa;">📬 New Form Submission</span>
+                                                    <span style="font-size: 13px; font-weight: 600; color: #fafafa;">New Form Submission</span>
                                                 </td>
                                                 <td align="right">
                                                     <span style="display: inline-block; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); color: #00ff88; font-size: 11px; font-family: 'Courier New', monospace; padding: 3px 10px; border-radius: 100px;">

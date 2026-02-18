@@ -28,23 +28,16 @@ Route::get('/ajax', [PageController::class, 'ajax'])->name('ajax');
 |--------------------------------------------------------------------------
 */
 Route::prefix('playground')->name('playground.')->group(function () {
-    Route::get('/',                [PlaygroundController::class, 'index'])->name('index');
-    Route::post('/verify-email',   [PlaygroundController::class, 'verifyEmail'])->name('verify');
-    Route::get('/confirm-email',   [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
-    Route::get('/check-verified',  [PlaygroundController::class, 'checkVerified'])->name('check-verified');
-    Route::post('/submit',         [PlaygroundController::class, 'submit'])->name('submit');
+    Route::get('/', [PlaygroundController::class, 'index'])->name('index');
+    Route::post('/verify-email', [PlaygroundController::class, 'verifyEmail'])->name('verify');
+    Route::get('/confirm-email', [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
+    Route::get('/check-verified', [PlaygroundController::class, 'checkVerified'])->name('check-verified');
+    Route::post('/submit', [PlaygroundController::class, 'submit'])->name('submit');
 });
 
-// ============================================================
-// Standalone form endpoint — works exactly like formsubmit.co
-// Usage in any HTML form:
-//   <form action="https://yourapp.com/f/your@email.com" method="POST">
-//
-// Supports:
-//   GET  /f/{email}  → shows activation page if not yet verified
-//   POST /f/{email}  → processes submission & redirects (or JSON)
-// ============================================================
+// Standalone form endpoint
 Route::get('/f/{email}', [PlaygroundController::class, 'formEndpointInfo'])->name('playground.endpoint.info');
+Route::post('/f/{email}', [PlaygroundController::class, 'formEndpoint'])->name('playground.endpoint');
 Route::get('/form-submitted', [PlaygroundController::class, 'formSubmitted'])->name('playground.form.submitted');
 
 /*
