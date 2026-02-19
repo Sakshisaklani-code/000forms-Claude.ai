@@ -95,17 +95,17 @@ Route::get('/verify-email/{token}', [EmailVerificationController::class, 'verify
 */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
-    Route::post('/signup', [AuthController::class, 'signup']);
+    Route::get('/login',           [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login',          [AuthController::class, 'login']);
+    Route::get('/signup',          [AuthController::class, 'showSignup'])->name('signup');
+    Route::post('/signup',         [AuthController::class, 'signup']);
     Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
-    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    Route::post('/forgot-password',[AuthController::class, 'sendResetLink'])->name('password.email');
 });
 
-Route::get('/auth/{provider}', [AuthController::class, 'redirectToProvider'])->name('auth.provider');
+Route::get('/auth/{provider}',          [AuthController::class, 'redirectToProvider'])->name('auth.provider');
 Route::get('/auth/callback/{provider}', [AuthController::class, 'handleCallback'])->name('auth.callback');
-Route::post('/auth/tokens', [AuthController::class, 'processTokens'])->name('auth.tokens');
+Route::post('/auth/tokens',             [AuthController::class, 'processTokens'])->name('auth.tokens');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -127,19 +127,23 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/forms/{id}/export',               [DashboardController::class, 'exportSubmissions'])->name('dashboard.forms.export');
     Route::post('/forms/{id}/resend-verification', [DashboardController::class, 'resendVerification'])->name('dashboard.forms.resend-verification');
 
+    // ── Submissions ──────────────────────────────────────────────────────
     Route::get('/forms/{formId}/submissions/{submissionId}',
         [DashboardController::class, 'showSubmission'])->name('dashboard.submissions.show');
 
-    Route::post('/dashboard/forms/{formId}/submissions/{submissionId}/download',
-        [FormSubmissionController::class, 'downloadFile'])
-        ->name('dashboard.submissions.download')
-        ->middleware(['auth']);
+    // Fixed: removed the erroneous /dashboard prefix inside the already-prefixed group
+    Route::get('/forms/{formId}/submissions/{submissionId}/download',
+        [FormSubmissionController::class, 'downloadFile'])->name('dashboard.submissions.download');
 
     Route::delete('/forms/{formId}/submissions/{submissionId}',
         [DashboardController::class, 'destroySubmission'])->name('dashboard.submissions.destroy');
 
     Route::post('/forms/{formId}/submissions/{submissionId}/spam',
         [DashboardController::class, 'markAsSpam'])->name('dashboard.submissions.spam');
+
+    // ── Archive toggle (archive_when_paused setting) ──────────────────────
+    Route::patch('/forms/{form}/toggle-archive',
+        [FormSubmissionController::class, 'toggleArchive'])->name('dashboard.forms.toggle-archive');
 });
 
 /*
