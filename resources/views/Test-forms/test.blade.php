@@ -3,6 +3,8 @@
   <input type="email" name="email"   placeholder="Your email"   required>
   <textarea name="message" placeholder="Your message"></textarea>
     <!-- Honeypot (spam protection) -->
+     <input type="hidden" name="_subject" value="Testing New submission!">
+     <input type="hidden" name="_blacklist" value="spammy pattern, banned term, phrase, money">
   <input type="text" name="honeypot_Ma35wvTf" style="display:none">
     <button type="submit">Send Message</button>
 </form>

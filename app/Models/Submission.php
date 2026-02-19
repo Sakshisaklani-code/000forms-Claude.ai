@@ -11,11 +11,6 @@ class Submission extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'form_id',
         'data',
@@ -31,21 +26,18 @@ class Submission extends Model
         'read_at',
         'email_sent',
         'email_sent_at',
+        'is_archived',        // ← ADDED
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'data' => 'array',
-        'metadata' => 'array',
-        'is_spam' => 'boolean',
-        'is_read' => 'boolean',
-        'read_at' => 'datetime',
-        'email_sent' => 'boolean',
-        'email_sent_at' => 'datetime',
+        'data'               => 'array',
+        'metadata'           => 'array',
+        'is_spam'            => 'boolean',
+        'is_read'            => 'boolean',
+        'read_at'            => 'datetime',
+        'email_sent'         => 'boolean',
+        'email_sent_at'      => 'datetime',
+        'is_archived'        => 'boolean', // ← ADDED
     ];
 
     /**

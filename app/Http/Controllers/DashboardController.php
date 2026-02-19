@@ -18,19 +18,21 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $user  = Auth::user();
         $forms = $user->forms()
             ->withCount(['submissions as unread_count' => function ($query) {
-                $query->where('is_spam', false)->where('is_read', false);
+                $query->where('is_spam', false)
+                      ->where('is_archived', false)
+                      ->where('is_read', false);
             }])
             ->orderBy('created_at', 'desc')
             ->get();
 
         $stats = [
-            'total_forms' => $forms->count(),
+            'total_forms'       => $forms->count(),
             'total_submissions' => $forms->sum('submission_count'),
-            'total_unread' => $forms->sum('unread_count'),
-            'forms_this_month' => $user->forms()
+            'total_unread'      => $forms->sum('unread_count'),
+            'forms_this_month'  => $user->forms()
                 ->where('created_at', '>=', now()->startOfMonth())
                 ->count(),
         ];
@@ -50,18 +52,18 @@ class DashboardController extends Controller
             ->orderBy('date')
             ->get()
             ->keyBy('date');
-        
+
         $chartData = [];
         for ($i = 29; $i >= 0; $i--) {
-            $date = now()->subDays($i);
+            $date    = now()->subDays($i);
             $dateKey = $date->format('Y-m-d');
-            
+
             $chartData[] = [
                 'label' => $date->format('M j'),
                 'count' => $formsGrouped->get($dateKey)?->count ?? 0,
             ];
         }
-        
+
         return $chartData;
     }
 
@@ -79,40 +81,37 @@ class DashboardController extends Controller
     public function storeForm(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'recipient_email' => 'required|email|max:255',
-            'cc_emails' => 'nullable|string|max:500',
-            'redirect_url' => 'nullable|url|max:500',
-            'success_message' => 'nullable|string|max:500',
+            'name'                  => 'required|string|max:255',
+            'recipient_email'       => 'required|email|max:255',
+            'cc_emails'             => 'nullable|string|max:500',
+            'redirect_url'          => 'nullable|url|max:500',
+            'success_message'       => 'nullable|string|max:500',
             'auto_response_enabled' => 'boolean',
             'auto_response_message' => 'nullable|string',
         ]);
 
-        // Process CC emails
         $ccEmails = null;
         if ($request->filled('cc_emails')) {
             $ccEmails = array_map('trim', explode(',', $request->input('cc_emails')));
-            $ccEmails = array_filter($ccEmails, function($email) {
-                return filter_var($email, FILTER_VALIDATE_EMAIL);
-            });
+            $ccEmails = array_filter($ccEmails, fn($e) => filter_var($e, FILTER_VALIDATE_EMAIL));
             $ccEmails = array_values($ccEmails);
         }
 
         $form = Auth::user()->forms()->create([
-            'name' => $request->input('name'),
-            'recipient_email' => $request->input('recipient_email'),
-            'cc_emails' => $ccEmails,
-            'redirect_url' => $request->input('redirect_url'),
-            'success_message' => $request->input('success_message', 'Thank you for your submission!'),
+            'name'                  => $request->input('name'),
+            'recipient_email'       => $request->input('recipient_email'),
+            'cc_emails'             => $ccEmails,
+            'redirect_url'          => $request->input('redirect_url'),
+            'success_message'       => $request->input('success_message', 'Thank you for your submission!'),
             'auto_response_enabled' => $request->boolean('auto_response_enabled'),
             'auto_response_message' => $request->input('auto_response_message'),
-            'email_notifications' => true,
-            'store_submissions' => true,
-            'honeypot_enabled' => true,
-            'status' => 'active',
+            'email_notifications'   => true,
+            'store_submissions'     => true,
+            'honeypot_enabled'      => true,
+            'status'                => 'active',
+            'archive_when_paused'   => true,   // default ON
         ]);
 
-        // Send verification email
         $this->sendVerificationEmail($form);
 
         return redirect()->route('dashboard.forms.show', $form->id)
@@ -121,40 +120,81 @@ class DashboardController extends Controller
 
     /**
      * Show form details with filtered/tabbed submissions.
+     *
+     * Tab logic:
+     *   inbox   → is_archived = false  AND  is_spam = false
+     *   spam    → is_archived = false  AND  is_spam = true
+     *   archive → is_archived = true   (regardless of is_spam)
+     *
+     * Paused-form submissions are stored with is_archived = true, so they
+     * will NEVER appear in inbox or spam — only in the archive tab.
      */
+/**
+ * Show form details with filtered/tabbed submissions.
+ *
+ * Tab logic:
+ *   inbox   → is_archived = false  AND  is_spam = false
+ *   spam    → is_archived = false  AND  is_spam = true
+ *   archive → is_archived = true   (regardless of is_spam)
+ *
+ * Paused-form submissions are stored with is_archived = true, so they
+ * will NEVER appear in inbox or spam — only in the archive tab.
+ */
     public function showForm(string $id)
     {
-        $form = Auth::user()->forms()->findOrFail($id);
-
+        $form   = Auth::user()->forms()->findOrFail($id);
         $tab    = request('tab', 'valid');
         $search = trim(request('search', ''));
         $panel  = request('panel', 'submissions');
 
-        $submissions = $form->submissions()
-            ->when($tab === 'spam',  fn($q) => $q->where('is_spam', true))
-            ->when($tab === 'valid', fn($q) => $q->where('is_spam', false))
-            ->when($search !== '', function ($q) use ($search) {
-                $lower = '%' . strtolower($search) . '%';
-                $q->where(function ($query) use ($lower) {
-                    // PostgreSQL JSONB operators
-                    $query->whereRaw("LOWER(data->>'name')    LIKE ?", [$lower])
-                        ->orWhereRaw("LOWER(data->>'email')   LIKE ?", [$lower])
-                        ->orWhereRaw("LOWER(data->>'message') LIKE ?", [$lower])
-                        ->orWhereRaw("LOWER(data->>'phone')   LIKE ?", [$lower])
-                        // Fallback: search entire JSON as text (catches any field)
-                        ->orWhereRaw("LOWER(data::text) LIKE ?", [$lower]);
-                });
-            })
-            ->latest()
-            ->paginate(10)
-            ->withQueryString();
+        // ── Build base query per tab ────────────────────────────────────────
+        $baseQuery = $form->submissions();
 
-        // Tab counts — unaffected by search
-        $validCount = $form->submissions()->where('is_spam', false)->count();
-        $spamCount  = $form->submissions()->where('is_spam', true)->count();
+        if ($tab === 'archive') {
+            // Archive: only is_archived = true
+            $baseQuery->where('is_archived', true);
+        } elseif ($tab === 'spam') {
+            // Spam: not archived, marked as spam
+            $baseQuery->where('is_archived', false)
+                    ->where('is_spam', true);
+        } else {
+            // Inbox (default): not archived, not spam
+            $baseQuery->where('is_archived', false)
+                    ->where('is_spam', false);
+        }
 
-        // Line Chart — last 7 days
+        // ── Search (inbox & spam only — archive has no search) ──────────────
+        if ($search !== '' && $tab !== 'archive') {
+            $lower = '%' . strtolower($search) . '%';
+            $baseQuery->where(function ($q) use ($lower) {
+                $q->whereRaw("LOWER(data->>'name')    LIKE ?", [$lower])
+                ->orWhereRaw("LOWER(data->>'email')   LIKE ?", [$lower])
+                ->orWhereRaw("LOWER(data->>'message') LIKE ?", [$lower])
+                ->orWhereRaw("LOWER(data->>'phone')   LIKE ?", [$lower])
+                ->orWhereRaw("LOWER(data::text) LIKE ?",       [$lower]);
+            });
+        }
+
+        $submissions = $baseQuery->latest()->paginate(10)->withQueryString();
+
+        // ── Tab counts — each scoped correctly, unaffected by search ────────
+        $validCount   = $form->submissions()
+                            ->where('is_archived', false)
+                            ->where('is_spam', false)
+                            ->count();
+
+        $spamCount    = $form->submissions()
+                            ->where('is_archived', false)
+                            ->where('is_spam', true)
+                            ->count();
+
+        $archiveCount = $form->submissions()
+                            ->where('is_archived', true)
+                            ->count();
+
+        // ── Line chart — valid submissions last 7 days ───────────────────────
         $dailySubmissions = $form->submissions()
+            ->where('is_archived', false)
             ->where('is_spam', false)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->where('created_at', '>=', now()->subDays(7))
@@ -170,12 +210,28 @@ class DashboardController extends Controller
             $lineData[]   = $dailySubmissions->firstWhere('date', $date)->count ?? 0;
         }
 
+        // ── Archive trend line — last 7 days ─────────────────────────────────
+        $dailyArchived = $form->submissions()
+            ->where('is_archived', true)
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->where('created_at', '>=', now()->subDays(7))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $archiveLineData = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date              = now()->subDays($i)->format('Y-m-d');
+            $archiveLineData[] = $dailyArchived->firstWhere('date', $date)->count ?? 0;
+        }
+
         return view('dashboard.forms.show', compact(
-            'form', 'submissions', 'validCount', 'spamCount',
-            'lineLabels', 'lineData', 'tab', 'search', 'panel'
+            'form', 'submissions', 'validCount', 'spamCount', 'archiveCount',
+            'lineLabels', 'lineData', 'archiveLineData',
+            'tab', 'search', 'panel'
         ));
     }
-    
+
     /**
      * Show form settings.
      */
@@ -193,54 +249,47 @@ class DashboardController extends Controller
         $form = Auth::user()->forms()->findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'recipient_email' => 'required|email|max:255',
-            'cc_emails' => 'nullable|string|max:500',
-            'redirect_url' => 'nullable|url|max:500',
-            'success_message' => 'nullable|string|max:500',
-            'status' => 'required|in:active,paused',
-            'honeypot_enabled' => 'boolean',
-            'email_notifications' => 'boolean',
-            'store_submissions' => 'boolean',
+            'name'                  => 'required|string|max:255',
+            'recipient_email'       => 'required|email|max:255',
+            'cc_emails'             => 'nullable|string|max:500',
+            'redirect_url'          => 'nullable|url|max:500',
+            'success_message'       => 'nullable|string|max:500',
+            'status'                => 'required|in:active,paused',
+            'honeypot_enabled'      => 'boolean',
+            'email_notifications'   => 'boolean',
+            'store_submissions'     => 'boolean',
             'auto_response_enabled' => 'boolean',
             'auto_response_message' => 'nullable|string',
         ]);
 
-        // Process CC emails
         $ccEmails = null;
         if ($request->filled('cc_emails')) {
             $ccEmails = array_map('trim', explode(',', $request->input('cc_emails')));
-            $ccEmails = array_filter($ccEmails, function($email) {
-                return filter_var($email, FILTER_VALIDATE_EMAIL);
-            });
+            $ccEmails = array_filter($ccEmails, fn($e) => filter_var($e, FILTER_VALIDATE_EMAIL));
             $ccEmails = array_values($ccEmails);
         }
 
-        // Check if email changed
         $emailChanged = $form->recipient_email !== $request->input('recipient_email');
 
         $form->update([
-            'name' => $request->input('name'),
-            'recipient_email' => $request->input('recipient_email'),
-            'cc_emails' => $ccEmails,
-            'redirect_url' => $request->input('redirect_url'),
-            'success_message' => $request->input('success_message', 'Thank you for your submission!'),
-            'status' => $request->input('status'),
-            'honeypot_enabled' => $request->boolean('honeypot_enabled'),
-            'email_notifications' => $request->boolean('email_notifications'),
-            'store_submissions' => $request->boolean('store_submissions'),
+            'name'                  => $request->input('name'),
+            'recipient_email'       => $request->input('recipient_email'),
+            'cc_emails'             => $ccEmails,
+            'redirect_url'          => $request->input('redirect_url'),
+            'success_message'       => $request->input('success_message', 'Thank you for your submission!'),
+            'status'                => $request->input('status'),
+            'honeypot_enabled'      => $request->boolean('honeypot_enabled'),
+            'email_notifications'   => $request->boolean('email_notifications'),
+            'store_submissions'     => $request->boolean('store_submissions'),
             'auto_response_enabled' => $request->boolean('auto_response_enabled'),
             'auto_response_message' => $request->input('auto_response_message'),
-            'email_verified' => $emailChanged ? false : $form->email_verified,
+            'email_verified'        => $emailChanged ? false : $form->email_verified,
         ]);
 
-        // Resend verification if email changed
         if ($emailChanged) {
-            $form->update([
-                'email_verification_token' => Str::random(64),
-            ]);
+            $form->update(['email_verification_token' => Str::random(64)]);
             $this->sendVerificationEmail($form);
-            
+
             return redirect()->route('dashboard.forms.show', $form->id)
                 ->with('message', 'Form updated! Please verify the new email address.');
         }
@@ -257,8 +306,7 @@ class DashboardController extends Controller
         $form = Auth::user()->forms()->findOrFail($id);
         $form->delete();
 
-        return redirect()->route('dashboard')
-            ->with('message', 'Form deleted.');
+        return redirect()->route('dashboard')->with('message', 'Form deleted.');
     }
 
     /**
@@ -266,11 +314,13 @@ class DashboardController extends Controller
      */
     public function showSubmission(string $formId, string $submissionId)
     {
-        $form = Auth::user()->forms()->findOrFail($formId);
+        $form       = Auth::user()->forms()->findOrFail($formId);
         $submission = $form->submissions()->findOrFail($submissionId);
 
-        // Mark as read
-        $submission->markAsRead();
+        // Only mark as read if it's a normal inbox submission
+        if (!$submission->is_archived && !$submission->is_spam) {
+            $submission->markAsRead();
+        }
 
         return view('dashboard.submissions.show', compact('form', 'submission'));
     }
@@ -280,7 +330,7 @@ class DashboardController extends Controller
      */
     public function destroySubmission(string $formId, string $submissionId)
     {
-        $form = Auth::user()->forms()->findOrFail($formId);
+        $form       = Auth::user()->forms()->findOrFail($formId);
         $submission = $form->submissions()->findOrFail($submissionId);
         $submission->delete();
 
@@ -293,7 +343,7 @@ class DashboardController extends Controller
      */
     public function markAsSpam(string $formId, string $submissionId)
     {
-        $form = Auth::user()->forms()->findOrFail($formId);
+        $form       = Auth::user()->forms()->findOrFail($formId);
         $submission = $form->submissions()->findOrFail($submissionId);
         $submission->markAsSpam('Marked by user');
 
@@ -301,12 +351,13 @@ class DashboardController extends Controller
     }
 
     /**
-     * Export submissions as CSV.
+     * Export submissions as CSV (inbox only — excludes spam and archived).
      */
     public function exportSubmissions(string $id)
     {
-        $form = Auth::user()->forms()->findOrFail($id);
+        $form        = Auth::user()->forms()->findOrFail($id);
         $submissions = $form->submissions()
+            ->where('is_archived', false)
             ->where('is_spam', false)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -318,13 +369,10 @@ class DashboardController extends Controller
         }
         $fields = array_unique($fields);
 
-        // Build CSV
         $csv = fopen('php://temp', 'r+');
-        
-        // Header row
+
         fputcsv($csv, array_merge(['Submitted At', 'IP Address'], $fields));
 
-        // Data rows
         foreach ($submissions as $submission) {
             $row = [
                 $submission->created_at->toDateTimeString(),
@@ -332,12 +380,9 @@ class DashboardController extends Controller
             ];
             foreach ($fields as $field) {
                 $value = $submission->data[$field] ?? '';
-                
-                // Convert arrays to comma-separated strings
                 if (is_array($value)) {
                     $value = implode(', ', $value);
                 }
-                
                 $row[] = $value;
             }
             fputcsv($csv, $row);
@@ -365,11 +410,7 @@ class DashboardController extends Controller
             return back()->with('message', 'Email is already verified.');
         }
 
-        // Generate new token
-        $form->update([
-            'email_verification_token' => Str::random(64),
-        ]);
-
+        $form->update(['email_verification_token' => Str::random(64)]);
         $this->sendVerificationEmail($form);
 
         return back()->with('message', 'Verification email sent.');

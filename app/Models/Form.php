@@ -38,19 +38,21 @@ class Form extends Model
         'last_submission_at',
         'allowed_domains',
         'metadata',
+        'archive_when_paused', // ← ADDED
     ];
 
     protected $casts = [
-        'email_verified' => 'boolean',
-        'email_verified_at' => 'datetime',
-        'honeypot_enabled' => 'boolean',
-        'email_notifications' => 'boolean',
-        'store_submissions' => 'boolean',
-        'last_submission_at' => 'datetime',
+        'email_verified'        => 'boolean',
+        'email_verified_at'     => 'datetime',
+        'honeypot_enabled'      => 'boolean',
+        'email_notifications'   => 'boolean',
+        'store_submissions'     => 'boolean',
+        'last_submission_at'    => 'datetime',
         'auto_response_enabled' => 'boolean',
-        'allowed_domains' => 'array',
-        'metadata' => 'array',
-        'cc_emails' => 'array',
+        'allowed_domains'       => 'array',
+        'metadata'              => 'array',
+        'cc_emails'             => 'array',
+        'archive_when_paused'   => 'boolean', // ← ADDED
     ];
 
     protected static function boot()
