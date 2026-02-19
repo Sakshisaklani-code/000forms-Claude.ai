@@ -17,7 +17,7 @@
         <div class="nav-inner">
             <a href="/" class="nav-logo"><span>000</span>form</a>
             <ul class="nav-links">
-                <li><a href="<?php echo e(route('docs')); ?>" style="color: var(--accent);">Documentation</a></li>
+                <li><a href="<?php echo e(route('docs')); ?>">Documentation</a></li>
                 <li><a href="<?php echo e(route('pricing')); ?>">Pricing</a></li>
                 <li><a href="<?php echo e(route('Home.library')); ?>">Library</a></li>
             </ul>

@@ -28,56 +28,52 @@ Route::get('/ajax', [PageController::class, 'ajax'])->name('ajax');
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('playground')->name('playground.')->group(function () {
-    Route::get('/',               [PlaygroundController::class, 'index'])->name('index');
-    Route::post('/verify-email',  [PlaygroundController::class, 'verifyEmail'])->name('verify');
-    Route::get('/confirm-email',  [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
-    Route::get('/check-verified', [PlaygroundController::class, 'checkVerified'])->name('check-verified');
-    Route::post('/submit',        [PlaygroundController::class, 'submit'])->name('submit');
-});
-
-Route::get('/form-submitted', [PlaygroundController::class, 'formSubmitted'])
-    ->name('playground.form.submitted');
-
-/*
-|--------------------------------------------------------------------------
-| Form Endpoints — all CSRF exempt
-|
-| HOW ROUTING WORKS:
-|   Laravel matches routes top to bottom within the group.
-|   We use ->where() with a regex that checks for '@' to split:
-|     - Contains '@'  → email address → FormEndpointController (playground)
-|     - No '@'        → slug          → FormSubmissionController (dashboard forms)
-|
-|   NOTE: Laravel strips ^ and $ anchors in route where() — so we use
-|   a positive lookahead pattern that works without anchors:
-|   Email pattern:  '.+@.+'   (must contain @)
-|   Slug  pattern:  '[^@]+'   (must NOT contain @)
-|--------------------------------------------------------------------------
-*/
-
 Route::withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])->group(function () {
 
     // ── Email-based: /f/you@example.com ─────────────────────────────────
-    // Matches ONLY when segment contains '@'
+    // GET request - Show form endpoint info page (for playground)
     Route::get('/f/{email}', [PlaygroundController::class, 'formEndpointInfo'])
         ->name('playground.endpoint.info')
         ->where('email', '.+@.+');
 
-    Route::post('/f/{email}', [FormEndpointController::class, 'handle'])
-        ->name('playground.endpoint')
+    // POST request - Handle form submission to email endpoint (playground submission)
+    Route::post('/f/{email}', [PlaygroundController::class, 'handleEmailSubmission'])
+        ->name('playground.endpoint.submit')
         ->where('email', '.+@.+');
 
     // ── Slug-based: /f/my-contact-form ──────────────────────────────────
-    // Matches ONLY when segment has NO '@' — dashboard forms, completely unchanged
-    Route::match(['get', 'post'], '/f/{slug}', [FormSubmissionController::class, 'submit'])
+    // GET request - Show form (if you want to display the form)
+    Route::get('/f/{slug}', [FormSubmissionController::class, 'show'])
+        ->name('form.show')
+        ->where('slug', '[^@]+');
+
+    // POST request - Handle form submission (dashboard forms)
+    Route::post('/f/{slug}', [FormSubmissionController::class, 'submit'])
         ->name('form.submit')
         ->where('slug', '[^@]+');
 
+    // File upload endpoint for dashboard forms
     Route::post('/f/{slug}/upload', [FormSubmissionController::class, 'upload'])
         ->where('slug', '[^@]+');
-
 });
+
+/*
+|--------------------------------------------------------------------------
+| Playground Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('playground')->name('playground.')->group(function () {
+    Route::get('/', [PlaygroundController::class, 'index'])->name('index');
+    Route::post('/verify-email', [PlaygroundController::class, 'verifyEmail'])->name('verify');
+    Route::get('/confirm-email', [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
+    Route::get('/check-verified', [PlaygroundController::class, 'checkVerified'])->name('check-verified');
+    Route::post('/submit', [PlaygroundController::class, 'submit'])->name('submit');
+});
+
+// Form submitted thank you page
+Route::get('/form-submitted', [PlaygroundController::class, 'formSubmitted'])
+    ->name('playground.form.submitted');
 
 /*
 |--------------------------------------------------------------------------

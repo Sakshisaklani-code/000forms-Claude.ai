@@ -17,7 +17,7 @@
         <div class="nav-inner">
             <a href="/" class="nav-logo"><span>000</span>form</a>
             <ul class="nav-links">
-                <li><a href="{{ route('docs') }}" style="color: var(--accent);">Documentation</a></li>
+                <li><a href="{{ route('docs') }}">Documentation</a></li>
                 <li><a href="{{ route('pricing') }}">Pricing</a></li>
                 <li><a href="{{ route('Home.library') }}">Library</a></li>
             </ul>
