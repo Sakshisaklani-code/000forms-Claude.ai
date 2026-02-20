@@ -28,7 +28,7 @@
     .docs-nav-label:first-child { margin-top: 0; }
     .docs-nav a {
         display: flex; align-items: center; gap: 0.55rem;
-        padding: 0.38rem 1.25rem; font-size: 13.5px; color: #666;
+        padding: 0.38rem 1.25rem; font-size: 18px; color: #666;
         text-decoration: none; transition: color 0.15s;
         border-left: 2px solid transparent; margin-left: -1px;
     }
@@ -191,7 +191,7 @@
     }
 
     /* ── CTA ── */
-    .docs-cta { text-align: center; padding: 3rem 0 1rem; }
+    .docs-cta { text-align: center;}
     .docs-cta p { color: #555; font-size: 14.5px; margin-bottom: 1rem; }
 
     @media (max-width: 860px) {
@@ -202,11 +202,11 @@
 </style>
 
 <div class="docs-wrap">
-    <div class="container" style="max-width: 1100px;">
+    <div class="container">
 
         <div style="margin-bottom: 2.5rem;">
-            <h1 style="font-size: 2.1rem; font-weight: 700; margin-bottom: 0.4rem; color: #f0f0f0;">Documentation</h1>
-            <p style="color: #555; font-size: 15.5px;">
+            <h1>Documentation</h1>
+            <p>
                 Everything you need to add 000form to your website.
                 <a href="<?php echo e(route('playground.index')); ?>" style="color:#00ff88;text-decoration:none;margin-left:0.5rem;">
                     <i class="bi bi-play-circle"></i> Try it in the Playground &rarr;

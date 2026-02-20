@@ -224,9 +224,20 @@
                     </p>
                     <ul class="attachment-list">
                         <?php $__currentLoopData = $attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
+                                $fileName = $attachment['name'] ?? 'file';
+                                $fileSize = isset($attachment['size']) ? number_format($attachment['size'] / 1024, 1) . ' KB' : '';
+                                $mimeType = $attachment['type'] ?? '';
+                                $isImage  = str_starts_with($mimeType, 'image/');
+                                $fileUrl  = isset($attachment['path'])
+                                    ? rtrim(config('app.url'), '/') . '/storage/' . ltrim($attachment['path'], '/')
+                                    : null;
+                            ?>
                             <li>
-                                <span class="file-name"><?php echo e($attachment['name']); ?></span>
-                                <span class="file-meta">(<?php echo e($attachment['size']); ?>)</span>
+                                <span class="file-name"><?php echo e($fileName); ?></span>
+                                <?php if($fileSize): ?>
+                                    <span class="file-meta">(<?php echo e($fileSize); ?>)</span>
+                                <?php endif; ?>
                             </li>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
