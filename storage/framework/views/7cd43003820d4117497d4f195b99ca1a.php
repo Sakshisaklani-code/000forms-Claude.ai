@@ -522,7 +522,7 @@
                         </div>
                         <div class="note-box">
                             <i class="bi bi-info-circle-fill"></i>
-                            <span>Upper and lower case don't matter &mdash; <strong>BUY NOW</strong>, <strong>buy now</strong>, and <strong>Buy Now</strong> are all caught. Only the user's fields are checked, not the blacklist field itself.</span>
+                            <span>Upper and lower case don't matter &mdash; <strong>BUY NOW</strong>, <strong>buy now</strong>, and <strong>Buy Now</strong> are all caught.</span>
                         </div>
                     </div>
                 </div>
