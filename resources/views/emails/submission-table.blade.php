@@ -223,9 +223,20 @@
                     </p>
                     <ul class="attachment-list">
                         @foreach($attachments as $attachment)
+                            @php
+                                $fileName = $attachment['name'] ?? 'file';
+                                $fileSize = isset($attachment['size']) ? number_format($attachment['size'] / 1024, 1) . ' KB' : '';
+                                $mimeType = $attachment['type'] ?? '';
+                                $isImage  = str_starts_with($mimeType, 'image/');
+                                $fileUrl  = isset($attachment['path'])
+                                    ? rtrim(config('app.url'), '/') . '/storage/' . ltrim($attachment['path'], '/')
+                                    : null;
+                            @endphp
                             <li>
-                                <span class="file-name">{{ $attachment['name'] }}</span>
-                                <span class="file-meta">({{ $attachment['size'] }})</span>
+                                <span class="file-name">{{ $fileName }}</span>
+                                @if($fileSize)
+                                    <span class="file-meta">({{ $fileSize }})</span>
+                                @endif
                             </li>
                         @endforeach
                     </ul>

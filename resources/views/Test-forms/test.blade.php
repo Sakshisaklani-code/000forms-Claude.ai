@@ -6,5 +6,6 @@
      <input type="hidden" name="_subject" value="Testing New submission!">
      <input type="hidden" name="_blacklist" value="spammy pattern, banned term, phrase, money">
   <input type="text" name="honeypot_Ma35wvTf" style="display:none">
+  <input type="hidden" name="_template" value="box">
     <button type="submit">Send Message</button>
 </form>

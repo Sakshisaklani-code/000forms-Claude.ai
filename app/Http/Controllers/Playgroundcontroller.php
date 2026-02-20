@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Mail\PlaygroundFormSubmissionMail;
 use App\Mail\PlaygroundVerificationMail;
@@ -15,16 +16,25 @@ use App\Models\Submission;
 
 class PlaygroundController extends Controller
 {
+    /**
+     * Show the playground page
+     */
     public function index()
     {
         return view('pages.playground');
     }
 
+    /**
+     * Show form submitted thank you page
+     */
     public function formSubmitted()
     {
         return view('pages.form-submitted');
     }
 
+    /**
+     * Show form endpoint info page
+     */
     public function formEndpointInfo(string $email)
     {
         $email    = strtolower(trim($email));
@@ -35,6 +45,9 @@ class PlaygroundController extends Controller
         return view('pages.form-endpoint-info', compact('email', 'verified'));
     }
 
+    /**
+     * Send verification email
+     */
     public function verifyEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -62,6 +75,10 @@ class PlaygroundController extends Controller
         return response()->json(['success' => true, 'message' => 'Verification email sent.']);
     }
 
+    /**
+     * Confirm email verification
+     * FIX: Changed cache TTL from 7 days to FOREVER — verified emails never expire
+     */
     public function confirmEmail(Request $request)
     {
         $email    = strtolower(trim($request->query('email', '')));
@@ -77,7 +94,8 @@ class PlaygroundController extends Controller
             ]);
         }
 
-        Cache::put($cacheKey, array_merge($data, ['verified' => true]), now()->addDays(7));
+        // FIX: Use forever() so verified email never expires and form never stops accepting submissions
+        Cache::forever($cacheKey, array_merge($data, ['verified' => true]));
         Log::info('Playground: email verified', ['email' => $email]);
 
         return view('pages.playground-verify-result', [
@@ -87,6 +105,9 @@ class PlaygroundController extends Controller
         ]);
     }
 
+    /**
+     * Check if email is verified
+     */
     public function checkVerified(Request $request)
     {
         $email    = strtolower(trim($request->query('email', '')));
@@ -98,11 +119,139 @@ class PlaygroundController extends Controller
         ]);
     }
 
+    /**
+     * Handle form submission to email endpoint (from external forms)
+     */
+    public function handleEmailSubmission(Request $request, string $email)
+    {
+        $email = strtolower(trim($email));
+
+        Log::info('Playground email submission received', [
+            'email'    => $email,
+            'ip'       => $request->ip(),
+            'method'   => $request->method(),
+            'has_files' => count($request->allFiles()) > 0 ? 'yes' : 'no',
+        ]);
+
+        // Check if email is verified
+        $cacheKey = 'playground_verify_' . md5($email);
+        $data     = Cache::get($cacheKey);
+
+        if (!$data || empty($data['verified'])) {
+            Log::warning('Playground: submission to unverified email', ['email' => $email]);
+
+            if ($request->wantsJson() || $request->input('_format') === 'json') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Email not verified. Please verify your email first.',
+                ], 403);
+            }
+
+            return redirect()->route('playground.endpoint.info', ['email' => $email])
+                ->with('error', 'Please verify your email first.');
+        }
+
+        try {
+            $specialFieldKeys = [
+                '_subject', '_replyto', '_next', '_cc', '_bcc',
+                '_template', '_format', '_blacklist', '_auto-response',
+                '_auto-reponse', // typo variant — normalized below
+                '_honeypot', '_gotcha', '_form_load_time',
+            ];
+
+            $allData        = $request->except(['_token']);
+            $submissionData = [];
+            $specialData    = [];
+
+            foreach ($allData as $key => $value) {
+                if (in_array($key, $specialFieldKeys)) {
+                    // Normalize typo _auto-reponse → _auto-response
+                    $normalizedKey = ($key === '_auto-reponse') ? '_auto-response' : $key;
+                    $specialData[$normalizedKey] = $value;
+                } elseif (!$request->hasFile($key)) {
+                    $submissionData[$key] = $value;
+                }
+            }
+
+            // Blacklist check — if any field value contains a banned word, block the admin email
+            // but still send auto-response to the user if _auto-response is set
+            if (!empty($specialData['_blacklist'])) {
+                if ($this->handleBlacklist($specialData['_blacklist'], $request, $submissionData)) {
+                    $senderEmail = $request->input('email') ?? $request->input('sender_email') ?? '';
+                    if (!empty($specialData['_auto-response']) && !empty($senderEmail)) {
+                        $blockedFormData = ['name' => $request->input('name') ?? 'Visitor', 'sender_email' => $senderEmail, 'form_name' => 'Playground Form'];
+                        $this->sendAutoResponse($senderEmail, $blockedFormData, $specialData);
+                    }
+                    return $this->handleResponse($request, $specialData, $email);
+                }
+            }
+
+            // Process file uploads
+            [$uploadedFiles, $uploadMetadata, $attachments, $fileError] = $this->processFileUploads(
+                $request,
+                'playground/temp/' . date('Y/m/d')
+            );
+
+            if ($fileError) {
+                if ($request->wantsJson() || $request->input('_format') === 'json') {
+                    return response()->json(['success' => false, 'message' => $fileError], 422);
+                }
+                return redirect()->back()->with('error', $fileError)->withInput();
+            }
+
+            $formData = $this->buildFormData($request, $email, 'Playground Form', $submissionData, $specialData, $uploadMetadata);
+
+            $this->sendFormSubmissionEmail($email, $formData, $attachments, $specialData);
+
+            // Handle auto-response
+            if (!empty($specialData['_auto-response']) && !empty($formData['sender_email'])) {
+                $this->sendAutoResponse($formData['sender_email'], $formData, $specialData);
+            }
+
+            Log::info('Playground email submission sent', [
+                'recipient'     => $email,
+                'attachments'   => count($attachments),
+                'special_fields' => array_keys($specialData),
+            ]);
+
+            // Clean up temp files
+            $this->cleanupFiles($uploadedFiles);
+            $this->cleanupTempDirectories();
+
+            return $this->handleResponse($request, $specialData, $email);
+
+        } catch (\Exception $e) {
+            Log::error('Playground email submission failed: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            if ($request->wantsJson() || $request->input('_format') === 'json') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to submit form. Please try again.',
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Failed to submit form. Please try again.')
+                ->withInput();
+        }
+    }
+
+    /**
+     * Main submit method - routes to appropriate handler
+     */
     public function submit(Request $request)
     {
-        // Check if this is a playground submission or external form submission
+        Log::info('Playground submit called', [
+            'has_recipient_email' => $request->has('recipient_email'),
+            'has_form_slug'       => $request->has('form_slug'),
+            'method'              => $request->method(),
+            'url'                 => $request->fullUrl(),
+        ]);
+
         $isPlaygroundSubmission = $request->has('recipient_email') && !$request->has('form_slug');
-        
+
         if ($isPlaygroundSubmission) {
             return $this->handlePlaygroundSubmission($request);
         } else {
@@ -139,47 +288,124 @@ class PlaygroundController extends Controller
         }
 
         try {
-            $skip        = ['recipient_email', '_token', '_method'];
-            $extraFields = [];
-            foreach ($request->except($skip) as $key => $value) {
-                if (!str_starts_with($key, '_')) {
-                    $extraFields[$key] = $value;
-                }
-            }
+            Log::info('Playground submission data', [
+                'all_input'    => $request->except(['_token']),
+                'all_files'    => array_keys($request->allFiles()),
+                'recipient'    => $recipientEmail,
+                'method'       => $request->method(),
+                'content_type' => $request->header('Content-Type'),
+            ]);
 
-            $formData = [
-                'name'            => $request->input('name') ?? $request->input('full_name') ?? 'Anonymous',
-                'sender_email'    => $request->input('email') ?? $request->input('sender_email') ?? '',
-                'message'         => $request->input('message') ?? $request->input('body') ?? json_encode($extraFields),
-                'recipient_email' => $recipientEmail,
-                'submitted_at'    => now()->format('Y-m-d H:i:s'),
-                'app_url'         => config('app.url'),
-                'extra_fields'    => array_filter($extraFields, fn($k) => !in_array($k, ['name', 'full_name', 'email', 'message', 'body']), ARRAY_FILTER_USE_KEY),
+            $specialFieldKeys = [
+                '_subject', '_replyto', '_next', '_cc', '_bcc',
+                '_template', '_format', '_blacklist', '_auto-response',
+                '_auto-reponse', // typo variant — normalized below
             ];
 
-            $attachments = [];
-            foreach ($request->allFiles() as $files) {
-                foreach ((array) $files as $file) {
-                    if ($file && $file->isValid()) {
-                        $attachments[] = [
-                            'file' => $file->path(),
-                            'name' => $file->getClientOriginalName(),
-                            'mime' => $file->getMimeType(),
-                        ];
-                    }
+            $allData        = $request->except(['recipient_email', '_token', '_method']);
+            $submissionData = [];
+            $specialData    = [];
+
+            foreach ($allData as $key => $value) {
+                if (in_array($key, $specialFieldKeys)) {
+                    // Normalize typo _auto-reponse → _auto-response
+                    $normalizedKey = ($key === '_auto-reponse') ? '_auto-response' : $key;
+                    $specialData[$normalizedKey] = $value;
+                    Log::info('Special field found', ['key' => $normalizedKey, 'original_key' => $key, 'value' => $value]);
+                } elseif (!$request->hasFile($key)) {
+                    $submissionData[$key] = $value;
                 }
             }
 
-            Mail::to($recipientEmail)->send(new PlaygroundFormSubmissionMail($formData, $attachments));
-            Log::info('Playground: submission sent', ['recipient' => $recipientEmail]);
+            // Blacklist check — if any field value contains a banned word, block the admin email
+            // but still send auto-response to the user if _auto-response is set
+            if (!empty($specialData['_blacklist'])) {
+                if ($this->handleBlacklist($specialData['_blacklist'], $request, $submissionData)) {
+                    $senderEmail = $request->input('email') ?? $request->input('sender_email') ?? '';
+                    if (!empty($specialData['_auto-response']) && !empty($senderEmail)) {
+                        $blockedFormData = ['name' => $request->input('name') ?? 'Visitor', 'sender_email' => $senderEmail, 'form_name' => 'Playground Form'];
+                        $this->sendAutoResponse($senderEmail, $blockedFormData, $specialData);
+                    }
+                    return response()->json(['success' => true, 'message' => '✅ Message sent successfully!']);
+                }
+            }
 
-            return response()->json(['success' => true, 'message' => '✅ Message sent successfully!']);
+            // FIX: Unified file processing method handles upload, uploads[], and any custom field names
+            [$uploadedFiles, $uploadMetadata, $attachments, $fileError] = $this->processFileUploads(
+                $request,
+                'playground/temp/' . date('Y/m/d')
+            );
+
+            if ($fileError) {
+                Log::warning('File upload error', ['error' => $fileError]);
+                return response()->json(['success' => false, 'message' => $fileError], 422);
+            }
+
+            $formData = $this->buildFormData($request, $recipientEmail, 'Playground Form', $submissionData, $specialData, $uploadMetadata);
+
+            Log::info('Form data prepared', [
+                'name'             => $formData['name'],
+                'has_sender_email' => !empty($formData['sender_email']),
+                'attachments_count' => count($attachments),
+            ]);
+
+            // Send main email
+            try {
+                Log::info('Attempting to send email', ['to' => $recipientEmail]);
+                $mail = new \App\Mail\PlaygroundFormSubmissionMail($formData, $attachments, $specialData);
+                Mail::to($recipientEmail)->send($mail);
+                Log::info('Email sent successfully', ['to' => $recipientEmail]);
+            } catch (\Exception $e) {
+                Log::error('Email sending failed: ' . $e->getMessage(), [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ]);
+                throw $e;
+            }
+
+            // Handle auto-response
+            if (!empty($specialData['_auto-response']) && !empty($formData['sender_email'])) {
+                try {
+                    $this->sendAutoResponse($formData['sender_email'], $formData, $specialData);
+                    Log::info('Auto-response sent', ['to' => $formData['sender_email']]);
+                } catch (\Exception $e) {
+                    Log::error('Auto-response failed: ' . $e->getMessage());
+                }
+            }
+
+            // Clean up temp files
+            $this->cleanupFiles($uploadedFiles);
+
+            Log::info('Playground: submission completed successfully', [
+                'recipient'   => $recipientEmail,
+                'attachments' => count($attachments),
+            ]);
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => '✅ Message sent successfully!',
+                ]);
+            }
+
+            if (!empty($specialData['_next'])) {
+                return redirect()->away($specialData['_next']);
+            }
+
+            return redirect()->route('playground.form.submitted')
+                ->with('success', 'Form submitted successfully!');
 
         } catch (\Exception $e) {
-            Log::error('Playground: submission failed — ' . $e->getMessage());
+            Log::error('Playground: submission failed — ' . $e->getMessage(), [
+                'exception_class' => get_class($e),
+                'file'            => $e->getFile(),
+                'line'            => $e->getLine(),
+                'recipient'       => $recipientEmail ?? 'unknown',
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => '❌ Failed to send. Please try again.',
+                'message' => '❌ Failed to send. Error: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -203,244 +429,426 @@ class PlaygroundController extends Controller
         $form = Form::where('slug', $request->form_slug)->first();
 
         if (!$form) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Form not found.',
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Form not found.'], 404);
         }
 
-        // Check if form can accept submissions
         if (!$form->canAcceptSubmissions()) {
             if (!$form->email_verified) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Form email not verified.',
-                ], 403);
+                return response()->json(['success' => false, 'message' => 'Form email not verified.'], 403);
             }
-            return response()->json([
-                'success' => false,
-                'message' => 'Form is not accepting submissions.',
-            ], 403);
+            return response()->json(['success' => false, 'message' => 'Form is not accepting submissions.'], 403);
         }
 
-        // Check domain restrictions
         if (!$form->isDomainAllowed($request->header('Referer'))) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Submissions from this domain are not allowed.',
-            ], 403);
+            return response()->json(['success' => false, 'message' => 'Submissions from this domain are not allowed.'], 403);
         }
 
         try {
-            // Process the submission data
-            $allData = $request->except(['_token', 'form_slug']);
-            
-            // Extract form data
-            $formData = [
-                'name'            => $request->input('name') ?? $request->input('full_name') ?? 'Anonymous',
-                'sender_email'    => $request->input('email') ?? $request->input('sender_email') ?? '',
-                'message'         => $request->input('message') ?? $request->input('body') ?? 'No message provided',
-                'recipient_email' => $form->recipient_email,
-                'submitted_at'    => now()->format('Y-m-d H:i:s'),
-                'app_url'         => config('app.url'),
-                'form_name'       => $form->title,
-                'all_fields'      => $allData,
+            $specialFieldKeys = [
+                '_subject', '_replyto', '_next', '_cc', '_bcc',
+                '_template', '_format', '_blacklist', '_auto-response',
+                '_auto-reponse', // typo variant — normalized below
             ];
 
-            // Handle file attachments
-            $attachments = [];
-            $uploadMetadata = [];
-            
-            if ($form->allow_file_upload) {
-                foreach ($request->allFiles() as $fieldName => $files) {
-                    $filesArray = is_array($files) ? $files : [$files];
-                    
-                    foreach ($filesArray as $uploadedFile) {
-                        if (!$uploadedFile || !$uploadedFile->isValid()) {
-                            continue;
-                        }
-                        
-                        // Check file size
-                        $maxFileSize = ($form->max_file_size ?? 10) * 1024 * 1024;
-                        if ($uploadedFile->getSize() > $maxFileSize) {
-                            continue;
-                        }
-                        
-                        // Store file temporarily
-                        $originalName = $uploadedFile->getClientOriginalName();
-                        $filename = time() . '_' . uniqid() . '_' . $originalName;
-                        $path = $uploadedFile->storeAs('temp/' . $form->id, $filename, 'public');
-                        $absolutePath = Storage::disk('public')->path($path);
-                        
-                        $attachments[] = [
-                            'file' => $absolutePath,
-                            'name' => $originalName,
-                            'mime' => $uploadedFile->getMimeType(),
-                        ];
-                        
-                        $uploadMetadata[] = [
-                            'name' => $originalName,
-                            'filename' => $filename,
-                            'path' => $path,
-                            'size' => $uploadedFile->getSize(),
-                            'type' => $uploadedFile->getMimeType(),
-                        ];
+            $allData        = $request->except(['_token', 'form_slug']);
+            $submissionData = [];
+            $specialData    = [];
+
+            foreach ($allData as $key => $value) {
+                if (in_array($key, $specialFieldKeys)) {
+                    // Normalize typo _auto-reponse → _auto-response
+                    $normalizedKey = ($key === '_auto-reponse') ? '_auto-response' : $key;
+                    $specialData[$normalizedKey] = $value;
+                } elseif (!$request->hasFile($key)) {
+                    $submissionData[$key] = $value;
+                }
+            }
+
+            // Blacklist check — if any field value contains a banned word, block the admin email
+            // but still send auto-response to the user if _auto-response is set
+            if (!empty($specialData['_blacklist'])) {
+                if ($this->handleBlacklist($specialData['_blacklist'], $request, $submissionData)) {
+                    $senderEmail = $request->input('email') ?? $request->input('sender_email') ?? '';
+                    if (!empty($specialData['_auto-response']) && !empty($senderEmail)) {
+                        $blockedFormData = ['name' => $request->input('name') ?? 'Visitor', 'sender_email' => $senderEmail, 'form_name' => $form->title ?? 'Form'];
+                        $this->sendAutoResponse($senderEmail, $blockedFormData, $specialData);
                     }
+                    return $this->handleResponse($request, $specialData, $form->recipient_email);
+                }
+            }
+
+            $attachments    = [];
+            $uploadMetadata = [];
+            $uploadedFiles  = [];
+
+            if ($form->allow_file_upload) {
+                $storagePath = 'uploads/' . $form->id . '/' . date('Y/m/d');
+                $maxFileSize = ($form->max_file_size ?? 10) * 1024 * 1024;
+                $maxFiles    = $form->max_files ?? 5;
+
+                [$uploadedFiles, $uploadMetadata, $attachments, $fileError] = $this->processFileUploads(
+                    $request,
+                    $storagePath,
+                    $maxFileSize,
+                    $maxFiles,
+                    false // Don't delete after — form stores files permanently
+                );
+
+                if ($fileError) {
+                    return response()->json(['success' => false, 'message' => $fileError], 422);
                 }
             }
 
             // Store submission if enabled
             if ($form->store_submissions) {
                 Submission::create([
-                    'form_id' => $form->id,
-                    'data' => $allData,
-                    'metadata' => [
+                    'form_id'    => $form->id,
+                    'data'       => $submissionData,
+                    'metadata'   => [
+                        'special_fields'  => $specialData,
                         'has_attachments' => !empty($attachments),
-                        'attachments' => $uploadMetadata,
+                        'attachments'     => $uploadMetadata,
                     ],
                     'ip_address' => $request->ip(),
                     'user_agent' => $request->userAgent(),
-                    'referrer' => $request->header('Referer'),
+                    'referrer'   => $request->header('Referer'),
                 ]);
             }
 
-            // Send email
-            Mail::to($form->recipient_email)->send(new PlaygroundFormSubmissionMail($formData, $attachments));
-            
-            // Clean up temporary files
-            foreach ($attachments as $attachment) {
-                if (file_exists($attachment['file'])) {
-                    unlink($attachment['file']);
-                }
+            $formData = $this->buildFormData($request, $form->recipient_email, $form->title, $submissionData, $specialData, $uploadMetadata);
+
+            $this->sendFormSubmissionEmail($form->recipient_email, $formData, $attachments, $specialData);
+
+            if (!empty($specialData['_auto-response']) && !empty($formData['sender_email'])) {
+                $this->sendAutoResponse($formData['sender_email'], $formData, $specialData);
             }
 
             Log::info('External form submission sent', [
-                'form_id' => $form->id,
-                'recipient' => $form->recipient_email
+                'form_id'     => $form->id,
+                'recipient'   => $form->recipient_email,
+                'attachments' => count($attachments),
             ]);
 
-            // Return appropriate response
-            if ($request->wantsJson() || $request->input('_format') === 'json') {
-                return response()->json([
-                    'success' => true,
-                    'message' => $form->success_message ?? 'Form submitted successfully!',
-                ]);
-            }
-
-            $redirectUrl = $request->input('_next') ?? $form->redirect_url;
-            if ($redirectUrl) {
-                return redirect()->away($redirectUrl);
-            }
-
-            return redirect()->route('playground.form-submitted');
+            return $this->handleResponse($request, $specialData, $form->recipient_email);
 
         } catch (\Exception $e) {
             Log::error('External form submission failed: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to process submission.',
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Failed to process submission.'], 500);
+        }
+    }
+
+    // =========================================================================
+    // PRIVATE / PROTECTED HELPERS
+    // =========================================================================
+
+    /**
+     * FIX: Unified file upload processor.
+     * Correctly handles: file, upload, uploads[], uploads[0], any custom field name.
+     *
+     * Returns: [uploadedFilePaths[], uploadMetadata[], attachments[], errorMessage|null]
+     */
+    protected function processFileUploads(
+        Request $request,
+        string $storagePath,
+        int $maxFileSize = 10485760,   // 10 MB
+        int $maxFiles    = 5,
+        bool $tempMode   = true        // true = playground temp, false = permanent storage
+    ): array {
+        $uploadedFiles  = [];
+        $uploadMetadata = [];
+        $attachments    = [];
+
+        $allFiles = $request->allFiles();
+
+        if (empty($allFiles)) {
+            return [$uploadedFiles, $uploadMetadata, $attachments, null];
+        }
+
+        // FIX: Flatten all files from all fields into a single list for counting
+        $flatFiles = [];
+        foreach ($allFiles as $fieldName => $files) {
+            if (in_array($fieldName, ['_token', '_method'])) {
+                continue;
+            }
+            $filesArray = is_array($files) ? $files : [$files];
+            foreach ($filesArray as $index => $file) {
+                if ($file && $file->isValid()) {
+                    $flatFiles[] = ['field' => $fieldName, 'index' => $index, 'file' => $file];
+                }
+            }
+        }
+
+        if (count($flatFiles) > $maxFiles) {
+            return [[], [], [], "Maximum {$maxFiles} files allowed. You uploaded " . count($flatFiles) . " files."];
+        }
+
+        foreach ($flatFiles as $item) {
+            $fieldName    = $item['field'];
+            $index        = $item['index'];
+            $uploadedFile = $item['file'];
+
+            // File size check
+            if ($uploadedFile->getSize() > $maxFileSize) {
+                $maxMb = round($maxFileSize / 1048576);
+                return [[], [], [], "File '{$uploadedFile->getClientOriginalName()}' is too large. Maximum size is {$maxMb}MB."];
+            }
+
+            $originalName = $uploadedFile->getClientOriginalName();
+            $safeName     = preg_replace('/[^a-zA-Z0-9_.-]/', '_', $originalName);
+
+            // FIX: Consistent filename generation for all field name patterns
+            // Handles: file, upload, uploads, uploads[], uploads[0], any_custom_field
+            $fieldSlug = preg_replace('/[^a-zA-Z0-9]/', '_', $fieldName);
+            $filename  = time() . '_' . uniqid() . '_' . $fieldSlug . '_' . $index . '_' . $safeName;
+
+            try {
+                $path         = $uploadedFile->storeAs($storagePath, $filename, 'public');
+                $absolutePath = Storage::disk('public')->path($path);
+
+                Log::info('File stored', [
+                    'field'    => $fieldName,
+                    'original' => $originalName,
+                    'size'     => $uploadedFile->getSize(),
+                    'path'     => $path,
+                ]);
+
+                $metadata = [
+                    'name'          => $originalName,
+                    'filename'      => $filename,
+                    'path'          => $path,
+                    'absolute_path' => $absolutePath,
+                    'size'          => $uploadedFile->getSize(),
+                    'type'          => $uploadedFile->getMimeType(),
+                    'field_name'    => $fieldName,
+                    'field_index'   => $index,
+                ];
+
+                $uploadedFiles[]  = $absolutePath;
+                $uploadMetadata[] = $metadata;
+                $attachments[]    = [
+                    'file' => $absolutePath,
+                    'name' => $originalName,
+                    'mime' => $uploadedFile->getMimeType(),
+                ];
+
+            } catch (\Exception $e) {
+                Log::error('File store failed: ' . $e->getMessage(), ['field' => $fieldName, 'original' => $originalName]);
+                return [[], [], [], 'Failed to upload file. Please try again.'];
+            }
+        }
+
+        return [$uploadedFiles, $uploadMetadata, $attachments, null];
+    }
+
+    /**
+     * Build standard formData array from request.
+     *
+     * IMPORTANT:
+     * - We read 'message' from $submissionData (already blacklist-filtered), NOT from $request directly.
+     *   This ensures blacklisted words in message are blocked before reaching the email.
+     * - 'all_fields' is passed to the blade as $data and rendered field-by-field.
+     *   We keep name/email/message OUT of all_fields to avoid duplicate rendering —
+     *   the blade header already shows sender name/email separately.
+     * - all_fields contains every OTHER field the user submitted (custom fields).
+     */
+    protected function buildFormData(
+        Request $request,
+        string $recipientEmail,
+        string $formName,
+        array $submissionData,
+        array $specialData,
+        array $uploadMetadata
+    ): array {
+        // Read message from cleaned submissionData so blacklist applies to it
+        $message = $submissionData['message'] ?? $submissionData['body'] ?? null;
+
+        // all_fields for blade: include message explicitly so it always renders,
+        // but skip internal/meta keys that are shown elsewhere or are empty
+        $skipKeys = ['recipient_email', '_token', '_method'];
+        $allFields = [];
+
+        // Always show message first if present
+        if (!empty($message)) {
+            $allFields['message'] = $message;
+        }
+
+        foreach ($submissionData as $key => $value) {
+            if (in_array($key, $skipKeys)) continue;
+            if ($key === 'message' || $key === 'body') continue; // already added above
+            $allFields[$key] = $value;
+        }
+
+        return [
+            'name'                 => $request->input('name') ?? $request->input('full_name') ?? 'Anonymous',
+            'sender_email'         => $request->input('email') ?? $request->input('sender_email') ?? '',
+            'message'              => $message ?? 'No message provided',
+            'recipient_email'      => $recipientEmail,
+            'submitted_at'         => now()->format('Y-m-d H:i:s'),
+            'app_url'              => config('app.url'),
+            'form_name'            => $formName,
+            'all_fields'           => $allFields,
+            'special_fields'       => $specialData,
+            'has_attachments'      => !empty($uploadMetadata),
+            'attachment_count'     => count($uploadMetadata),
+            'attachments_metadata' => $uploadMetadata,
+        ];
+    }
+
+    /**
+     * Send form submission email
+     */
+    protected function sendFormSubmissionEmail(string $recipient, array $formData, array $attachments, array $specialData): void
+    {
+        $mail = new \App\Mail\PlaygroundFormSubmissionMail($formData, $attachments, $specialData);
+        Mail::to($recipient)->send($mail);
+    }
+
+    /**
+     * Send auto-response email to the form submitter.
+     *
+     * _auto-response field supports two formats:
+     *   1. Message only:
+     *      value="Thank you for reaching us."
+     *      → Uses default subject: "We received your message — {form_name}"
+     *
+     *   2. Message with custom subject (pipe-separated):
+     *      value="Thank you for reaching us.|We received your message"
+     *      → Uses custom subject from after the pipe
+     *
+     * Supports placeholders in BOTH message and subject: {name}, {email}, {date}
+     */
+    protected function sendAutoResponse(string $visitorEmail, array $formData, array $specialData): void
+    {
+        try {
+            $rawValue = $specialData['_auto-response'] ?? "Thank you for your submission. We'll get back to you soon.";
+
+            // Parse optional pipe-separated subject: "Message body|Custom Subject"
+            if (str_contains($rawValue, '|')) {
+                [$autoResponseMessage, $customSubject] = array_map('trim', explode('|', $rawValue, 2));
+            } else {
+                $autoResponseMessage = trim($rawValue);
+                $customSubject       = null;
+            }
+
+            // Build subject — use custom if provided, otherwise default
+            $defaultSubject = 'We received your message — ' . ($formData['form_name'] ?? config('app.name'));
+            $subject        = $customSubject ?: $defaultSubject;
+
+            // Replace placeholders in both message and subject
+            $placeholders = ['{name}', '{email}', '{date}'];
+            $replacements = [
+                $formData['name']         ?? 'Visitor',
+                $formData['sender_email'] ?? '',
+                now()->format('Y-m-d'),
+            ];
+
+            $autoResponseMessage = str_replace($placeholders, $replacements, $autoResponseMessage);
+            $subject             = str_replace($placeholders, $replacements, $subject);
+
+            Log::info('Sending auto-response', [
+                'to'      => $visitorEmail,
+                'subject' => $subject,
+            ]);
+
+            Mail::html(
+                '<div style="font-family:sans-serif;font-size:15px;line-height:1.6;color:#333;">'
+                    . nl2br(e($autoResponseMessage))
+                    . '</div>',
+                function ($message) use ($visitorEmail, $subject) {
+                    $message->to($visitorEmail)->subject($subject);
+                }
+            );
+
+            Log::info('Auto-response sent successfully', ['to' => $visitorEmail]);
+
+        } catch (\Exception $e) {
+            Log::error('Auto-response failed: ' . $e->getMessage(), ['to' => $visitorEmail]);
+            // Don't re-throw — auto-response failure should never break main submission
         }
     }
 
     /**
-     * Handle form submission to email endpoint (from external forms)
+     * Blacklist: removes any field whose VALUE contains a banned word/phrase.
+     * Also removes fields whose KEY contains a banned term.
+     *
+     * Returns TRUE if the entire submission should be blocked
+     * (banned word found in 'message' or 'body' — core content fields).
+     * Returns FALSE if only minor fields were cleaned and email can still send.
+     *
+     * Called BEFORE buildFormData() so banned content never reaches the email.
      */
-    public function handleEmailSubmission(Request $request, string $email)
+    /**
+     * Check ALL submitted field values against the blacklist.
+     * If ANY field's value contains a banned word → return true (block entire email).
+     * We check submissionData AND also the raw request inputs like 'message', 'name', 'email'
+     * so nothing bypasses via buildFormData reading directly from $request.
+     */
+    protected function handleBlacklist($blacklist, Request $request, array $submissionData): bool
     {
-        $email = strtolower(trim($email));
-        
-        Log::info('Playground email submission received', [
-            'email' => $email,
-            'ip' => $request->ip(),
-            'has_files' => $request->hasFile('file') ? 'yes' : 'no',
-        ]);
+        $bannedTerms = is_array($blacklist)
+            ? $blacklist
+            : array_map('trim', explode(',', $blacklist));
 
-        // Check if email is verified
-        $cacheKey = 'playground_verify_' . md5($email);
-        $data = Cache::get($cacheKey);
+        $bannedTerms = array_filter($bannedTerms, fn($t) => trim($t) !== '');
 
-        if (!$data || empty($data['verified'])) {
-            Log::warning('Playground: submission to unverified email', ['email' => $email]);
-            
-            // Redirect to verification page
-            return redirect()->route('playground.endpoint.info', ['email' => $email])
-                ->with('error', 'Please verify your email first.');
+        if (empty($bannedTerms)) {
+            return false;
         }
 
-        try {
-            // Process the submission
-            $skip = ['_token', '_method'];
-            $extraFields = [];
-            foreach ($request->except($skip) as $key => $value) {
-                if (!str_starts_with($key, '_')) {
-                    $extraFields[$key] = $value;
+        // Only check user-submitted fields — skip ALL special/internal fields (anything starting with _)
+        // Without this, the blacklist scans its OWN value and blocks clean submissions
+        $allValues = array_filter(
+            $request->except(['_token', '_method', 'recipient_email', 'form_slug']),
+            fn($v, $k) => !str_starts_with((string)$k, '_') && (!is_array($v) || count($v) > 0),
+            ARRAY_FILTER_USE_BOTH
+        );
+
+        foreach ($allValues as $key => $value) {
+            $valueStr = is_array($value) ? implode(' ', $value) : (string) $value;
+
+            foreach ($bannedTerms as $term) {
+                $term = trim($term);
+                if ($term === '') continue;
+
+                if (stripos($valueStr, $term) !== false) {
+                    Log::info('Blacklist triggered — blocking submission', [
+                        'field' => $key,
+                        'term'  => $term,
+                    ]);
+                    return true; // Block the whole email immediately
                 }
             }
-
-            $formData = [
-                'name' => $request->input('name') ?? $request->input('full_name') ?? 'Anonymous',
-                'sender_email' => $request->input('email') ?? $request->input('sender_email') ?? '',
-                'message' => $request->input('message') ?? $request->input('body') ?? json_encode($extraFields),
-                'recipient_email' => $email,
-                'submitted_at' => now()->format('Y-m-d H:i:s'),
-                'app_url' => config('app.url'),
-                'extra_fields' => array_filter($extraFields, fn($k) => !in_array($k, ['name', 'full_name', 'email', 'message', 'body']), ARRAY_FILTER_USE_KEY),
-            ];
-
-            // Handle file attachments
-            $attachments = [];
-            foreach ($request->allFiles() as $files) {
-                foreach ((array) $files as $file) {
-                    if ($file && $file->isValid()) {
-                        $attachments[] = [
-                            'file' => $file->path(),
-                            'name' => $file->getClientOriginalName(),
-                            'mime' => $file->getMimeType(),
-                        ];
-                    }
-                }
-            }
-
-            // Send email
-            Mail::to($email)->send(new PlaygroundFormSubmissionMail($formData, $attachments));
-            
-            Log::info('Playground email submission sent', ['recipient' => $email]);
-
-            // Check response format
-            if ($request->wantsJson() || $request->input('_format') === 'json') {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Form submitted successfully!',
-                ]);
-            }
-
-            // Check for redirect URL in the form data
-            $redirectUrl = $request->input('_next');
-            if ($redirectUrl) {
-                return redirect()->away($redirectUrl);
-            }
-
-            // Redirect to the form submitted page
-            return redirect()->route('playground.form.submitted')
-                ->with('success', 'Form submitted successfully! Check your email.');
-
-        } catch (\Exception $e) {
-            Log::error('Playground email submission failed: ' . $e->getMessage());
-            
-            if ($request->wantsJson() || $request->input('_format') === 'json') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to submit form. Please try again.',
-                ], 500);
-            }
-
-            return redirect()->back()
-                ->with('error', 'Failed to submit form. Please try again.')
-                ->withInput();
         }
+
+        return false;
     }
 
+    /**
+     * Handle response based on format and redirect
+     */
+    protected function handleResponse(Request $request, array $specialData, string $email)
+    {
+        if ($request->wantsJson() || ($specialData['_format'] ?? '') === 'json') {
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Form submitted successfully!',
+                'redirect' => $specialData['_next'] ?? null,
+            ]);
+        }
+
+        if (!empty($specialData['_next'])) {
+            return redirect()->away($specialData['_next']);
+        }
+
+        return redirect()->route('playground.form.submitted')
+            ->with('success', 'Form submitted successfully! Check your email.');
+    }
+
+    /**
+     * Send verification email
+     * FIX: verification token cache stays 7 days (enough to click link),
+     * but on confirmation we store forever — so form never stops working
+     */
     protected function sendVerification(string $email): void
     {
         $token    = Str::random(32);
@@ -449,7 +857,7 @@ class PlaygroundController extends Controller
         Cache::put($cacheKey, [
             'token'    => $token,
             'verified' => false,
-        ], now()->addHours(24));
+        ], now()->addHours(24)); // 24 hours to click the link — enough time
 
         $verifyUrl = route('playground.confirm-email', [
             'email' => $email,
@@ -461,6 +869,46 @@ class PlaygroundController extends Controller
             Log::info('Playground: verification email sent', ['email' => $email]);
         } catch (\Exception $e) {
             Log::error('Playground: verification email failed — ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete a list of files safely
+     */
+    protected function cleanupFiles(array $files): void
+    {
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                try {
+                    unlink($file);
+                    Log::info('Temp file deleted', ['file' => $file]);
+                } catch (\Exception $e) {
+                    Log::warning('Failed to delete temp file', ['file' => $file]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Clean up empty temporary directories
+     */
+    protected function cleanupTempDirectories(): void
+    {
+        try {
+            $tempBase = Storage::disk('public')->path('playground/temp');
+            if (!is_dir($tempBase)) return;
+
+            foreach (glob($tempBase . '/*', GLOB_ONLYDIR) as $year) {
+                foreach (glob($year . '/*', GLOB_ONLYDIR) as $month) {
+                    foreach (glob($month . '/*', GLOB_ONLYDIR) as $day) {
+                        if (count(glob($day . '/*')) === 0) rmdir($day);
+                    }
+                    if (count(glob($month . '/*')) === 0) rmdir($month);
+                }
+                if (count(glob($year . '/*')) === 0) rmdir($year);
+            }
+        } catch (\Exception $e) {
+            Log::warning('Failed to cleanup temp directories: ' . $e->getMessage());
         }
     }
 }
