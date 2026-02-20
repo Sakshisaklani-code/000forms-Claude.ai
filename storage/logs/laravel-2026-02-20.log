@@ -1,0 +1,88 @@
+[2026-02-20 06:30:16] local.INFO: Playground submit called {"has_recipient_email":true,"has_form_slug":false,"method":"POST","url":"http://127.0.0.1:8000/playground/submit"} 
+[2026-02-20 06:30:16] local.INFO: Playground submission data {"all_input":{"name":"sakshi saklani","email":"tsaklani2drish@gmail.com","message":"money","_blacklist":"spammy pattern, banned term, phrase, money","_subject":"Testing the subject","_cc":"tsaklani2drish@gmail.com","_auto-reponse":"Thank you reaching us.","recipient_email":"tsaklani2drish@gmail.com","upload":{"Illuminate\\Http\\UploadedFile":"C:\\xampp\\tmp\\php348B.tmp"}},"all_files":["upload"],"recipient":"tsaklani2drish@gmail.com","method":"POST","content_type":"multipart/form-data; boundary=----WebKitFormBoundaryzE9oXgZBCbM62bew"} 
+[2026-02-20 06:30:16] local.INFO: Special field found {"key":"_blacklist","original_key":"_blacklist","value":"spammy pattern, banned term, phrase, money"} 
+[2026-02-20 06:30:16] local.INFO: Special field found {"key":"_subject","original_key":"_subject","value":"Testing the subject"} 
+[2026-02-20 06:30:16] local.INFO: Special field found {"key":"_cc","original_key":"_cc","value":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:30:16] local.INFO: Special field found {"key":"_auto-response","original_key":"_auto-reponse","value":"Thank you reaching us."} 
+[2026-02-20 06:30:16] local.INFO: Blacklist triggered — blocking submission {"field":"message","term":"money"} 
+[2026-02-20 06:30:53] local.INFO: Playground submit called {"has_recipient_email":true,"has_form_slug":false,"method":"POST","url":"http://127.0.0.1:8000/playground/submit"} 
+[2026-02-20 06:30:53] local.INFO: Playground submission data {"all_input":{"name":"sakshi saklani","email":"tsaklani2drish@gmail.com","message":"test","_blacklist":"spammy pattern, banned term, phrase, money","_subject":"Testing the subject","_cc":"tsaklani2drish@gmail.com","_auto-reponse":"Thank you reaching us.","recipient_email":"tsaklani2drish@gmail.com","upload":{"Illuminate\\Http\\UploadedFile":"C:\\xampp\\tmp\\phpC5EF.tmp"}},"all_files":["upload"],"recipient":"tsaklani2drish@gmail.com","method":"POST","content_type":"multipart/form-data; boundary=----WebKitFormBoundaryFjC1fxiTK5rGXXnt"} 
+[2026-02-20 06:30:53] local.INFO: Special field found {"key":"_blacklist","original_key":"_blacklist","value":"spammy pattern, banned term, phrase, money"} 
+[2026-02-20 06:30:53] local.INFO: Special field found {"key":"_subject","original_key":"_subject","value":"Testing the subject"} 
+[2026-02-20 06:30:53] local.INFO: Special field found {"key":"_cc","original_key":"_cc","value":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:30:53] local.INFO: Special field found {"key":"_auto-response","original_key":"_auto-reponse","value":"Thank you reaching us."} 
+[2026-02-20 06:30:53] local.INFO: File stored {"field":"upload","original":"about-1.jpg","size":43233,"path":"playground/temp/2026/02/20/1771569053_6997ff9db4796_upload_0_about-1.jpg"} 
+[2026-02-20 06:30:53] local.INFO: Form data prepared {"name":"sakshi saklani","has_sender_email":true,"attachments_count":1} 
+[2026-02-20 06:30:53] local.INFO: Attempting to send email {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:30:53] local.INFO: Building form submission email {"subject":"Testing the subject","template":"basic","view":"emails.submission-basic","attachments":1,"has_cc":true,"has_bcc":false,"has_replyto":true} 
+[2026-02-20 06:30:58] local.INFO: Email sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:30:58] local.INFO: Sending auto-response {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:30:59] local.INFO: Auto-response sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:30:59] local.INFO: Auto-response sent {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:30:59] local.INFO: Temp file deleted {"file":"C:\\Git-folders\\000FORMS-Claude.ai\\000forms-Claude.ai\\storage\\app/public\\playground/temp/2026/02/20/1771569053_6997ff9db4796_upload_0_about-1.jpg"} 
+[2026-02-20 06:30:59] local.INFO: Playground: submission completed successfully {"recipient":"tsaklani2drish@gmail.com","attachments":1} 
+[2026-02-20 06:37:03] local.INFO: Playground email submission received {"email":"sakshi.saklani@drishinfo.com","ip":"127.0.0.1","method":"POST","has_files":"no"} 
+[2026-02-20 06:37:04] local.INFO: Building form submission email {"subject":"Testing the subject","template":"basic","view":"emails.submission-basic","attachments":0,"has_cc":true,"has_bcc":false,"has_replyto":true} 
+[2026-02-20 06:37:08] local.INFO: Sending auto-response {"to":"tsaklani02@gmail.com","subject":"Hello sakshi — confirmation received"} 
+[2026-02-20 06:37:09] local.INFO: Auto-response sent successfully {"to":"tsaklani02@gmail.com"} 
+[2026-02-20 06:37:09] local.INFO: Playground email submission sent {"recipient":"sakshi.saklani@drishinfo.com","attachments":0,"special_fields":["_blacklist","_subject","_cc","_auto-response"]} 
+[2026-02-20 06:37:48] local.INFO: Playground email submission received {"email":"sakshi.saklani@drishinfo.com","ip":"127.0.0.1","method":"POST","has_files":"no"} 
+[2026-02-20 06:37:48] local.INFO: Building form submission email {"subject":"Testing the subject","template":"basic","view":"emails.submission-basic","attachments":0,"has_cc":true,"has_bcc":false,"has_replyto":true} 
+[2026-02-20 06:37:52] local.INFO: Sending auto-response {"to":"tsaklani2@gmail.com","subject":"Hello Tanuja — confirmation received"} 
+[2026-02-20 06:37:54] local.INFO: Auto-response sent successfully {"to":"tsaklani2@gmail.com"} 
+[2026-02-20 06:37:54] local.INFO: Playground email submission sent {"recipient":"sakshi.saklani@drishinfo.com","attachments":0,"special_fields":["_blacklist","_subject","_cc","_auto-response"]} 
+[2026-02-20 06:39:58] local.INFO: Playground email submission received {"email":"sakshi.saklani@drishinfo.com","ip":"127.0.0.1","method":"POST","has_files":"no"} 
+[2026-02-20 06:39:58] local.INFO: Blacklist triggered — blocking submission {"field":"message","term":"money"} 
+[2026-02-20 06:39:58] local.INFO: Sending auto-response {"to":"tsaklani2@gmail.com","subject":"Hello sakshi — confirmation received"} 
+[2026-02-20 06:40:02] local.INFO: Auto-response sent successfully {"to":"tsaklani2@gmail.com"} 
+[2026-02-20 06:46:38] local.INFO: Playground submit called {"has_recipient_email":true,"has_form_slug":false,"method":"POST","url":"http://127.0.0.1:8000/playground/submit"} 
+[2026-02-20 06:46:38] local.INFO: Playground submission data {"all_input":{"name":"sakshi saklani","email":"tsaklani2drish@gmail.com","message":"test","_blacklist":"spammy pattern, banned term, phrase, money","_subject":"Testing the subject","_cc":"tsaklani2drish@gmail.com","_auto-reponse":"Thank you reaching us.","recipient_email":"tsaklani2drish@gmail.com","upload":[{"Illuminate\\Http\\UploadedFile":"C:\\xampp\\tmp\\php304E.tmp"},{"Illuminate\\Http\\UploadedFile":"C:\\xampp\\tmp\\php304F.tmp"}]},"all_files":["upload"],"recipient":"tsaklani2drish@gmail.com","method":"POST","content_type":"multipart/form-data; boundary=----WebKitFormBoundaryltpSvOxykuLUyfGj"} 
+[2026-02-20 06:46:38] local.INFO: Special field found {"key":"_blacklist","original_key":"_blacklist","value":"spammy pattern, banned term, phrase, money"} 
+[2026-02-20 06:46:38] local.INFO: Special field found {"key":"_subject","original_key":"_subject","value":"Testing the subject"} 
+[2026-02-20 06:46:38] local.INFO: Special field found {"key":"_cc","original_key":"_cc","value":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:46:38] local.INFO: Special field found {"key":"_auto-response","original_key":"_auto-reponse","value":"Thank you reaching us."} 
+[2026-02-20 06:46:38] local.INFO: File stored {"field":"upload","original":"about-1.jpg","size":43233,"path":"playground/temp/2026/02/20/1771569998_6998034e7174f_upload_0_about-1.jpg"} 
+[2026-02-20 06:46:38] local.INFO: File stored {"field":"upload","original":"about-2.jpg","size":51703,"path":"playground/temp/2026/02/20/1771569998_6998034e74d73_upload_1_about-2.jpg"} 
+[2026-02-20 06:46:38] local.INFO: Form data prepared {"name":"sakshi saklani","has_sender_email":true,"attachments_count":2} 
+[2026-02-20 06:46:38] local.INFO: Attempting to send email {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:46:38] local.INFO: Building form submission email {"subject":"Testing the subject","template":"basic","view":"emails.submission-basic","attachments":2,"has_cc":true,"has_bcc":false,"has_replyto":true} 
+[2026-02-20 06:46:43] local.INFO: Email sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:46:43] local.INFO: Sending auto-response {"to":"tsaklani2drish@gmail.com","subject":"We received your message — Playground Form"} 
+[2026-02-20 06:46:44] local.INFO: Auto-response sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:46:44] local.INFO: Auto-response sent {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:46:44] local.INFO: Temp file deleted {"file":"C:\\Git-folders\\000FORMS-Claude.ai\\000forms-Claude.ai\\storage\\app/public\\playground/temp/2026/02/20/1771569998_6998034e7174f_upload_0_about-1.jpg"} 
+[2026-02-20 06:46:44] local.INFO: Temp file deleted {"file":"C:\\Git-folders\\000FORMS-Claude.ai\\000forms-Claude.ai\\storage\\app/public\\playground/temp/2026/02/20/1771569998_6998034e74d73_upload_1_about-2.jpg"} 
+[2026-02-20 06:46:44] local.INFO: Playground: submission completed successfully {"recipient":"tsaklani2drish@gmail.com","attachments":2} 
+[2026-02-20 06:47:50] local.INFO: Playground submit called {"has_recipient_email":true,"has_form_slug":false,"method":"POST","url":"http://127.0.0.1:8000/playground/submit"} 
+[2026-02-20 06:47:50] local.INFO: Playground submission data {"all_input":{"name":"sakshi saklani","email":"tsaklani2drish@gmail.com","message":"test","_blacklist":"spammy pattern, banned term, phrase, money","_subject":"Testing the subject","_cc":"tsaklani2drish@gmail.com","_auto-reponse":"Thank you reaching us.","recipient_email":"tsaklani2drish@gmail.com","upload":{"Illuminate\\Http\\UploadedFile":"C:\\xampp\\tmp\\php47FA.tmp"}},"all_files":["upload"],"recipient":"tsaklani2drish@gmail.com","method":"POST","content_type":"multipart/form-data; boundary=----WebKitFormBoundarynXlNVV8mxs2uYzwV"} 
+[2026-02-20 06:47:50] local.INFO: Special field found {"key":"_blacklist","original_key":"_blacklist","value":"spammy pattern, banned term, phrase, money"} 
+[2026-02-20 06:47:50] local.INFO: Special field found {"key":"_subject","original_key":"_subject","value":"Testing the subject"} 
+[2026-02-20 06:47:50] local.INFO: Special field found {"key":"_cc","original_key":"_cc","value":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:47:50] local.INFO: Special field found {"key":"_auto-response","original_key":"_auto-reponse","value":"Thank you reaching us."} 
+[2026-02-20 06:47:50] local.INFO: File stored {"field":"upload","original":"about-1.jpg","size":43233,"path":"playground/temp/2026/02/20/1771570070_699803960d797_upload_0_about-1.jpg"} 
+[2026-02-20 06:47:50] local.INFO: Form data prepared {"name":"sakshi saklani","has_sender_email":true,"attachments_count":1} 
+[2026-02-20 06:47:50] local.INFO: Attempting to send email {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:47:50] local.INFO: Building form submission email {"subject":"Testing the subject","template":"basic","view":"emails.submission-basic","attachments":1,"has_cc":true,"has_bcc":false,"has_replyto":true} 
+[2026-02-20 06:47:54] local.INFO: Email sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:47:54] local.INFO: Sending auto-response {"to":"tsaklani2drish@gmail.com","subject":"We received your message — Playground Form"} 
+[2026-02-20 06:47:55] local.INFO: Auto-response sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:47:55] local.INFO: Auto-response sent {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:47:55] local.INFO: Temp file deleted {"file":"C:\\Git-folders\\000FORMS-Claude.ai\\000forms-Claude.ai\\storage\\app/public\\playground/temp/2026/02/20/1771570070_699803960d797_upload_0_about-1.jpg"} 
+[2026-02-20 06:47:55] local.INFO: Playground: submission completed successfully {"recipient":"tsaklani2drish@gmail.com","attachments":1} 
+[2026-02-20 06:48:39] local.INFO: Playground submit called {"has_recipient_email":true,"has_form_slug":false,"method":"POST","url":"http://127.0.0.1:8000/playground/submit"} 
+[2026-02-20 06:48:39] local.INFO: Playground submission data {"all_input":{"name":"sakshi saklani","email":"tsaklani2drish@gmail.com","message":"testing the table","_blacklist":"spammy pattern, banned term, phrase, money","_template":"table","_subject":"Testing the subject","_cc":"tsaklani2drish@gmail.com","_auto-reponse":"Thank you reaching us.","recipient_email":"tsaklani2drish@gmail.com","upload":{"Illuminate\\Http\\UploadedFile":"C:\\xampp\\tmp\\phpA32.tmp"}},"all_files":["upload"],"recipient":"tsaklani2drish@gmail.com","method":"POST","content_type":"multipart/form-data; boundary=----WebKitFormBoundaryd6LcBiYUtU334dFZ"} 
+[2026-02-20 06:48:39] local.INFO: Special field found {"key":"_blacklist","original_key":"_blacklist","value":"spammy pattern, banned term, phrase, money"} 
+[2026-02-20 06:48:39] local.INFO: Special field found {"key":"_template","original_key":"_template","value":"table"} 
+[2026-02-20 06:48:39] local.INFO: Special field found {"key":"_subject","original_key":"_subject","value":"Testing the subject"} 
+[2026-02-20 06:48:39] local.INFO: Special field found {"key":"_cc","original_key":"_cc","value":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:48:39] local.INFO: Special field found {"key":"_auto-response","original_key":"_auto-reponse","value":"Thank you reaching us."} 
+[2026-02-20 06:48:39] local.INFO: File stored {"field":"upload","original":"about-1.jpg","size":43233,"path":"playground/temp/2026/02/20/1771570119_699803c7bcd68_upload_0_about-1.jpg"} 
+[2026-02-20 06:48:39] local.INFO: Form data prepared {"name":"sakshi saklani","has_sender_email":true,"attachments_count":1} 
+[2026-02-20 06:48:39] local.INFO: Attempting to send email {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:48:39] local.INFO: Building form submission email {"subject":"Testing the subject","template":"table","view":"emails.submission-table","attachments":1,"has_cc":true,"has_bcc":false,"has_replyto":true} 
+[2026-02-20 06:48:44] local.INFO: Email sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:48:44] local.INFO: Sending auto-response {"to":"tsaklani2drish@gmail.com","subject":"We received your message — Playground Form"} 
+[2026-02-20 06:48:45] local.INFO: Auto-response sent successfully {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:48:45] local.INFO: Auto-response sent {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-20 06:48:45] local.INFO: Temp file deleted {"file":"C:\\Git-folders\\000FORMS-Claude.ai\\000forms-Claude.ai\\storage\\app/public\\playground/temp/2026/02/20/1771570119_699803c7bcd68_upload_0_about-1.jpg"} 
+[2026-02-20 06:48:45] local.INFO: Playground: submission completed successfully {"recipient":"tsaklani2drish@gmail.com","attachments":1} 

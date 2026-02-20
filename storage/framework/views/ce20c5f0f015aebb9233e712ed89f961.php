@@ -1,0 +1,57 @@
+
+
+<?php $__env->startSection('title', 'Test Forms - 000form'); ?>
+
+<?php $__env->startSection('content'); ?>
+
+<!-- modify this form HTML and place wherever you want your form -->
+<form
+  id="my-form"
+  action="https://formspree.io/f/xvzbpnwy"
+  method="POST">
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+</form>
+
+<script>
+var form = document.getElementById("my-form");
+async function handleSubmit(event) {
+event.preventDefault();
+var status = document.getElementById("my-form-status");
+var data = new FormData(event.target);
+fetch(event.target.action, {
+  method: form.method,
+  body: data,
+  headers: {
+    'Accept': 'application/json'
+}
+}).then(response => {
+  if (response.ok) {
+    status.innerHTML = "Thanks for your submission!";
+    form.reset()
+  } else {
+    response.json().then(data => {
+    if (Object.hasOwn(data, 'errors')) {
+      status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+    } else {
+      status.innerHTML = "Oops! There was a problem submitting your form"
+    }
+  })
+}
+}).catch(error => {
+  status.innerHTML = "Oops! There was a problem submitting your form"
+});
+}
+form.addEventListener("submit", handleSubmit)
+</script>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views\Test-forms\formspree.blade.php ENDPATH**/ ?>
