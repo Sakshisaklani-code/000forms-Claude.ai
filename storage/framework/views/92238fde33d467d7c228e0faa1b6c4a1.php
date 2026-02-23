@@ -731,7 +731,7 @@
                 <div>
                     <p>
                         <strong>
-                        To disable captcha, add <code style="background:rgba(0,0,0,0.08);padding:0.1rem 0.4rem;border-radius:4px;">&lt;input type="hidden" name="_captcha" value="false"&gt;</code></strong>
+                        To disable captcha add: <code style="background:rgba(0,0,0,0.08);padding:0.1rem 0.4rem;border-radius:4px;">&lt;input type="hidden" name="_captcha" value="false"&gt;</code></strong>
                     </p>
                 </div>
             </div>
@@ -740,13 +740,12 @@
                 <button class="code-tab active" onclick="switchCodeTab('html', event)">Plain HTML</button>
                 <button class="code-tab" onclick="switchCodeTab('ajax', event)">HTML + AJAX</button>
                 <button class="code-tab" onclick="switchCodeTab('fileupload', event)">File Upload</button>
-                <button class="code-tab" onclick="switchCodeTab('nocaptcha', event)">No Captcha</button>
             </div>
 
             
             <div id="code-html" class="code-block active">
                 <div class="code-header">
-                    <span class="code-lang">HTML (Like Formspree - No Keys!)</span>
+                    <span class="code-lang">HTML</span>
                     <button class="code-copy" onclick="copyCode('html-pre')">Copy</button>
                 </div>
                 <div class="code-content">
@@ -755,14 +754,13 @@
   <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"email"</span> <span class="attr">name</span>=<span class="string">"email"</span>   <span class="attr">placeholder</span>=<span class="string">"Your email"</span>   <span class="attr">required</span><span class="tag">&gt;</span>
   <span class="tag">&lt;textarea</span> <span class="attr">name</span>=<span class="string">"message"</span> <span class="attr">placeholder</span>=<span class="string">"Your message"</span><span class="tag">&gt;&lt;/textarea&gt;</span>
   <?php if($form->honeypot_enabled): ?>
-  <span class="comment">&lt;!-- Honeypot (keep hidden) --&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"<?php echo e($form->honeypot_field); ?>"</span> <span class="attr">style</span>=<span class="string">"display:none"</span> <span class="attr">tabindex</span>=<span class="string">"-1"</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- Honeypot --&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"<?php echo e($form->honeypot_field); ?>"</span> <span class="attr">style</span>=<span class="string">"display:none"</span>&gt;</span>
   <?php endif; ?>
-  <span class="comment">&lt;!-- No reCAPTCHA code needed - we handle it on our server! --&gt;</span>
+  <span class="comment">&lt;!-- Google CAPTCHA is enabled! --&gt;</span>
   <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="string">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
 <span class="tag">&lt;/form&gt;</span>
-
-<span class="comment">&lt;!-- Users will be redirected to our secure captcha page if needed --&gt;</span></pre>
+</pre>
                 </div>
             </div>
 
@@ -778,10 +776,10 @@
   <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"email"</span> <span class="attr">name</span>=<span class="string">"email"</span>   <span class="attr">placeholder</span>=<span class="string">"Your email"</span>   <span class="attr">required</span><span class="tag">&gt;</span>
   <span class="tag">&lt;textarea</span> <span class="attr">name</span>=<span class="string">"message"</span> <span class="attr">placeholder</span>=<span class="string">"Your message"</span><span class="tag">&gt;&lt;/textarea&gt;</span>
   <?php if($form->honeypot_enabled): ?>
-  <span class="comment">&lt;!-- Honeypot (keep hidden) --&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"<?php echo e($form->honeypot_field); ?>"</span> <span class="attr">style</span>=<span class="string">"display:none"</span> <span class="attr">tabindex</span>=<span class="string">"-1"</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- Honeypot --&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"<?php echo e($form->honeypot_field); ?>"</span> <span class="attr">style</span>=<span class="string">"display:none"</span> <span class="tag">&gt;</span>
   <?php endif; ?>
-  <span class="comment">&lt;!-- No reCAPTCHA code needed - we handle it on our server! --&gt;</span>
+  <span class="comment">&lt;!-- Google CAPTCHA is enabled! --&gt;</span>
   <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="string">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
 <span class="tag">&lt;/form&gt;</span>
 <span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="string">"form-response"</span> <span class="attr">style</span>=<span class="string">"margin-top:15px"</span><span class="tag">&gt;&lt;/div&gt;</span>
@@ -832,44 +830,10 @@
   <span class="comment">&lt;!-- OR multiple files --&gt;</span>
   <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"upload[]"</span> <span class="attr">multiple</span><span class="tag">&gt;</span>
   <?php if($form->honeypot_enabled): ?>
-  <span class="comment">&lt;!-- Honeypot (keep hidden) --&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"<?php echo e($form->honeypot_field); ?>"</span> <span class="attr">style</span>=<span class="string">"display:none"</span> <span class="attr">tabindex</span>=<span class="string">"-1"</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- Honeypot --&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"<?php echo e($form->honeypot_field); ?>"</span> <span class="attr">style</span>=<span class="string">"display:none"</span> &gt;</span>
   <?php endif; ?>
-  <span class="comment">&lt;!-- No reCAPTCHA code needed - we handle it on our server! --&gt;</span>
-  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="string">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
-<span class="tag">&lt;/form&gt;</span></pre>
-                </div>
-            </div>
-
-            
-            <div id="code-nocaptcha" class="code-block">
-                <div class="code-header">
-                    <span class="code-lang">HTML (Captcha Disabled)</span>
-                    <button class="code-copy" onclick="copyCode('nocaptcha-pre')">Copy</button>
-                </div>
-                <div style="padding:0.75rem 1rem;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:6px;margin-bottom:0.75rem;display:flex;align-items:flex-start;gap:0.6rem;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0;margin-top:1px;">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="12"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                    <p style="margin:0;font-size:0.82rem;color:var(--text-muted);line-height:1.5;">
-                        <strong style="color:#f59e0b;">Captcha disabled.</strong>
-                        Add <code style="background:rgba(0,0,0,0.06);padding:0.1rem 0.35rem;border-radius:3px;">_captcha=false</code>
-                        to bypass the interstitial verification page.
-                    </p>
-                </div>
-                <div class="code-content">
-                    <pre id="nocaptcha-pre"><span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="string">"<?php echo e($form->endpoint_url); ?>"</span> <span class="attr">method</span>=<span class="string">"POST"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span>  <span class="attr">name</span>=<span class="string">"name"</span>    <span class="attr">placeholder</span>=<span class="string">"Your name"</span>    <span class="attr">required</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"email"</span> <span class="attr">name</span>=<span class="string">"email"</span>   <span class="attr">placeholder</span>=<span class="string">"Your email"</span>   <span class="attr">required</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;textarea</span> <span class="attr">name</span>=<span class="string">"message"</span> <span class="attr">placeholder</span>=<span class="string">"Your message"</span><span class="tag">&gt;&lt;/textarea&gt;</span>
-  <?php if($form->honeypot_enabled): ?>
-  <span class="comment">&lt;!-- Honeypot (keep hidden) --&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"<?php echo e($form->honeypot_field); ?>"</span> <span class="attr">style</span>=<span class="string">"display:none"</span> <span class="attr">tabindex</span>=<span class="string">"-1"</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span><span class="tag">&gt;</span>
-  <?php endif; ?>
-  <span class="comment">&lt;!-- Disable captcha verification --&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_captcha"</span> <span class="attr">value</span>=<span class="string">"false"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- Google CAPTCHA is enabled! --&gt;</span>
   <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="string">"submit"</span><span class="tag">&gt;</span>Send Message<span class="tag">&lt;/button&gt;</span>
 <span class="tag">&lt;/form&gt;</span></pre>
                 </div>
@@ -881,34 +845,151 @@
 
 
 <script>
-// Simple copy function - no keys to replace!
-function copyCode(preId) {
-    const text = document.getElementById(preId).innerText;
-    navigator.clipboard.writeText(text);
-    const btn = event.currentTarget;
-    const orig = btn.textContent;
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = orig, 2000);
-}
+    // Real site key — used only to render placeholders in the UI, never copied
+    window.__rk = '<?php echo e(config('services.recaptcha.site_key')); ?>';
 
-// Copy endpoint URL
-function copyEndpoint(slug) {
-    navigator.clipboard.writeText('<?php echo e(url('/f')); ?>/' + slug);
-    const btn = event.currentTarget;
-    const orig = btn.innerHTML;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
-    setTimeout(() => btn.innerHTML = orig, 2000);
-}
+    // Replace placeholder spans with the real key so code looks correct on screen
+    document.querySelectorAll('.sitekey-placeholder').forEach(function(el) {
+        el.textContent = window.__rk;
+    });
 
-// Code tab switcher
-function switchCodeTab(tab, e) {
-    document.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
-    (e?.currentTarget ?? event.currentTarget).classList.add('active');
-    document.querySelectorAll('.code-block').forEach(b => b.classList.remove('active'));
-    document.getElementById('code-' + tab).classList.add('active');
-}
+    // ── Copy code — strips the real key before writing to clipboard ──
+    function copyCode(preId) {
+        const text = document.getElementById(preId).innerText;
+        // Replace the real site key with the placeholder in the copied text
+        const safe = text.split(window.__rk).join('YOUR_SITE_KEY');
+        navigator.clipboard.writeText(safe);
+        const btn = event.currentTarget, orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = orig, 2000);
+    }
 
-// Live search, archive toggle, charts remain the same...
+    // ── Copy endpoint URL ──
+    function copyEndpoint(slug) {
+        navigator.clipboard.writeText('<?php echo e(url('/f')); ?>/' + slug);
+        const btn = event.currentTarget, orig = btn.innerHTML;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+        setTimeout(() => btn.innerHTML = orig, 2000);
+    }
+
+    // ── Code tab switcher ──
+    function switchCodeTab(tab, e) {
+        document.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
+        (e?.currentTarget ?? event.currentTarget).classList.add('active');
+        document.querySelectorAll('.code-block').forEach(b => b.classList.remove('active'));
+        document.getElementById('code-' + tab).classList.add('active');
+    }
+
+    // ── Live search ──
+    (function () {
+        const input    = document.getElementById('liveSearchInput');
+        const clearBtn = document.getElementById('clearBtn');
+        if (!input) return;
+        const baseUrl  = "<?php echo e(route('dashboard.forms.show', $form->id)); ?>";
+        const curTab   = "<?php echo e($tab); ?>";
+        const curPanel = "<?php echo e($panel); ?>";
+        let timer;
+        input.addEventListener('input', function () {
+            clearTimeout(timer);
+            const val = input.value.trim();
+            if (clearBtn) clearBtn.style.display = val ? 'flex' : 'none';
+            timer = setTimeout(() => {
+                const params = new URLSearchParams({ panel: curPanel, tab: curTab, search: val, page: 1 });
+                window.location.href = baseUrl + '?' + params.toString();
+            }, 350);
+        });
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function () {
+                const params = new URLSearchParams({ panel: curPanel, tab: curTab, search: '', page: 1 });
+                window.location.href = baseUrl + '?' + params.toString();
+            });
+        }
+    })();
+
+    // ── Archive toggle label ──
+    (function () {
+        const toggle = document.getElementById('archiveToggle');
+        const label  = document.getElementById('toggleLabel');
+        if (!toggle || !label) return;
+        toggle.addEventListener('change', function () {
+            label.textContent = this.checked ? 'On' : 'Off';
+        });
+    })();
+
+    // ── Charts ──
+    const primaryColor = '#414265';
+    const mutedColor   = '#94a3b8';
+    const archiveColor = '#6366f1';
+
+    if (document.getElementById('lineChart')) {
+        new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels: <?php echo json_encode($lineLabels, 15, 512) ?>,
+                datasets: [{
+                    label: 'Submissions',
+                    data: <?php echo json_encode($lineData, 15, 512) ?>,
+                    borderColor: primaryColor,
+                    backgroundColor: 'rgba(65,66,101,0.08)',
+                    tension: 0.4, fill: true,
+                    pointRadius: 4, pointHoverRadius: 6,
+                    pointBackgroundColor: primaryColor, borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleColor: '#94a3b8', bodyColor: '#f1f5f9', padding: 10, cornerRadius: 6 } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: mutedColor, font: { size: 11 } }, border: { display: false } },
+                    y: { ticks: { color: mutedColor, font: { size: 11 }, callback: v => Number.isInteger(v) ? v : null, stepSize: 1 }, grid: { color: 'rgba(148,163,184,0.08)' }, border: { display: false }, beginAtZero: true }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Valid', 'Spam', 'Archived'],
+                datasets: [{
+                    data: [<?php echo e($validCount); ?>, <?php echo e($spamCount); ?>, <?php echo e($archiveCount); ?>],
+                    backgroundColor: ['rgba(34,197,94,0.85)', 'rgba(245,158,11,0.85)', 'rgba(99,102,241,0.85)'],
+                    borderRadius: 8, borderSkipped: false, barThickness: 40,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleColor: '#94a3b8', bodyColor: '#f1f5f9', padding: 10, cornerRadius: 6 } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: mutedColor, font: { size: 12 } }, border: { display: false } },
+                    y: { ticks: { color: mutedColor, font: { size: 11 }, callback: v => Number.isInteger(v) ? v : null, stepSize: 1 }, grid: { color: 'rgba(148,163,184,0.08)' }, border: { display: false }, beginAtZero: true }
+                }
+            }
+        });
+
+        const archiveCanvas = document.getElementById('archiveLineChart');
+        if (archiveCanvas) {
+            new Chart(archiveCanvas, {
+                type: 'line',
+                data: {
+                    labels: <?php echo json_encode($lineLabels, 15, 512) ?>,
+                    datasets: [{
+                        label: 'Archived', data: <?php echo json_encode($archiveLineData, 15, 512) ?>,
+                        borderColor: archiveColor, backgroundColor: 'rgba(99,102,241,0.08)',
+                        tension: 0.4, fill: true, pointRadius: 4, pointHoverRadius: 6,
+                        pointBackgroundColor: archiveColor, borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleColor: '#94a3b8', bodyColor: '#f1f5f9', padding: 10, cornerRadius: 6 } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: mutedColor, font: { size: 11 } }, border: { display: false } },
+                        y: { ticks: { color: mutedColor, font: { size: 11 }, callback: v => Number.isInteger(v) ? v : null, stepSize: 1 }, grid: { color: 'rgba(148,163,184,0.08)' }, border: { display: false }, beginAtZero: true }
+                    }
+                }
+            });
+        }
+    }
 </script>
 
 <?php $__env->stopSection(); ?>

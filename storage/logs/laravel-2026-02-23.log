@@ -491,3 +491,31 @@ CONTEXT:  unnamed portal parameter $1 = '...' at C:/Git-folders/000FORMS-Claude.
 [2026-02-23 10:40:59] local.INFO: Showing captcha page {"form_id":"a11ff4a8-c1c5-4d21-a51e-d919bb9857d1"} 
 [2026-02-23 10:41:42] local.INFO: Showing captcha page {"form_id":"a11ff4a8-c1c5-4d21-a51e-d919bb9857d1"} 
 [2026-02-23 10:41:54] local.INFO: Showing captcha page {"form_id":"a11ff4a8-c1c5-4d21-a51e-d919bb9857d1"} 
+[2026-02-23 11:03:20] local.INFO: === FORM SUBMISSION STARTED === {"slug":"f_bvdjliy5","method":"POST"} 
+[2026-02-23 11:03:20] local.INFO: Request data: {"name":"sakshi","email":"sakshi.saklani@drishinfo.com","message":"Testing if the Captcha is disabled or not.","honeypot_GxsrZVuf":null,"_captcha":"false"} 
+[2026-02-23 11:03:20] local.INFO: Has files: {"files":0} 
+[2026-02-23 11:03:21] local.INFO: Form found {"form_id":"a11ff4a8-c1c5-4d21-a51e-d919bb9857d1","form_name":"Form Created - 20 February"} 
+[2026-02-23 11:03:21] local.INFO: Captcha verification status {"is_captcha_verified":false,"has_captcha_flag":false,"captcha_flag_value":null} 
+[2026-02-23 11:03:21] local.INFO: reCAPTCHA skipped {"is_captcha_verified":false,"is_disabled":true} 
+[2026-02-23 11:03:21] local.INFO: Parsed submission data {"name":"sakshi","email":"sakshi.saklani@drishinfo.com","message":"Testing if the Captcha is disabled or not."} 
+[2026-02-23 11:03:21] local.INFO: FILE UPLOAD CHECK {"all_files":[]} 
+[2026-02-23 11:03:21] local.INFO: Total files uploaded: 0  
+[2026-02-23 11:03:21] local.INFO: VALID SUBMISSION {"form_id":"a11ff4a8-c1c5-4d21-a51e-d919bb9857d1","ip":"127.0.0.1","is_spam":false,"reasons":[]} 
+[2026-02-23 11:03:21] local.INFO: Spam check result {"is_spam":false,"reasons":[],"ip":"127.0.0.1"} 
+[2026-02-23 11:03:21] local.INFO: Submission created {"submission_id":"a125f8ce-bd9f-40ab-ba6e-aac59ab6b5cb","ip":"127.0.0.1"} 
+[2026-02-23 11:03:22] local.INFO: Form stats updated  
+[2026-02-23 11:03:22] local.INFO: Checking email notification conditions {"is_spam":false,"email_notifications":true,"recipient_email":"tsaklani2drish@gmail.com"} 
+[2026-02-23 11:03:22] local.INFO: Attempting to send notification email {"to":"tsaklani2drish@gmail.com","has_attachments":false} 
+[2026-02-23 11:03:22] local.INFO: === SENDING NOTIFICATION EMAIL === {"to":"tsaklani2drish@gmail.com","submission_id":"a125f8ce-bd9f-40ab-ba6e-aac59ab6b5cb","has_files":false} 
+[2026-02-23 11:03:22] local.INFO: Final CC emails {"final_list":[]} 
+[2026-02-23 11:03:22] local.INFO: Email template selected: basic  
+[2026-02-23 11:03:22] local.INFO: Attachments to process: 0  
+[2026-02-23 11:03:22] local.INFO: Mail object created  
+[2026-02-23 11:03:22] local.INFO: Sending email without CC {"to":"tsaklani2drish@gmail.com"} 
+[2026-02-23 11:03:22] local.INFO: Total attachments added: 0  
+[2026-02-23 11:03:26] local.INFO: Mail send method called successfully  
+[2026-02-23 11:03:26] local.INFO: Submission updated with email_sent flag  
+[2026-02-23 11:03:26] local.INFO: Email sent successfully to: tsaklani2drish@gmail.com  
+[2026-02-23 11:03:26] local.INFO: Notification email sent successfully  
+[2026-02-23 11:03:26] local.INFO: === FORM SUBMISSION COMPLETED === {"slug":"f_bvdjliy5"} 
+[2026-02-23 11:03:26] local.INFO: Success response {"wants_json":false,"format":null,"redirect_url":null} 
