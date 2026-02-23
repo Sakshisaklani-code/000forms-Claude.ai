@@ -173,7 +173,3 @@ Route::get('/Scholarship-Application-forms', [LibraryController::class, 'Scholar
 Route::get('/Vendor-Application-forms',      [LibraryController::class, 'VendorApplicationForm'])->name('Home.library.VendorApplicationForm');
 Route::get('/Internship-Application-forms',  [LibraryController::class, 'InternshipApplicationForm'])->name('Home.library.InternshipApplicationForm');
 
-Route::get('/Test-form',  [TestController::class, 'home'])->name('test-form');
-Route::get('/thank-you',  [TestController::class, 'thankYou'])->name('thank-you-form');
-Route::get('/formspree',  [TestController::class, 'formspree'])->name('formspree-form');
-Route::get('/formsubmit', [TestController::class, 'formsubmit'])->name('formsubmit-form');
