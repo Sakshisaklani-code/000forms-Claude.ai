@@ -24,13 +24,6 @@ Route::get('/recaptcha-config', function () {
 })->name('recaptcha.config');
 Route::get('/captcha/{formId}', [FormSubmissionController::class, 'showCaptcha'])->name('captcha.show');
 Route::post('/captcha/{formId}/verify', [FormSubmissionController::class, 'verifyCaptcha'])->name('captcha.verify');
-/*
-|--------------------------------------------------------------------------
-| Google Authentication Routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/auth/{provider}', [SocialAuthController::class, 'redirect'])->name('social.redirect');
-Route::get('/auth/callback/{provider}', [SocialAuthController::class, 'callback'])->name('social.callback');
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +113,17 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password',[AuthController::class, 'sendResetLink'])->name('password.email');
 });
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/auth/reset-password',  [AuthController::class, 'showResetForm'])->name('password.reset');
+Route::post('/auth/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+/*
+|--------------------------------------------------------------------------
+| Google Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/auth/{provider}', [SocialAuthController::class, 'redirect'])->name('social.redirect');
+Route::get('/auth/callback/{provider}', [SocialAuthController::class, 'callback'])->name('social.callback');
+
 
 /*
 |--------------------------------------------------------------------------

@@ -164,6 +164,37 @@ class AuthController extends Controller
     }
 
     /**
+     * Show reset password form (linked from email).
+     */
+    public function showResetForm()
+    {
+        return view('auth.reset-password');
+    }
+
+    /**
+     * Handle password reset submission.
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'access_token' => 'required',
+            'password'     => 'required|min:8|confirmed',
+        ]);
+
+        $result = $this->supabase->updateUserPassword(
+            $request->input('access_token'),
+            $request->input('password')
+        );
+
+        if (!$result['success']) {
+            return back()->withErrors(['password' => $result['error'] ?? 'Failed to reset password.']);
+        }
+
+        return redirect()->route('login')
+            ->with('message', 'Password reset successfully. Please log in.');
+    }
+
+    /**
      * Store Supabase session data.
      */
     protected function storeSession(array $data): void

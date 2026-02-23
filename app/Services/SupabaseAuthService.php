@@ -237,24 +237,47 @@ class SupabaseAuthService
         try {
             $this->client->post('/auth/v1/recover', [
                 'headers' => [
-                    'apikey' => $this->key,
+                    'apikey'       => $this->key,
                     'Content-Type' => 'application/json',
                 ],
                 'json' => [
-                    'email' => $email,
+                    'email'      => $email,
+                    'redirectTo' => url('/auth/reset-password'),
                 ],
             ]);
 
-            return [
-                'success' => true,
-            ];
+            return ['success' => true];
+
         } catch (GuzzleException $e) {
             Log::error('Supabase password reset error: ' . $e->getMessage());
-            
-            return [
-                'success' => false,
-                'error' => 'Password reset failed',
-            ];
+            return ['success' => false, 'error' => 'Password reset failed'];
+        }
+    }
+
+    /**
+     * Handle password reset submission.
+     */
+    public function updateUserPassword(string $accessToken, string $newPassword): array
+    {
+        try {
+            $response = Http::withHeaders([
+                'apikey'        => $this->supabaseKey,
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Content-Type'  => 'application/json',
+            ])->put($this->supabaseUrl . '/auth/v1/user', [
+                'password' => $newPassword,
+            ]);
+
+            $data = $response->json();
+
+            if ($response->failed() || isset($data['error'])) {
+                return ['success' => false, 'error' => $data['message'] ?? $data['error'] ?? 'Failed to reset password.'];
+            }
+
+            return ['success' => true, 'data' => $data];
+
+        } catch (\Exception $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
         }
     }
 
