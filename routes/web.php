@@ -12,7 +12,18 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
-
+/*
+|--------------------------------------------------------------------------
+| Google Captcha Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/recaptcha-config', function () {
+    return response()->json([
+        'sitekey' => config('services.recaptcha.site_key'),
+    ]);
+})->name('recaptcha.config');
+Route::get('/captcha/{formId}', [FormSubmissionController::class, 'showCaptcha'])->name('captcha.show');
+Route::post('/captcha/{formId}/verify', [FormSubmissionController::class, 'verifyCaptcha'])->name('captcha.verify');
 /*
 |--------------------------------------------------------------------------
 | Google Authentication Routes

@@ -41,8 +41,10 @@ class SpamDetectionService
             }
         }
 
+        // Get IP with fallback for safety
+        $ip = $request->ip() ?? $request->getClientIp() ?? '0.0.0.0';
+        
         // Check rate limiting by IP
-        $ip = $request->ip();
         $rateLimitKey = "spam_check:{$form->id}:{$ip}";
         $submissionCount = Cache::get($rateLimitKey, 0);
         
@@ -131,7 +133,7 @@ class SpamDetectionService
             Log::info('Repetitive content detected');
         }
 
-        // Check for blocked IP
+        // FIXED: Check for blocked IP with null safety
         if ($this->isBlockedIp($ip)) {
             $reasons[] = 'Blocked IP address';
             Log::info('Blocked IP', ['ip' => $ip]);
@@ -271,11 +273,27 @@ class SpamDetectionService
     }
 
     /**
-     * Check if IP is in blocklist.
+     * FIXED: Check if IP is in blocklist - with null safety.
+     * 
+     * @param string|null $ip
+     * @return bool
      */
-    protected function isBlockedIp(string $ip): bool
+    protected function isBlockedIp(?string $ip): bool
     {
+        // Handle null or empty IP
+        if (empty($ip)) {
+            Log::warning('isBlockedIp called with null/empty IP');
+            return false;
+        }
+        
         $blockedIps = Cache::get('blocked_ips', []);
+        
+        // Ensure blockedIps is an array
+        if (!is_array($blockedIps)) {
+            Log::error('blocked_ips cache is not an array', ['type' => gettype($blockedIps)]);
+            return false;
+        }
+        
         return in_array($ip, $blockedIps);
     }
 
@@ -284,7 +302,19 @@ class SpamDetectionService
      */
     public function blockIp(string $ip, int $hours = 24): void
     {
+        // Validate IP
+        if (empty($ip)) {
+            Log::error('Attempted to block empty IP');
+            return;
+        }
+        
         $blockedIps = Cache::get('blocked_ips', []);
+        
+        // Ensure blockedIps is an array
+        if (!is_array($blockedIps)) {
+            $blockedIps = [];
+        }
+        
         $blockedIps[] = $ip;
         Cache::put('blocked_ips', array_unique($blockedIps), now()->addHours($hours));
         
@@ -296,7 +326,19 @@ class SpamDetectionService
      */
     public function unblockIp(string $ip): void
     {
+        // Validate IP
+        if (empty($ip)) {
+            Log::error('Attempted to unblock empty IP');
+            return;
+        }
+        
         $blockedIps = Cache::get('blocked_ips', []);
+        
+        // Ensure blockedIps is an array
+        if (!is_array($blockedIps)) {
+            return;
+        }
+        
         $blockedIps = array_diff($blockedIps, [$ip]);
         Cache::put('blocked_ips', $blockedIps, now()->addDay());
         

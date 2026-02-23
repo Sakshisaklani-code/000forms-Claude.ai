@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use App\Services\SpamDetectionService;
 use App\Services\SupabaseAuthService;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+       View::share('recaptchaSiteKey', config('services.recaptcha.site_key'));
     }
 }

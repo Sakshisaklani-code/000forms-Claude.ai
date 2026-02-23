@@ -13,9 +13,17 @@ use App\Mail\PlaygroundFormSubmissionMail;
 use App\Mail\PlaygroundVerificationMail;
 use App\Models\Form;
 use App\Models\Submission;
+use App\Services\RecaptchaService;
 
 class PlaygroundController extends Controller
 {
+    protected RecaptchaService $recaptcha;
+
+    public function __construct(RecaptchaService $recaptcha)
+    {
+        $this->recaptcha = $recaptcha;
+    }
+
     /**
      * Show the playground page
      */
@@ -94,7 +102,6 @@ class PlaygroundController extends Controller
             ]);
         }
 
-        // FIX: Use forever() so verified email never expires and form never stops accepting submissions
         Cache::forever($cacheKey, array_merge($data, ['verified' => true]));
         Log::info('Playground: email verified', ['email' => $email]);
 
@@ -127,9 +134,9 @@ class PlaygroundController extends Controller
         $email = strtolower(trim($email));
 
         Log::info('Playground email submission received', [
-            'email'    => $email,
-            'ip'       => $request->ip(),
-            'method'   => $request->method(),
+            'email'     => $email,
+            'ip'        => $request->ip(),
+            'method'    => $request->method(),
             'has_files' => count($request->allFiles()) > 0 ? 'yes' : 'no',
         ]);
 
@@ -151,42 +158,67 @@ class PlaygroundController extends Controller
                 ->with('error', 'Please verify your email first.');
         }
 
+        // -----------------------------------------------------------------
+        // reCAPTCHA VERIFICATION
+        // Skip if user adds: <input type="hidden" name="_captcha" value="false">
+        // -----------------------------------------------------------------
+        $allData = $request->except(['_token']);
+
+        if (!$this->recaptcha->isDisabledByUser($allData)) {
+            $token = $request->input('g-recaptcha-response', '');
+            if (empty($token) || !$this->recaptcha->verify($token, $request->ip())) {
+                Log::warning('reCAPTCHA failed on email endpoint', ['email' => $email, 'ip' => $request->ip()]);
+
+                if ($request->wantsJson() || $request->input('_format') === 'json') {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'reCAPTCHA verification failed. Please try again.',
+                    ], 422);
+                }
+
+                return back()->with('error', 'reCAPTCHA verification failed. Please try again.')->withInput();
+            }
+        } else {
+            Log::info('reCAPTCHA skipped via _captcha=false', ['email' => $email]);
+        }
+
         try {
             $specialFieldKeys = [
                 '_subject', '_replyto', '_next', '_cc', '_bcc',
                 '_template', '_format', '_blacklist', '_auto-response',
-                '_auto-reponse', // typo variant — normalized below
-                '_honeypot', '_gotcha', '_form_load_time',
+                '_auto-reponse', '_captcha',
             ];
 
-            $allData        = $request->except(['_token']);
             $submissionData = [];
             $specialData    = [];
 
             foreach ($allData as $key => $value) {
+                if ($key === 'g-recaptcha-response') continue;
+
                 if (in_array($key, $specialFieldKeys)) {
-                    // Normalize typo _auto-reponse → _auto-response
-                    $normalizedKey = ($key === '_auto-reponse') ? '_auto-response' : $key;
+                    $normalizedKey               = ($key === '_auto-reponse') ? '_auto-response' : $key;
                     $specialData[$normalizedKey] = $value;
                 } elseif (!$request->hasFile($key)) {
                     $submissionData[$key] = $value;
                 }
             }
 
-            // Blacklist check — if any field value contains a banned word, block the admin email
-            // but still send auto-response to the user if _auto-response is set
+            // Blacklist check
             if (!empty($specialData['_blacklist'])) {
                 if ($this->handleBlacklist($specialData['_blacklist'], $request, $submissionData)) {
                     $senderEmail = $request->input('email') ?? $request->input('sender_email') ?? '';
                     if (!empty($specialData['_auto-response']) && !empty($senderEmail)) {
-                        $blockedFormData = ['name' => $request->input('name') ?? 'Visitor', 'sender_email' => $senderEmail, 'form_name' => 'Playground Form'];
+                        $blockedFormData = [
+                            'name'         => $request->input('name') ?? 'Visitor',
+                            'sender_email' => $senderEmail,
+                            'form_name'    => 'Playground Form',
+                        ];
                         $this->sendAutoResponse($senderEmail, $blockedFormData, $specialData);
                     }
                     return $this->handleResponse($request, $specialData, $email);
                 }
             }
 
-            // Process file uploads
             [$uploadedFiles, $uploadMetadata, $attachments, $fileError] = $this->processFileUploads(
                 $request,
                 'playground/temp/' . date('Y/m/d')
@@ -203,18 +235,16 @@ class PlaygroundController extends Controller
 
             $this->sendFormSubmissionEmail($email, $formData, $attachments, $specialData);
 
-            // Handle auto-response
             if (!empty($specialData['_auto-response']) && !empty($formData['sender_email'])) {
                 $this->sendAutoResponse($formData['sender_email'], $formData, $specialData);
             }
 
             Log::info('Playground email submission sent', [
-                'recipient'     => $email,
-                'attachments'   => count($attachments),
+                'recipient'      => $email,
+                'attachments'    => count($attachments),
                 'special_fields' => array_keys($specialData),
             ]);
 
-            // Clean up temp files
             $this->cleanupFiles($uploadedFiles);
             $this->cleanupTempDirectories();
 
@@ -287,6 +317,28 @@ class PlaygroundController extends Controller
             ], 403);
         }
 
+        // -----------------------------------------------------------------
+        // reCAPTCHA VERIFICATION
+        // Skip if user adds: <input type="hidden" name="_captcha" value="false">
+        // -----------------------------------------------------------------
+        $allData = $request->except(['_token']);
+
+        if (!$this->recaptcha->isDisabledByUser($allData)) {
+            $token = $request->input('g-recaptcha-response', '');
+            if (empty($token) || !$this->recaptcha->verify($token, $request->ip())) {
+                Log::warning('reCAPTCHA failed on playground submission', [
+                    'email' => $recipientEmail,
+                    'ip'    => $request->ip(),
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => '⚠️ reCAPTCHA verification failed. Please try again.',
+                ], 422);
+            }
+        } else {
+            Log::info('reCAPTCHA skipped via _captcha=false', ['email' => $recipientEmail]);
+        }
+
         try {
             Log::info('Playground submission data', [
                 'all_input'    => $request->except(['_token']),
@@ -299,17 +351,17 @@ class PlaygroundController extends Controller
             $specialFieldKeys = [
                 '_subject', '_replyto', '_next', '_cc', '_bcc',
                 '_template', '_format', '_blacklist', '_auto-response',
-                '_auto-reponse', // typo variant — normalized below
+                '_auto-reponse', '_captcha',
             ];
 
-            $allData        = $request->except(['recipient_email', '_token', '_method']);
             $submissionData = [];
             $specialData    = [];
 
             foreach ($allData as $key => $value) {
+                if ($key === 'g-recaptcha-response') continue;
+
                 if (in_array($key, $specialFieldKeys)) {
-                    // Normalize typo _auto-reponse → _auto-response
-                    $normalizedKey = ($key === '_auto-reponse') ? '_auto-response' : $key;
+                    $normalizedKey               = ($key === '_auto-reponse') ? '_auto-response' : $key;
                     $specialData[$normalizedKey] = $value;
                     Log::info('Special field found', ['key' => $normalizedKey, 'original_key' => $key, 'value' => $value]);
                 } elseif (!$request->hasFile($key)) {
@@ -317,20 +369,22 @@ class PlaygroundController extends Controller
                 }
             }
 
-            // Blacklist check — if any field value contains a banned word, block the admin email
-            // but still send auto-response to the user if _auto-response is set
+            // Blacklist check
             if (!empty($specialData['_blacklist'])) {
                 if ($this->handleBlacklist($specialData['_blacklist'], $request, $submissionData)) {
                     $senderEmail = $request->input('email') ?? $request->input('sender_email') ?? '';
                     if (!empty($specialData['_auto-response']) && !empty($senderEmail)) {
-                        $blockedFormData = ['name' => $request->input('name') ?? 'Visitor', 'sender_email' => $senderEmail, 'form_name' => 'Playground Form'];
+                        $blockedFormData = [
+                            'name'         => $request->input('name') ?? 'Visitor',
+                            'sender_email' => $senderEmail,
+                            'form_name'    => 'Playground Form',
+                        ];
                         $this->sendAutoResponse($senderEmail, $blockedFormData, $specialData);
                     }
                     return response()->json(['success' => true, 'message' => '✅ Message sent successfully!']);
                 }
             }
 
-            // FIX: Unified file processing method handles upload, uploads[], and any custom field names
             [$uploadedFiles, $uploadMetadata, $attachments, $fileError] = $this->processFileUploads(
                 $request,
                 'playground/temp/' . date('Y/m/d')
@@ -344,12 +398,11 @@ class PlaygroundController extends Controller
             $formData = $this->buildFormData($request, $recipientEmail, 'Playground Form', $submissionData, $specialData, $uploadMetadata);
 
             Log::info('Form data prepared', [
-                'name'             => $formData['name'],
-                'has_sender_email' => !empty($formData['sender_email']),
+                'name'              => $formData['name'],
+                'has_sender_email'  => !empty($formData['sender_email']),
                 'attachments_count' => count($attachments),
             ]);
 
-            // Send main email
             try {
                 Log::info('Attempting to send email', ['to' => $recipientEmail]);
                 $mail = new \App\Mail\PlaygroundFormSubmissionMail($formData, $attachments, $specialData);
@@ -363,7 +416,6 @@ class PlaygroundController extends Controller
                 throw $e;
             }
 
-            // Handle auto-response
             if (!empty($specialData['_auto-response']) && !empty($formData['sender_email'])) {
                 try {
                     $this->sendAutoResponse($formData['sender_email'], $formData, $specialData);
@@ -373,7 +425,6 @@ class PlaygroundController extends Controller
                 }
             }
 
-            // Clean up temp files
             $this->cleanupFiles($uploadedFiles);
 
             Log::info('Playground: submission completed successfully', [
@@ -443,34 +494,53 @@ class PlaygroundController extends Controller
             return response()->json(['success' => false, 'message' => 'Submissions from this domain are not allowed.'], 403);
         }
 
+        // -----------------------------------------------------------------
+        // reCAPTCHA VERIFICATION
+        // Skip if user adds: <input type="hidden" name="_captcha" value="false">
+        // -----------------------------------------------------------------
+        $allData = $request->except(['_token']);
+
+        if (!$this->recaptcha->isDisabledByUser($allData)) {
+            $token = $request->input('g-recaptcha-response', '');
+            if (empty($token) || !$this->recaptcha->verify($token, $request->ip())) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'reCAPTCHA verification failed. Please try again.',
+                ], 422);
+            }
+        }
+
         try {
             $specialFieldKeys = [
                 '_subject', '_replyto', '_next', '_cc', '_bcc',
                 '_template', '_format', '_blacklist', '_auto-response',
-                '_auto-reponse', // typo variant — normalized below
+                '_auto-reponse', '_captcha',
             ];
 
-            $allData        = $request->except(['_token', 'form_slug']);
             $submissionData = [];
             $specialData    = [];
 
             foreach ($allData as $key => $value) {
+                if ($key === 'g-recaptcha-response') continue;
+
                 if (in_array($key, $specialFieldKeys)) {
-                    // Normalize typo _auto-reponse → _auto-response
-                    $normalizedKey = ($key === '_auto-reponse') ? '_auto-response' : $key;
+                    $normalizedKey               = ($key === '_auto-reponse') ? '_auto-response' : $key;
                     $specialData[$normalizedKey] = $value;
                 } elseif (!$request->hasFile($key)) {
                     $submissionData[$key] = $value;
                 }
             }
 
-            // Blacklist check — if any field value contains a banned word, block the admin email
-            // but still send auto-response to the user if _auto-response is set
+            // Blacklist check
             if (!empty($specialData['_blacklist'])) {
                 if ($this->handleBlacklist($specialData['_blacklist'], $request, $submissionData)) {
                     $senderEmail = $request->input('email') ?? $request->input('sender_email') ?? '';
                     if (!empty($specialData['_auto-response']) && !empty($senderEmail)) {
-                        $blockedFormData = ['name' => $request->input('name') ?? 'Visitor', 'sender_email' => $senderEmail, 'form_name' => $form->title ?? 'Form'];
+                        $blockedFormData = [
+                            'name'         => $request->input('name') ?? 'Visitor',
+                            'sender_email' => $senderEmail,
+                            'form_name'    => $form->title ?? 'Form',
+                        ];
                         $this->sendAutoResponse($senderEmail, $blockedFormData, $specialData);
                     }
                     return $this->handleResponse($request, $specialData, $form->recipient_email);
@@ -491,7 +561,7 @@ class PlaygroundController extends Controller
                     $storagePath,
                     $maxFileSize,
                     $maxFiles,
-                    false // Don't delete after — form stores files permanently
+                    false
                 );
 
                 if ($fileError) {
@@ -499,7 +569,6 @@ class PlaygroundController extends Controller
                 }
             }
 
-            // Store submission if enabled
             if ($form->store_submissions) {
                 Submission::create([
                     'form_id'    => $form->id,
@@ -508,6 +577,7 @@ class PlaygroundController extends Controller
                         'special_fields'  => $specialData,
                         'has_attachments' => !empty($attachments),
                         'attachments'     => $uploadMetadata,
+                        'captcha_skipped' => $this->recaptcha->isDisabledByUser($allData),
                     ],
                     'ip_address' => $request->ip(),
                     'user_agent' => $request->userAgent(),
@@ -542,17 +612,15 @@ class PlaygroundController extends Controller
     // =========================================================================
 
     /**
-     * FIX: Unified file upload processor.
-     * Correctly handles: file, upload, uploads[], uploads[0], any custom field name.
-     *
+     * Unified file upload processor.
      * Returns: [uploadedFilePaths[], uploadMetadata[], attachments[], errorMessage|null]
      */
     protected function processFileUploads(
         Request $request,
         string $storagePath,
-        int $maxFileSize = 10485760,   // 10 MB
+        int $maxFileSize = 10485760,
         int $maxFiles    = 5,
-        bool $tempMode   = true        // true = playground temp, false = permanent storage
+        bool $tempMode   = true
     ): array {
         $uploadedFiles  = [];
         $uploadMetadata = [];
@@ -564,7 +632,6 @@ class PlaygroundController extends Controller
             return [$uploadedFiles, $uploadMetadata, $attachments, null];
         }
 
-        // FIX: Flatten all files from all fields into a single list for counting
         $flatFiles = [];
         foreach ($allFiles as $fieldName => $files) {
             if (in_array($fieldName, ['_token', '_method'])) {
@@ -587,7 +654,6 @@ class PlaygroundController extends Controller
             $index        = $item['index'];
             $uploadedFile = $item['file'];
 
-            // File size check
             if ($uploadedFile->getSize() > $maxFileSize) {
                 $maxMb = round($maxFileSize / 1048576);
                 return [[], [], [], "File '{$uploadedFile->getClientOriginalName()}' is too large. Maximum size is {$maxMb}MB."];
@@ -595,11 +661,8 @@ class PlaygroundController extends Controller
 
             $originalName = $uploadedFile->getClientOriginalName();
             $safeName     = preg_replace('/[^a-zA-Z0-9_.-]/', '_', $originalName);
-
-            // FIX: Consistent filename generation for all field name patterns
-            // Handles: file, upload, uploads, uploads[], uploads[0], any_custom_field
-            $fieldSlug = preg_replace('/[^a-zA-Z0-9]/', '_', $fieldName);
-            $filename  = time() . '_' . uniqid() . '_' . $fieldSlug . '_' . $index . '_' . $safeName;
+            $fieldSlug    = preg_replace('/[^a-zA-Z0-9]/', '_', $fieldName);
+            $filename     = time() . '_' . uniqid() . '_' . $fieldSlug . '_' . $index . '_' . $safeName;
 
             try {
                 $path         = $uploadedFile->storeAs($storagePath, $filename, 'public');
@@ -642,14 +705,6 @@ class PlaygroundController extends Controller
 
     /**
      * Build standard formData array from request.
-     *
-     * IMPORTANT:
-     * - We read 'message' from $submissionData (already blacklist-filtered), NOT from $request directly.
-     *   This ensures blacklisted words in message are blocked before reaching the email.
-     * - 'all_fields' is passed to the blade as $data and rendered field-by-field.
-     *   We keep name/email/message OUT of all_fields to avoid duplicate rendering —
-     *   the blade header already shows sender name/email separately.
-     * - all_fields contains every OTHER field the user submitted (custom fields).
      */
     protected function buildFormData(
         Request $request,
@@ -659,22 +714,18 @@ class PlaygroundController extends Controller
         array $specialData,
         array $uploadMetadata
     ): array {
-        // Read message from cleaned submissionData so blacklist applies to it
         $message = $submissionData['message'] ?? $submissionData['body'] ?? null;
 
-        // all_fields for blade: include message explicitly so it always renders,
-        // but skip internal/meta keys that are shown elsewhere or are empty
-        $skipKeys = ['recipient_email', '_token', '_method'];
+        $skipKeys  = ['recipient_email', '_token', '_method'];
         $allFields = [];
 
-        // Always show message first if present
         if (!empty($message)) {
             $allFields['message'] = $message;
         }
 
         foreach ($submissionData as $key => $value) {
             if (in_array($key, $skipKeys)) continue;
-            if ($key === 'message' || $key === 'body') continue; // already added above
+            if ($key === 'message' || $key === 'body') continue;
             $allFields[$key] = $value;
         }
 
@@ -705,24 +756,14 @@ class PlaygroundController extends Controller
 
     /**
      * Send auto-response email to the form submitter.
-     *
-     * _auto-response field supports two formats:
-     *   1. Message only:
-     *      value="Thank you for reaching us."
-     *      → Uses default subject: "We received your message — {form_name}"
-     *
-     *   2. Message with custom subject (pipe-separated):
-     *      value="Thank you for reaching us.|We received your message"
-     *      → Uses custom subject from after the pipe
-     *
-     * Supports placeholders in BOTH message and subject: {name}, {email}, {date}
+     * Supports pipe-separated subject: "Message body|Custom Subject"
+     * Supports placeholders: {name}, {email}, {date}
      */
     protected function sendAutoResponse(string $visitorEmail, array $formData, array $specialData): void
     {
         try {
             $rawValue = $specialData['_auto-response'] ?? "Thank you for your submission. We'll get back to you soon.";
 
-            // Parse optional pipe-separated subject: "Message body|Custom Subject"
             if (str_contains($rawValue, '|')) {
                 [$autoResponseMessage, $customSubject] = array_map('trim', explode('|', $rawValue, 2));
             } else {
@@ -730,11 +771,9 @@ class PlaygroundController extends Controller
                 $customSubject       = null;
             }
 
-            // Build subject — use custom if provided, otherwise default
             $defaultSubject = 'We received your message — ' . ($formData['form_name'] ?? config('app.name'));
             $subject        = $customSubject ?: $defaultSubject;
 
-            // Replace placeholders in both message and subject
             $placeholders = ['{name}', '{email}', '{date}'];
             $replacements = [
                 $formData['name']         ?? 'Visitor',
@@ -745,10 +784,7 @@ class PlaygroundController extends Controller
             $autoResponseMessage = str_replace($placeholders, $replacements, $autoResponseMessage);
             $subject             = str_replace($placeholders, $replacements, $subject);
 
-            Log::info('Sending auto-response', [
-                'to'      => $visitorEmail,
-                'subject' => $subject,
-            ]);
+            Log::info('Sending auto-response', ['to' => $visitorEmail, 'subject' => $subject]);
 
             Mail::html(
                 '<div style="font-family:sans-serif;font-size:15px;line-height:1.6;color:#333;">'
@@ -763,25 +799,12 @@ class PlaygroundController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Auto-response failed: ' . $e->getMessage(), ['to' => $visitorEmail]);
-            // Don't re-throw — auto-response failure should never break main submission
         }
     }
 
     /**
-     * Blacklist: removes any field whose VALUE contains a banned word/phrase.
-     * Also removes fields whose KEY contains a banned term.
-     *
-     * Returns TRUE if the entire submission should be blocked
-     * (banned word found in 'message' or 'body' — core content fields).
-     * Returns FALSE if only minor fields were cleaned and email can still send.
-     *
-     * Called BEFORE buildFormData() so banned content never reaches the email.
-     */
-    /**
      * Check ALL submitted field values against the blacklist.
-     * If ANY field's value contains a banned word → return true (block entire email).
-     * We check submissionData AND also the raw request inputs like 'message', 'name', 'email'
-     * so nothing bypasses via buildFormData reading directly from $request.
+     * Returns true if submission should be blocked.
      */
     protected function handleBlacklist($blacklist, Request $request, array $submissionData): bool
     {
@@ -795,8 +818,6 @@ class PlaygroundController extends Controller
             return false;
         }
 
-        // Only check user-submitted fields — skip ALL special/internal fields (anything starting with _)
-        // Without this, the blacklist scans its OWN value and blocks clean submissions
         $allValues = array_filter(
             $request->except(['_token', '_method', 'recipient_email', 'form_slug']),
             fn($v, $k) => !str_starts_with((string)$k, '_') && (!is_array($v) || count($v) > 0),
@@ -815,7 +836,7 @@ class PlaygroundController extends Controller
                         'field' => $key,
                         'term'  => $term,
                     ]);
-                    return true; // Block the whole email immediately
+                    return true;
                 }
             }
         }
@@ -845,9 +866,8 @@ class PlaygroundController extends Controller
     }
 
     /**
-     * Send verification email
-     * FIX: verification token cache stays 7 days (enough to click link),
-     * but on confirmation we store forever — so form never stops working
+     * Send verification email.
+     * Token cache = 24 hours (to click link). On confirmation → stored forever.
      */
     protected function sendVerification(string $email): void
     {
@@ -857,7 +877,7 @@ class PlaygroundController extends Controller
         Cache::put($cacheKey, [
             'token'    => $token,
             'verified' => false,
-        ], now()->addHours(24)); // 24 hours to click the link — enough time
+        ], now()->addHours(24));
 
         $verifyUrl = route('playground.confirm-email', [
             'email' => $email,

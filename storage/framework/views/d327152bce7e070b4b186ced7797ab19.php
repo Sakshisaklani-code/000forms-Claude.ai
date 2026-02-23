@@ -13,4 +13,4 @@
   </label>
   <!-- your other form fields go here -->
   <button type="submit">Send</button>
-</form>
+</form><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/formspree.blade.php ENDPATH**/ ?>

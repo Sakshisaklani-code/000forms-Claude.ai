@@ -7,41 +7,55 @@ use Illuminate\Support\Facades\Log;
 
 class RecaptchaService
 {
-    public function verify(?string $token): bool
+    /**
+     * Verify reCAPTCHA token
+     */
+    public function verify(string $token, ?string $ip = null): bool
     {
-        $secret = config('supabase.recaptcha.secret');
-
-        if (empty($secret)) {
-            Log::warning('reCAPTCHA: CAPTCHA_SECRET_KEY not set in .env');
-            return true;
-        }
-
+        // Skip if no token (will be caught by caller)
         if (empty($token)) {
-            Log::warning('reCAPTCHA: No token received');
+            Log::warning('RecaptchaService: Empty token provided');
             return false;
         }
-
+        
         try {
             $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret'   => $secret,
+                'secret' => config('services.recaptcha.secret_key'),
                 'response' => $token,
+                'remoteip' => $ip ?? request()->ip() ?? '0.0.0.0',
             ]);
-
-            $result  = $response->json();
-            $success = $result['success'] ?? false;
-
-            Log::info('reCAPTCHA v2 result', ['success' => $success]);
-
-            return $success;
-
+            
+            if (!$response->successful()) {
+                Log::error('RecaptchaService: HTTP request failed', [
+                    'status' => $response->status()
+                ]);
+                return false;
+            }
+            
+            $result = $response->json();
+            
+            Log::info('RecaptchaService: Verification result', [
+                'success' => $result['success'] ?? false,
+                'score' => $result['score'] ?? null,
+                'action' => $result['action'] ?? null,
+                'error_codes' => $result['error-codes'] ?? []
+            ]);
+            
+            return $result['success'] ?? false;
+            
         } catch (\Exception $e) {
-            Log::error('reCAPTCHA verification exception: ' . $e->getMessage());
+            Log::error('RecaptchaService: Exception during verification', [
+                'error' => $e->getMessage()
+            ]);
             return false;
         }
     }
-
-    public function siteKey(): string
+    
+    /**
+     * Check if captcha is disabled by user via _captcha=false field
+     */
+    public function isDisabledByUser(array $data): bool
     {
-        return config('supabase.recaptcha.site_key', '');
+        return isset($data['_captcha']) && $data['_captcha'] === 'false';
     }
 }

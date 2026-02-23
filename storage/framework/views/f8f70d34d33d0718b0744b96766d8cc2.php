@@ -8,4 +8,4 @@
   <button type="submit">Send Message</button>
 </form>
 
-<!-- Users will be redirected to our secure captcha page if needed -->
+<!-- Users will be redirected to our secure captcha page if needed --><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000forms-Claude.ai\resources\views/Test-forms/test.blade.php ENDPATH**/ ?>
