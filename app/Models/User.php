@@ -17,6 +17,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    public $rememberTokenName = false;  
+
     protected $fillable = [
         'id',
         'email',
@@ -26,6 +29,8 @@ class User extends Authenticatable
         'email_verified',
         'email_verified_at',
         'metadata',
+        'google_id',  
+        'avatar',
     ];
 
     /**

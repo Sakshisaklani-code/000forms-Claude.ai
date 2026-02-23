@@ -9,7 +9,17 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PlaygroundController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\SocialAuthController;
 use Illuminate\Support\Facades\Route;
+
+
+/*
+|--------------------------------------------------------------------------
+| Google Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/auth/{provider}', [SocialAuthController::class, 'redirect'])->name('social.redirect');
+Route::get('/auth/callback/{provider}', [SocialAuthController::class, 'callback'])->name('social.callback');
 
 /*
 |--------------------------------------------------------------------------
@@ -98,11 +108,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
     Route::post('/forgot-password',[AuthController::class, 'sendResetLink'])->name('password.email');
 });
-
-Route::get('/auth/{provider}',          [AuthController::class, 'redirectToProvider'])->name('auth.provider');
-Route::get('/auth/callback/{provider}', [AuthController::class, 'handleCallback'])->name('auth.callback');
-Route::post('/auth/tokens',             [AuthController::class, 'processTokens'])->name('auth.tokens');
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
