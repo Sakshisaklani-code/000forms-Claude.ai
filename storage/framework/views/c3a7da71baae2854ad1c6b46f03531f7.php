@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="000form - Free form backend for your websites. No server required.">
     <title><?php echo $__env->yieldContent('title', '000form - Free Form Backend'); ?></title>
+    <!-- Favicon -->
     <link rel="icon" href="<?php echo e(asset('images/favicon/file-text-fill.svg')); ?>" type="image/svg+xml">
+    <!-- Canonical Tag --> 
+    <link rel="canonical" href="https://000form.com/" />
+    <!-- FontsStyles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="/css/app.css">
+    <!-- Open Graph Tags --> 
+    <meta property="og:title" content="000Forms - Smart Form Submissions" /> 
+    <meta property="og:description" content="Easily create and manage forms with 000Forms, a Laravel-powered solution." /> 
+    <meta property="og:type" content="website" /> 
+    <meta property="og:url" content="https://000form.com/" /> 
+    <meta property="og:image" content="<?php echo e(asset('images/og-image/og-image.jpg')); ?>" /> 
+    <meta property="og:site_name" content="000Forms" />
+    <!-- Index and follow for SEO -->
+    <meta name="robots" content="index, follow">
+    <!-- Schema.org JSON-LD --> 
+    <script type="application/ld+json"> 
+       { 
+            "@context": "https://schema.org", 
+            "@type": "Organization", 
+            "name": "000Forms", 
+            "alternateName": "000Forms", 
+            "url": "<?php echo e(url('/')); ?>", 
+        }
+    </script>
     <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>

@@ -24,6 +24,16 @@
     <meta property="og:site_name" content="000Forms" />
     <!-- Index and follow for SEO -->
     <meta name="robots" content="index, follow">
+    <!-- Schema.org JSON-LD --> 
+    <script type="application/ld+json"> 
+       { 
+            "@context": "https://schema.org", 
+            "@type": "Organization", 
+            "name": "000Forms", 
+            "alternateName": "000Forms", 
+            "url": "{{ url('/') }}", 
+        }
+    </script>
     @stack('styles')
 </head>
 <body>
