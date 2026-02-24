@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="description" content="000form - Free form backend for your websites. No server required.">
     <title>@yield('title', '000form - Free Form Backend')</title>
     <!-- Favicon -->
@@ -37,18 +37,115 @@
         }
     </script>
     @stack('styles')
+    <style>
+        /* Mobile menu styles */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 100;
+        }
+        
+        .mobile-menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            margin: 5px 0;
+            transition: 0.3s;
+            border-radius: 3px;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-links,
+            .nav-actions {
+                display: none;
+                width: 100%;
+            }
+            
+            .nav-links.active,
+            .nav-actions.active {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+            
+            .nav-links.active {
+                border-top: 1px solid var(--border-color);
+                margin-top: 1rem;
+            }
+            
+            .nav-inner {
+                flex-wrap: wrap;
+            }
+            
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav-logo {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <nav class="nav">
         <div class="nav-inner">
             <a href="/" class="nav-logo"><span>000</span>form</a>
-            <ul class="nav-links">
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav-links" id="navLinks">
                 <li><a href="{{ route('docs') }}">Documentation</a></li>
                 <li><a href="{{ route('pricing') }}">Pricing</a></li>
                 <li><a href="{{ route('Home.library') }}">Library</a></li>
             </ul>
-            <div class="nav-actions">
+            
+            <div class="nav-actions" id="navActions">
                 @auth
                     <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
                 @else
@@ -60,9 +157,7 @@
     </nav>
 
     @yield('content')
-    <script src="/js/app.js"></script>
-    @stack('scripts')
-
+    
     <footer class="footer">
         <div class="container">
             <div class="footer-inner">
@@ -77,5 +172,23 @@
         </div>
     </footer>
 
+    <script src="/js/app.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('mobileMenuToggle');
+            const navLinks = document.getElementById('navLinks');
+            const navActions = document.getElementById('navActions');
+            
+            if (toggle && navLinks && navActions) {
+                toggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                    navActions.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>
