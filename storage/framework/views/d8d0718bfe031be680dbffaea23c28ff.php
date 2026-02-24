@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', 'AJAX - 000forms')
 
-@section('content')
+<?php $__env->startSection('title', 'AJAX - 000forms'); ?>
+
+<?php $__env->startSection('content'); ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
@@ -352,7 +352,7 @@
 <div class="ajax-docs-wrap">
     <div class="container">
 
-        {{-- Page heading --}}
+        
         <div class="ajax-page-head">
             <h1>AJAX Form Submission</h1>
             <p>Submit forms without a page reload. Add one header and you're done.</p>
@@ -364,7 +364,7 @@
 
         <div class="ajax-docs-layout">
 
-            {{-- ── SIDEBAR ── --}}
+            
             <nav class="docs-nav">
                 <div class="docs-nav-label">Methods</div>
                 <a href="#overview"><i class="bi bi-grid-1x2"></i> Overview</a>
@@ -381,10 +381,10 @@
                 <a href="#test-ajax"><i class="bi bi-play-circle"></i> Test AJAX</a>
             </nav>
 
-            {{-- ── MAIN CONTENT ── --}}
+            
             <div>
 
-                {{-- Overview --}}
+                
                 <div class="docs-section" id="overview">
                     <div class="docs-section-header">
                         <h2>
@@ -403,7 +403,7 @@
 
                 <div class="section-group-label"><span>Methods</span></div>
 
-                {{-- Fetch --}}
+                
                 <div class="docs-section" id="fetch">
                     <div class="docs-section-header">
                         <h2>
@@ -457,7 +457,7 @@ form.<span class="fn">addEventListener</span>(<span class="str2">'submit'</span>
                     </div>
                 </div>
 
-                {{-- jQuery --}}
+                
                 <div class="docs-section" id="jquery">
                     <div class="docs-section-header">
                         <h2>
@@ -497,7 +497,7 @@ form.<span class="fn">addEventListener</span>(<span class="str2">'submit'</span>
                     </div>
                 </div>
 
-                {{-- Axios --}}
+                
                 <div class="docs-section" id="axios">
                     <div class="docs-section-header">
                         <h2>
@@ -535,7 +535,7 @@ form.<span class="fn">addEventListener</span>(<span class="str2">'submit'</span>
 
                 <div class="section-group-label"><span>Reference</span></div>
 
-                {{-- Attributes --}}
+                
                 <div class="docs-section" id="attributes">
                     <div class="docs-section-header">
                         <h2>
@@ -585,7 +585,7 @@ form.<span class="fn">addEventListener</span>(<span class="str2">'submit'</span>
                     </div>
                 </div>
 
-                {{-- Responses --}}
+                
                 <div class="docs-section" id="responses">
                     <div class="docs-section-header">
                         <h2>
@@ -623,7 +623,7 @@ form.<span class="fn">addEventListener</span>(<span class="str2">'submit'</span>
                     </div>
                 </div>
 
-                {{-- Tips --}}
+                
                 <div class="docs-section" id="tips">
                     <div class="docs-section-header">
                         <h2>
@@ -669,7 +669,7 @@ btn.textContent = <span class="str2">'Sending…'</span>;
                     </div>
                 </div>
 
-                {{-- ══════════ TEST AJAX ══════════ --}}
+                
                 <div class="test-section" id="test-ajax">
                     <div class="test-section-header">
                         <h2>
@@ -681,7 +681,7 @@ btn.textContent = <span class="str2">'Sending…'</span>;
                     </div>
                     <div class="test-section-body">
 
-                        {{-- Endpoint bar --}}
+                        
                         <div class="test-endpoint">
                             <label>Endpoint</label>
                             <input type="text" id="testEndpoint"
@@ -689,7 +689,7 @@ btn.textContent = <span class="str2">'Sending…'</span>;
                                    placeholder="https://000forms.com/f/YOUR_TOKEN">
                         </div>
 
-                        {{-- Method tabs --}}
+                        
                         <div class="test-tabs">
                             <button class="test-tab active" onclick="switchTestTab('fetch')">
                                 <i class="bi bi-lightning-charge"></i> Fetch
@@ -702,7 +702,7 @@ btn.textContent = <span class="str2">'Sending…'</span>;
                             </button>
                         </div>
 
-                        {{-- Fetch panel --}}
+                        
                         <div class="test-panel active" id="tp-fetch">
                             <div class="test-grid">
                                 <div class="t-card">
@@ -742,7 +742,7 @@ btn.textContent = <span class="str2">'Sending…'</span>;
                             </div>
                         </div>
 
-                        {{-- jQuery panel --}}
+                        
                         <div class="test-panel" id="tp-jquery">
                             <div class="test-grid">
                                 <div class="t-card">
@@ -784,7 +784,7 @@ btn.textContent = <span class="str2">'Sending…'</span>;
                             </div>
                         </div>
 
-                        {{-- Axios panel --}}
+                        
                         <div class="test-panel" id="tp-axios">
                             <div class="test-grid">
                                 <div class="t-card">
@@ -827,8 +827,8 @@ btn.textContent = <span class="str2">'Sending…'</span>;
                     </div>
                 </div>
 
-            </div>{{-- end main --}}
-        </div>{{-- end layout --}}
+            </div>
+        </div>
     </div>
 </div>
 
@@ -960,4 +960,5 @@ async function testAxios() {
 }
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000form\resources\views/pages/ajax.blade.php ENDPATH**/ ?>
