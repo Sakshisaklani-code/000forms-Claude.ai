@@ -8,6 +8,8 @@
     <link rel="icon" href="{{ asset('images/favicon/file-text-fill.svg') }}" type="image/svg+xml">
     <!-- Canonical Tag --> 
     <link rel="canonical" href="https://000form.com/" />
+    <!-- Keywords --> 
+    <meta name="keywords" content="forms, laravel forms, php form builder, contact forms, form submissions, 000Form">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
