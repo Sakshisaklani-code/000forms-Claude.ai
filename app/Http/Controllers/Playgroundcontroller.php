@@ -13,15 +13,12 @@ use App\Mail\PlaygroundFormSubmissionMail;
 use App\Mail\PlaygroundVerificationMail;
 use App\Models\Form;
 use App\Models\Submission;
-use App\Services\RecaptchaService;
 
 class PlaygroundController extends Controller
 {
-    protected RecaptchaService $recaptcha;
-
-    public function __construct(RecaptchaService $recaptcha)
+    public function __construct()
     {
-        $this->recaptcha = $recaptcha;
+        // No RecaptchaService needed anymore
     }
 
     /**
@@ -159,42 +156,22 @@ class PlaygroundController extends Controller
         }
 
         // -----------------------------------------------------------------
-        // reCAPTCHA VERIFICATION
-        // Skip if user adds: <input type="hidden" name="_captcha" value="false">
+        // CAPTCHA VERIFICATION REMOVED - NO CAPTCHA FOR PLAYGROUND
         // -----------------------------------------------------------------
-        $allData = $request->except(['_token']);
-
-        if (!$this->recaptcha->isDisabledByUser($allData)) {
-            $token = $request->input('g-recaptcha-response', '');
-            if (empty($token) || !$this->recaptcha->verify($token, $request->ip())) {
-                Log::warning('reCAPTCHA failed on email endpoint', ['email' => $email, 'ip' => $request->ip()]);
-
-                if ($request->wantsJson() || $request->input('_format') === 'json') {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'reCAPTCHA verification failed. Please try again.',
-                    ], 422);
-                }
-
-                return back()->with('error', 'reCAPTCHA verification failed. Please try again.')->withInput();
-            }
-        } else {
-            Log::info('reCAPTCHA skipped via _captcha=false', ['email' => $email]);
-        }
 
         try {
+            $allData = $request->except(['_token']);
+            
             $specialFieldKeys = [
                 '_subject', '_replyto', '_next', '_cc', '_bcc',
                 '_template', '_format', '_blacklist', '_auto-response',
-                '_auto-reponse', '_captcha',
+                '_auto-reponse',
             ];
 
             $submissionData = [];
             $specialData    = [];
 
             foreach ($allData as $key => $value) {
-                if ($key === 'g-recaptcha-response') continue;
-
                 if (in_array($key, $specialFieldKeys)) {
                     $normalizedKey               = ($key === '_auto-reponse') ? '_auto-response' : $key;
                     $specialData[$normalizedKey] = $value;
@@ -318,28 +295,12 @@ class PlaygroundController extends Controller
         }
 
         // -----------------------------------------------------------------
-        // reCAPTCHA VERIFICATION
-        // Skip if user adds: <input type="hidden" name="_captcha" value="false">
+        // CAPTCHA VERIFICATION REMOVED - NO CAPTCHA FOR PLAYGROUND
         // -----------------------------------------------------------------
-        $allData = $request->except(['_token']);
-
-        if (!$this->recaptcha->isDisabledByUser($allData)) {
-            $token = $request->input('g-recaptcha-response', '');
-            if (empty($token) || !$this->recaptcha->verify($token, $request->ip())) {
-                Log::warning('reCAPTCHA failed on playground submission', [
-                    'email' => $recipientEmail,
-                    'ip'    => $request->ip(),
-                ]);
-                return response()->json([
-                    'success' => false,
-                    'message' => '⚠️ reCAPTCHA verification failed. Please try again.',
-                ], 422);
-            }
-        } else {
-            Log::info('reCAPTCHA skipped via _captcha=false', ['email' => $recipientEmail]);
-        }
 
         try {
+            $allData = $request->except(['_token']);
+            
             Log::info('Playground submission data', [
                 'all_input'    => $request->except(['_token']),
                 'all_files'    => array_keys($request->allFiles()),
@@ -351,15 +312,13 @@ class PlaygroundController extends Controller
             $specialFieldKeys = [
                 '_subject', '_replyto', '_next', '_cc', '_bcc',
                 '_template', '_format', '_blacklist', '_auto-response',
-                '_auto-reponse', '_captcha',
+                '_auto-reponse',
             ];
 
             $submissionData = [];
             $specialData    = [];
 
             foreach ($allData as $key => $value) {
-                if ($key === 'g-recaptcha-response') continue;
-
                 if (in_array($key, $specialFieldKeys)) {
                     $normalizedKey               = ($key === '_auto-reponse') ? '_auto-response' : $key;
                     $specialData[$normalizedKey] = $value;
@@ -495,34 +454,22 @@ class PlaygroundController extends Controller
         }
 
         // -----------------------------------------------------------------
-        // reCAPTCHA VERIFICATION
-        // Skip if user adds: <input type="hidden" name="_captcha" value="false">
+        // CAPTCHA VERIFICATION REMOVED - NO CAPTCHA FOR PLAYGROUND EXTERNAL FORMS
         // -----------------------------------------------------------------
-        $allData = $request->except(['_token']);
-
-        if (!$this->recaptcha->isDisabledByUser($allData)) {
-            $token = $request->input('g-recaptcha-response', '');
-            if (empty($token) || !$this->recaptcha->verify($token, $request->ip())) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'reCAPTCHA verification failed. Please try again.',
-                ], 422);
-            }
-        }
 
         try {
+            $allData = $request->except(['_token']);
+            
             $specialFieldKeys = [
                 '_subject', '_replyto', '_next', '_cc', '_bcc',
                 '_template', '_format', '_blacklist', '_auto-response',
-                '_auto-reponse', '_captcha',
+                '_auto-reponse',
             ];
 
             $submissionData = [];
             $specialData    = [];
 
             foreach ($allData as $key => $value) {
-                if ($key === 'g-recaptcha-response') continue;
-
                 if (in_array($key, $specialFieldKeys)) {
                     $normalizedKey               = ($key === '_auto-reponse') ? '_auto-response' : $key;
                     $specialData[$normalizedKey] = $value;
@@ -577,7 +524,6 @@ class PlaygroundController extends Controller
                         'special_fields'  => $specialData,
                         'has_attachments' => !empty($attachments),
                         'attachments'     => $uploadMetadata,
-                        'captcha_skipped' => $this->recaptcha->isDisabledByUser($allData),
                     ],
                     'ip_address' => $request->ip(),
                     'user_agent' => $request->userAgent(),

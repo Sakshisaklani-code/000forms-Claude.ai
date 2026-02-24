@@ -88,15 +88,15 @@
         <div class="logo">000<span>form</span>.com</div>
         <h1>Verify your email address</h1>
         <p>
-            Someone (hopefully you!) entered <strong style="color:#fafafa;">{{ $recipientEmail }}</strong>
-            as a form submission recipient on the <strong style="color:#fafafa;">{{ $appName }} Playground</strong>.
+            Someone (hopefully you!) entered <strong style="color:#fafafa;"><?php echo e($recipientEmail); ?></strong>
+            as a form submission recipient on the <strong style="color:#fafafa;"><?php echo e($appName); ?> Playground</strong>.
             Click the button below to confirm you own this address.
         </p>
-        <a href="{{ $verifyUrl }}" class="btn">Verify My Email</a>
+        <a href="<?php echo e($verifyUrl); ?>" class="btn">Verify My Email</a>
         <p style="font-size:0.82rem; color:#555;">
             Or copy and paste this URL into your browser:
         </p>
-        <div class="url-box">{{ $verifyUrl }}</div>
+        <div class="url-box"><?php echo e($verifyUrl); ?></div>
         <div class="footer">
             If you didn't request this, you can safely ignore this email.
             No account has been created and no further emails will be sent.
@@ -104,4 +104,4 @@
     </div>
 </div>
 </body>
-</html>
+</html><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000form\resources\views/emails/playground-verification.blade.php ENDPATH**/ ?>

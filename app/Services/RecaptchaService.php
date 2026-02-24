@@ -58,4 +58,12 @@ class RecaptchaService
     {
         return isset($data['_captcha']) && $data['_captcha'] === 'false';
     }
+    
+    /**
+     * Check if reCAPTCHA is enabled in configuration
+     */
+    public function isEnabled(): bool
+    {
+        return config('services.recaptcha.enabled', true);
+    }
 }

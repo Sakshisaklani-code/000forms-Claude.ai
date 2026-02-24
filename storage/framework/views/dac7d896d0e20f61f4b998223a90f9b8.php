@@ -1,12 +1,12 @@
-@extends('layouts.app')
 
-@section('title', 'Form Playground')
 
-@section('content')
+<?php $__env->startSection('title', 'Form Playground'); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="playground-wrapper">
     <div class="container">
 
-        {{-- Page Heading --}}
+        
         <div class="playground-header">
             <div class="playground-badge">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
@@ -18,10 +18,10 @@
             <p class="playground-subtitle">Build your form, preview it live, and test real email delivery — all in one place.</p>
         </div>
 
-        {{-- Main Two-Column Layout --}}
+        
         <div class="playground-main">
 
-            {{-- LEFT PANEL - Editor --}}
+            
             <div class="panel editor-panel">
                 <div class="panel-header">
                     <div class="panel-title">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                {{-- HTML Tab --}}
+                
                 <div class="tab-content active" id="tab-code">
                     <div class="editor-toolbar">
                         <span class="editor-lang">HTML</span>
@@ -60,19 +60,31 @@
                             Copy
                         </button>
                     </div>
-                    <textarea id="htmlEditor" class="code-editor" spellcheck="false">&lt;form action="{{ config('app.url') }}/f/YOUR@EMAIL.COM" method="POST"&gt;
-    &lt;input type="text" name="name" placeholder="Your name" required&gt;
-    &lt;input type="email" name="email" placeholder="Your email" required&gt;
-    &lt;textarea name="message" placeholder="Your message" required&gt;&lt;/textarea&gt;
-    
-    &lt;!-- To disable captcha, add this hidden field --&gt;
-    &lt;!-- &lt;input type="hidden" name="_captcha" value="false"&gt; --&gt;
-    
-    &lt;button type="submit"&gt;Send Message&lt;/button&gt;
+                    <textarea id="htmlEditor" class="code-editor" spellcheck="false">&lt;!-- Add _captcha=false to disable captcha --&gt;
+&lt;form action="<?php echo e(config('app.url')); ?>/f/YOUR@EMAIL.COM" method="POST" class="preview-form"&gt;
+
+    &lt;div class="form-row"&gt;
+        &lt;div class="col"&gt;
+            &lt;input type="text" name="name" placeholder="Full Name" required&gt;
+        &lt;/div&gt;
+        &lt;div class="col"&gt;
+            &lt;input type="email" name="email" placeholder="Email Address" required&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        &lt;textarea name="message" placeholder="Your Message" rows="6" required&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+
+    &lt;!-- reCAPTCHA widget - automatically included --&gt;
+    &lt;div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"&gt;&lt;/div&gt;
+
+    &lt;button type="submit" class="submit-btn"&gt;Submit Form&lt;/button&gt;
+
 &lt;/form&gt;</textarea>
                 </div>
 
-                {{-- CSS Tab --}}
+                
                 <div class="tab-content" id="tab-css">
                     <div class="editor-toolbar">
                         <span class="editor-lang">CSS</span>
@@ -84,51 +96,126 @@
                             Copy
                         </button>
                     </div>
-                    <textarea id="cssEditor" class="code-editor" spellcheck="false">form {
-    max-width: 500px;
-    margin: 0 auto;
+                    <textarea id="cssEditor" class="code-editor" spellcheck="false">/* reCAPTCHA styling */
+.g-recaptcha {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    .g-recaptcha {
+        transform: scale(0.9);
+        transform-origin: center;
+    }
+}
+
+.preview-form {
+    max-width: 100%;
     font-family: sans-serif;
 }
 
-input, textarea {
-    width: 100%;
-    padding: 0.75rem;
+/* Two-column row */
+.form-row {
+    display: flex;
+    gap: 0.75rem;
     margin-bottom: 1rem;
-    border: 1px solid #2d2d2d;
-    border-radius: 6px;
-    background: #1a1a1a;
-    color: #ffffff;
-    font-size: 1rem;
-    transition: border-color 0.2s;
 }
 
-input:focus, textarea:focus {
+.form-row .col {
+    flex: 1;
+    min-width: 0;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    color: #e5e7eb;
+    font-size: 0.9rem;
+}
+
+.form-row input,
+.form-group input,
+.form-group textarea,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+textarea {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid #2d2d2d;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: #1a1a1a;
+    color: #ffffff;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form-row input:focus,
+.form-group input:focus,
+.form-group textarea:focus,
+input:focus,
+textarea:focus {
     outline: none;
     border-color: #00ff88;
     box-shadow: 0 0 0 3px rgba(0,255,136,0.1);
 }
 
-button[type="submit"] {
+input::placeholder,
+textarea::placeholder {
+    color: #555;
+}
+
+textarea {
+    resize: vertical;
+}
+
+select {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid #2d2d2d;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: #1a1a1a;
+    color: #ffffff;
+    box-sizing: border-box;
+}
+
+button[type="submit"],
+.submit-btn {
     background: #00ff88;
     color: #050505;
     border: none;
-    border-radius: 6px;
-    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
     font-weight: 600;
+    border-radius: 6px;
     cursor: pointer;
+    width: 100%;
     transition: all 0.2s;
+    margin-top: 0.5rem;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover,
+.submit-btn:hover {
     background: #00cc6a;
     transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+    .form-row { flex-direction: column; gap: 0.5rem; }
 }</textarea>
                 </div>
             </div>
 
-            {{-- RIGHT PANEL - Live Preview --}}
+            
             <div class="panel preview-panel">
                 <div class="panel-header">
                     <div class="panel-title">
@@ -144,7 +231,7 @@ button[type="submit"]:hover {
                 </div>
 
                 <div class="preview-body">
-                    {{-- Email Configuration --}}
+                    
                     <div class="email-config-box">
                         <label for="recipientEmail">
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16">
@@ -158,32 +245,27 @@ button[type="submit"]:hover {
                         </div>
                         <div id="emailStatus" class="email-status"></div>
                         
-                        {{-- Captcha info box - similar to dashboard --}}
-                        <div class="captcha-info-box" style="margin-top:1rem;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                            </svg>
-                            <div>
-                                <p style="margin:0;font-size:0.82rem;">
-                                    <strong>Google CAPTCHA is enabled!</strong> Users will see a captcha page after submission.
-                                    To disable, add: <code style="background:rgba(0,0,0,0.08);padding:0.1rem 0.4rem;border-radius:4px;">&lt;input type="hidden" name="_captcha" value="false"&gt;</code>
-                                </p>
-                            </div>
+                        
+                        <div class="captcha-option" style="margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="disableCaptcha" style="accent-color: var(--accent);">
+                            <label for="disableCaptcha" style="font-size: 0.8rem; color: var(--text-secondary);">
+                                Disable reCAPTCHA (adds <code>_captcha=false</code> to form)
+                            </label>
                         </div>
                     </div>
 
-                    {{-- Dynamic Form Preview --}}
+                    
                     <div id="formPreview" class="preview-content">
-                        {{-- Rendered form goes here --}}
+                        
                     </div>
 
-                    {{-- Response Message --}}
+                    
                     <div id="responseMessage" class="response-message"></div>
                 </div>
             </div>
         </div>
 
-        {{-- Instructions Panel --}}
+        
         <div class="how-it-works-panel">
             <div class="how-header">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -198,30 +280,30 @@ button[type="submit"]:hover {
                 </div>
                 <div class="how-step">
                     <span class="step-num">2</span>
-                    <span>Edit the HTML on the left to design your form</span>
+                    <span>Edit the HTML (and CSS) on the left to design your form</span>
                 </div>
                 <div class="how-step">
                     <span class="step-num">3</span>
-                    <span>Fill in and submit the preview form — you'll be redirected to a captcha page</span>
+                    <span>Complete the reCAPTCHA (or check "Disable" for testing)</span>
                 </div>
                 <div class="how-step">
                     <span class="step-num">4</span>
-                    <span>After captcha verification, submission lands in your inbox</span>
+                    <span>Fill in and submit the preview form — emails land in your inbox</span>
                 </div>
             </div>
-            <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-muted);">
-                <strong>Note:</strong> The captcha page appears <em>after</em> form submission, not in the form itself.
+            <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Pro tip:</strong> Add <code>&lt;input type="hidden" name="_captcha" value="false"&gt;</code> to any form to disable reCAPTCHA
             </div>
         </div>
 
     </div>
 </div>
 
-{{-- Toast notification --}}
-<div id="toast" class="toast"></div>
-@endsection
 
-@push('styles')
+<div id="toast" class="toast"></div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('styles'); ?>
 <style>
 /* ============================================
    Playground Page — uses global CSS variables
@@ -550,36 +632,18 @@ button[type="submit"]:hover {
     color: var(--error);
 }
 
-/* ---- Captcha info box (like dashboard) ---- */
-.captcha-info-box {
+/* ---- reCAPTCHA styling ---- */
+.g-recaptcha {
+    margin: 1rem 0;
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.9rem 1.1rem;
-    background: rgba(65,66,101,0.07);
-    border: 1px solid rgba(65,66,101,0.18);
-    border-radius: 8px;
-    margin-top: 1rem;
+    justify-content: center;
 }
 
-.captcha-info-box svg { 
-    color: #414265; 
-    flex-shrink: 0; 
-    margin-top: 1px; 
-}
-
-.captcha-info-box p { 
-    margin: 0; 
-    font-size: 0.82rem; 
-    color: var(--text-muted); 
-    line-height: 1.5; 
-}
-
-.captcha-info-box code {
-    background: rgba(0,0,0,0.08);
-    padding: 0.1rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
+@media (max-width: 480px) {
+    .g-recaptcha {
+        transform: scale(0.85);
+        transform-origin: center;
+    }
 }
 
 /* ---- Form Preview Content ---- */
@@ -593,53 +657,62 @@ button[type="submit"]:hover {
 }
 
 /* ---- Injected Form Styles ---- */
-.preview-content form {
-    max-width: 100%;
+.preview-content .preview-form { max-width: 100%; }
+.preview-content .form-group { margin-bottom: 1.1rem; }
+.preview-content .form-group label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
-.preview-content input,
-.preview-content textarea {
+.preview-content .form-group input,
+.preview-content .form-group textarea {
     width: 100%;
     padding: 0.6rem 0.85rem;
-    margin-bottom: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 6px;
+    font-size: 0.9rem;
     background: var(--bg-tertiary);
     color: var(--text-primary);
-    font-size: 0.9rem;
+    font-family: var(--font-display);
     transition: all 0.2s;
 }
-.preview-content input:focus,
-.preview-content textarea:focus {
+.preview-content .form-group input:focus,
+.preview-content .form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-glow);
 }
-.preview-content button[type="submit"] {
-    width: 100%;
-    padding: 0.7rem 1.25rem;
+.preview-content .form-group input::placeholder,
+.preview-content .form-group textarea::placeholder { color: var(--text-muted); }
+.preview-content .submit-btn {
     background: var(--accent);
     color: var(--bg-primary);
     border: none;
-    border-radius: 6px;
+    padding: 0.7rem 1.25rem;
     font-size: 0.9rem;
     font-weight: 600;
+    border-radius: 6px;
     cursor: pointer;
+    width: 100%;
+    font-family: var(--font-display);
     transition: all 0.2s ease;
 }
-.preview-content button[type="submit"]:hover {
+.preview-content .submit-btn:hover {
     background: var(--text-primary);
     transform: translateY(-1px);
 }
-.preview-content button[type="submit"]:disabled {
+.preview-content .submit-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
 }
-.preview-content button[type="submit"].loading {
+.preview-content .submit-btn.loading {
     position: relative;
     color: transparent;
 }
-.preview-content button[type="submit"].loading::after {
+.preview-content .submit-btn.loading::after {
     content: '';
     position: absolute;
     width: 1rem;
@@ -672,11 +745,6 @@ button[type="submit"]:hover {
     background: rgba(255,68,68,0.08);
     border: 1px solid rgba(255,68,68,0.2);
     color: var(--error);
-}
-.response-message.info {
-    background: rgba(65,66,101,0.08);
-    border: 1px solid rgba(65,66,101,0.2);
-    color: #414265;
 }
 
 /* ---- How It Works ---- */
@@ -768,11 +836,16 @@ button[type="submit"]:hover {
     .playground-title { font-size: 2.25rem; }
 }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
+// Real site key — used only to render placeholders, never exposed in copied code
+window.__rk = '<?php echo e(config('services.recaptcha.site_key')); ?>';
+
 document.addEventListener('DOMContentLoaded', function () {
+
     /* ============================================================
        Elements
     ============================================================ */
@@ -784,19 +857,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const verifyBtn       = document.getElementById('verifyEmailBtn');
     const emailStatus     = document.getElementById('emailStatus');
     const toast           = document.getElementById('toast');
+    const disableCaptcha  = document.getElementById('disableCaptcha');
     const copyHtmlBtn     = document.getElementById('copyHtml');
     const copyCssBtn      = document.getElementById('copyCss');
 
     let isVerified        = false;
     let injectedStyle     = null;
     let verifiedEmail     = localStorage.getItem('playground_verified_email') || '';
+    let captchaWidgetId   = null;
 
     /* ============================================================
-       Copy Buttons
+       Copy Buttons - Strip real site key before copying
     ============================================================ */
     function setupCopy(btn, getContent) {
         btn.addEventListener('click', () => {
-            navigator.clipboard.writeText(getContent()).then(() => {
+            // Replace real site key with placeholder in copied text
+            const content = getContent();
+            const safe = content.split(window.__rk).join('YOUR_SITE_KEY');
+            
+            navigator.clipboard.writeText(safe).then(() => {
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
                 btn.classList.add('copied');
@@ -855,6 +934,27 @@ document.addEventListener('DOMContentLoaded', function () {
         formPreview.innerHTML = decoded;
         injectCss(cssEditor.value);
         attachFormHandler();
+        
+        // Replace placeholder with real site key for live preview only
+        const recaptchaDivs = formPreview.querySelectorAll('.g-recaptcha');
+        recaptchaDivs.forEach(div => {
+            const sitekey = div.getAttribute('data-sitekey');
+            if (sitekey === 'YOUR_SITE_KEY' && window.__rk) {
+                div.setAttribute('data-sitekey', window.__rk);
+            }
+            
+            // Re-render reCAPTCHA if not already rendered
+            if (typeof grecaptcha !== 'undefined' && !disableCaptcha.checked && !div.hasAttribute('data-widget-id')) {
+                try {
+                    const widgetId = grecaptcha.render(div, {
+                        sitekey: div.getAttribute('data-sitekey') || window.__rk
+                    });
+                    div.setAttribute('data-widget-id', widgetId);
+                } catch (e) {
+                    console.log('reCAPTCHA already rendered or error:', e);
+                }
+            }
+        });
     }
 
     let previewTimer;
@@ -873,20 +973,24 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function updateHtmlCodeWithEmail(email) {
         let currentHtml = htmlEditor.value;
-        // Replace YOUR@EMAIL.COM in the action attribute
+        // Replace YOUR@EMAIL.COM or any email in the action attribute
         const actionRegex = /(action=["'].*\/f\/)([^"']+)(["'])/;
         const match = currentHtml.match(actionRegex);
         
         if (match) {
+            // Update the email in the action attribute
             const newHtml = currentHtml.replace(actionRegex, `$1${email}$3`);
             htmlEditor.value = newHtml;
+            
+            // Also update the preview
             scheduleUpdate();
+            
             showToast(`Email updated in HTML code`);
         }
     }
 
     function checkEmailVerification(email) {
-        return fetch('{{ route("playground.check-verified") }}?email=' + encodeURIComponent(email), {
+        return fetch('<?php echo e(route("playground.check-verified")); ?>?email=' + encodeURIComponent(email), {
             headers: { 'Accept': 'application/json' }
         })
         .then(r => r.json())
@@ -972,11 +1076,11 @@ document.addEventListener('DOMContentLoaded', function () {
         verifyBtn.innerHTML = 'Sending…';
         setEmailStatus('', '');
 
-        fetch('{{ route("playground.verify") }}', {
+        fetch('<?php echo e(route("playground.verify")); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({ email })
@@ -1008,8 +1112,69 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* ============================================================
-       Form Submit Handler - Handles redirect to captcha page
+       Captcha Disable Toggle
     ============================================================ */
+    disableCaptcha.addEventListener('change', function() {
+        let currentHtml = htmlEditor.value;
+        
+        if (this.checked) {
+            // Add _captcha=false if not present
+            if (!currentHtml.includes('name="_captcha"')) {
+                // Insert before closing form tag
+                const formCloseRegex = /<\/form>/i;
+                if (formCloseRegex.test(currentHtml)) {
+                    const newHtml = currentHtml.replace(formCloseRegex, '    <input type="hidden" name="_captcha" value="false">\n</form>');
+                    htmlEditor.value = newHtml;
+                }
+            }
+            showToast('reCAPTCHA disabled for testing');
+        } else {
+            // Remove _captcha=false if present
+            if (currentHtml.includes('name="_captcha"')) {
+                const newHtml = currentHtml.replace(/\s*<input[^>]*name="_captcha"[^>]*>\s*/g, '\n');
+                htmlEditor.value = newHtml;
+            }
+            showToast('reCAPTCHA enabled');
+        }
+        scheduleUpdate();
+    });
+
+    /* ============================================================
+       Form Submit Handler with reCAPTCHA
+    ============================================================ */
+    function getRecaptchaToken(form) {
+        return new Promise((resolve, reject) => {
+            // Check if captcha is disabled via _captcha field
+            const captchaInput = form.querySelector('input[name="_captcha"]');
+            if (captchaInput && captchaInput.value === 'false') {
+                resolve('captcha-disabled');
+                return;
+            }
+
+            // Find reCAPTCHA widget
+            const recaptchaDiv = form.querySelector('.g-recaptcha');
+            if (!recaptchaDiv) {
+                // No reCAPTCHA required
+                resolve('no-captcha');
+                return;
+            }
+
+            const widgetId = recaptchaDiv.getAttribute('data-widget-id');
+            if (!widgetId || typeof grecaptcha === 'undefined') {
+                reject('reCAPTCHA not initialized');
+                return;
+            }
+
+            const response = grecaptcha.getResponse(widgetId);
+            if (!response) {
+                reject('Please complete the reCAPTCHA');
+                return;
+            }
+
+            resolve(response);
+        });
+    }
+
     function resolveRecipientEmail(form) {
         // Try to extract email from action URL: /f/email@example.com
         const action = form.getAttribute('action') || '';
@@ -1062,40 +1227,51 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Prepare form data
-            const formData = new FormData(form);
-            formData.append('_token', '{{ csrf_token() }}');
-            formData.append('recipient_email', targetEmail);
-            formData.append('from_playground', 'true');
+            // Get reCAPTCHA token
+            getRecaptchaToken(form).then(captchaResponse => {
+                const formData = new FormData(form);
+                formData.append('_token', '<?php echo e(csrf_token()); ?>');
+                formData.append('recipient_email', targetEmail);
+                formData.append('from_playground', 'true');
+                
+                // Add captcha response if not disabled
+                if (captchaResponse && captchaResponse !== 'captcha-disabled' && captchaResponse !== 'no-captcha') {
+                    formData.append('g-recaptcha-response', captchaResponse);
+                }
 
-            // Submit the form - expect redirect to captcha page
-            fetch('{{ route("playground.submit") }}', {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                },
-                body: formData
+                // Log what we're sending
+                console.log('Submitting to:', targetEmail, 'Captcha:', captchaResponse);
+
+                return fetch('<?php echo e(route("playground.submit")); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
             })
             .then(async r => {
                 const data = await r.json();
-                
-                // Check if we need to redirect to captcha page
-                if (data.redirect) {
-                    showResponse('🔄 Redirecting to captcha verification...', 'info');
-                    setTimeout(() => {
-                        window.location.href = data.redirect;
-                    }, 1000);
-                    return;
-                }
-                
                 if (!r.ok) {
                     throw new Error(data.message || 'Submission failed');
                 }
-                
+                return data;
+            })
+            .then(data => {
                 if (data.success) {
                     showResponse(`✅ Submission sent to <strong>${targetEmail}</strong>`, 'success');
                     form.reset();
+                    
+                    // Reset reCAPTCHA
+                    if (typeof grecaptcha !== 'undefined') {
+                        const recaptchaDiv = form.querySelector('.g-recaptcha');
+                        if (recaptchaDiv) {
+                            const widgetId = recaptchaDiv.getAttribute('data-widget-id');
+                            if (widgetId) grecaptcha.reset(widgetId);
+                        }
+                    }
+                    
                     showToast('Form submitted!');
                 } else {
                     showResponse(data.message || 'An error occurred.', 'error');
@@ -1157,7 +1333,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    console.log('Playground initialized with interstitial captcha flow');
+    console.log('Playground initialized with reCAPTCHA and auto-email update');
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Git-folders\000FORMS-Claude.ai\000form\resources\views/pages/playground.blade.php ENDPATH**/ ?>
