@@ -1,2 +1,5 @@
 /vendor
 .env
+/bootstrap/cache/config.php
+/storage/app
+/storage/logs
