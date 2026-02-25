@@ -392,9 +392,7 @@
         <div class="verify-card">
             <!-- Form Info -->
             <div class="form-info">
-                <p class="label">Verifying playground submission for</p>
-                <p class="name"><?php echo e($email); ?></p>
-                <div class="playground-badge">🔧 Playground Mode</div>
+                <p class="label">Verify Captcha For Submission</p>
             </div>
             
             <!-- reCAPTCHA Form -->
@@ -415,7 +413,7 @@
             </p>
 
             <!-- Working Line -->
-            <p class="working-line">You Are Working with 000form.com Playground</p>
+            <p class="working-line">You Are Working with 000form.com</p>
         </div>
         
         <!-- Back Link -->
@@ -424,7 +422,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
-                Go back to playground
+                Go back to form
             </a>
         </div>
 

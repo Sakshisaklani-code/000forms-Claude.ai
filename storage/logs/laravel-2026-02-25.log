@@ -219,3 +219,11 @@ CONTEXT:  unnamed portal parameter $1 = '...' at C:/Git-folders/000FORMS-Claude.
 [2026-02-25 06:50:39] local.INFO: Playground: Email sent successfully {"to":"sakshi.saklani@drishinfo.com"} 
 [2026-02-25 06:50:39] local.INFO: Playground: Submission completed successfully {"recipient":"sakshi.saklani@drishinfo.com","attachments":0} 
 [2026-02-25 06:50:39] local.INFO: Playground: Redirecting to form submitted page  
+[2026-02-25 07:09:27] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 07:09:27] local.WARNING: Playground: No pending submission found {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 07:09:42] local.INFO: Playground email submission received {"email":"sakshi.saklani@drishinfo.com","ip":"127.0.0.1","method":"POST","has_files":"no"} 
+[2026-02-25 07:09:42] local.INFO: Playground email: Redirecting to captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 07:09:42] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 07:11:13] local.INFO: Playground email submission received {"email":"sakshi.saklani@drishinfo.com","ip":"127.0.0.1","method":"POST","has_files":"no"} 
+[2026-02-25 07:11:13] local.INFO: Playground email: Redirecting to captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 07:11:13] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
