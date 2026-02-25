@@ -6,7 +6,7 @@
     <meta name="description" content="000form - Free form backend for your websites. No server required.">
     <title><?php echo $__env->yieldContent('title', '000form - Free Form Backend'); ?></title>
     <!-- Favicon -->
-    <link rel="icon" href="<?php echo e(asset('images/favicon/file-text-fill.svg')); ?>" type="image/svg+xml">
+    <link rel="icon" href="<?php echo e(asset('images/favicon/000formFavicon.png')); ?>" type="image/svg+xml">
     <!-- Canonical Tag --> 
     <link rel="canonical" href="https://000form.com/" />
     <!-- Keywords --> 

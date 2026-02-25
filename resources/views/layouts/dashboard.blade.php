@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>@yield('title', 'Dashboard') - 000form</title>
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('images/favicon/file-text-fill.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('images/favicon/000formFavicon.png') }}" type="image/svg+xml">
     <!-- Canonical Tag --> 
     <link rel="canonical" href="https://000form.com/" />
     <!-- Keywords --> 
