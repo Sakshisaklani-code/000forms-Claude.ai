@@ -125,13 +125,19 @@
                 font-size: 0.9rem;
             }
         }
+        .nav-logo img{
+            height: 35px;
+            filter: brightness(0) saturate(100%) invert(74%) sepia(69%) saturate(500%) hue-rotate(100deg) brightness(105%);
+        }
     </style>
 </head>
 <body>
 
     <nav class="nav">
         <div class="nav-inner">
-            <a href="/" class="nav-logo"><span>000</span>form</a>
+            <a href="/" class="nav-logo">
+                <img src="<?php echo e(asset('images/logo/000formlogo.png')); ?>" alt="000form Logo">
+            </a>
             
             <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
                 <span></span>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title><?php echo $__env->yieldContent('title', 'Dashboard'); ?> - 000form</title>
     <!-- Favicon -->
-    <link rel="icon" href="<?php echo e(asset('images/favicon/file-text-fill.svg')); ?>" type="image/svg+xml">
+    <link rel="icon" href="<?php echo e(asset('images/favicon/000formFavicon.png')); ?>" type="image/svg+xml">
     <!-- Canonical Tag --> 
     <link rel="canonical" href="https://000form.com/" />
     <!-- Keywords --> 
@@ -475,13 +475,23 @@
             background: var(--bg-hover);
             color: var(--text-primary);
         }
+        .logo img {
+            height: 35px;
+            filter: brightness(0) saturate(100%) invert(74%) sepia(69%) saturate(500%) hue-rotate(100deg) brightness(105%);
+        }
+
+        .sidebar-logo img {
+            height: 25px;
+            filter: brightness(0) saturate(100%) invert(74%) sepia(69%) saturate(500%) hue-rotate(100deg) brightness(105%);
+        }
     </style>
 </head>
 <body>
+    
     <!-- Mobile Header -->
     <div class="mobile-header">
         <a href="<?php echo e(route('dashboard')); ?>" class="logo">
-            <span>000</span>form
+            <img src="<?php echo e(asset('images/logo/000formlogo.png')); ?>" alt="000form Logo">
         </a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
             <span></span>
@@ -497,7 +507,7 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <a href="<?php echo e(route('dashboard')); ?>" class="sidebar-logo">
-                <span>000</span>form
+                <img src="<?php echo e(asset('images/logo/000formlogo.png')); ?>" alt="000form Logo">
             </a>
             
             <nav>

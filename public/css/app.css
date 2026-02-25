@@ -233,6 +233,7 @@ code, .mono {
 
 .btn-primary:hover {
     background: var(--text-primary);
+    color: var(--bg-primary);
     border-color: var(--text-primary);
     transform: translateY(-1px);
     box-shadow: 0 4px 20px var(--accent-glow);
