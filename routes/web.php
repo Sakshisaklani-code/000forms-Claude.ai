@@ -77,17 +77,25 @@ Route::withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken
 |--------------------------------------------------------------------------
 */
 
+// Playground routes with captcha
 Route::prefix('playground')->name('playground.')->group(function () {
     Route::get('/', [PlaygroundController::class, 'index'])->name('index');
+    Route::post('/submit', [PlaygroundController::class, 'submit'])->name('submit');
+    Route::get('/form-submitted', [PlaygroundController::class, 'formSubmitted'])->name('form.submitted');
+    Route::get('/endpoint/{email}', [PlaygroundController::class, 'formEndpointInfo'])->name('endpoint.info');
+    
+    // Email verification
     Route::post('/verify-email', [PlaygroundController::class, 'verifyEmail'])->name('verify');
     Route::get('/confirm-email', [PlaygroundController::class, 'confirmEmail'])->name('confirm-email');
     Route::get('/check-verified', [PlaygroundController::class, 'checkVerified'])->name('check-verified');
-    Route::post('/submit', [PlaygroundController::class, 'submit'])->name('submit');
+    
+    // Captcha routes - using existing captcha-page view
+    Route::get('/captcha/{email}', [PlaygroundController::class, 'showCaptcha'])->name('show-captcha');
+    Route::post('/captcha/{email}/verify', [PlaygroundController::class, 'verifyCaptcha'])->name('verify-captcha');
+    
+    // Email endpoint (for /f/email style submissions)
+    Route::post('/f/{email}', [PlaygroundController::class, 'handleEmailSubmission'])->name('email-submit');
 });
-
-// Form submitted thank you page
-Route::get('/form-submitted', [PlaygroundController::class, 'formSubmitted'])
-    ->name('playground.form.submitted');
 
 /*
 |--------------------------------------------------------------------------

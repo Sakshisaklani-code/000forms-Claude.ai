@@ -4,3 +4,218 @@
 [2026-02-25 05:19:03] local.ERROR: Supabase password reset error: cURL error 60: SSL certificate problem: self-signed certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://zpqlkncexstlodwcneuq.supabase.co/auth/v1/recover  
 [2026-02-25 05:19:37] local.ERROR: Supabase password reset error: cURL error 60: SSL certificate problem: self-signed certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://zpqlkncexstlodwcneuq.supabase.co/auth/v1/recover  
 [2026-02-25 05:59:59] local.ERROR: Supabase signin error: cURL error 60: SSL certificate problem: self-signed certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://zpqlkncexstlodwcneuq.supabase.co/auth/v1/token?grant_type=password  
+[2026-02-25 06:29:54] local.INFO: Playground: verification email sent {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:30:11] local.INFO: Playground: email verified {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:30:38] local.INFO: Playground submit called {"has_recipient_email":true,"has_form_slug":false,"method":"POST","url":"http://127.0.0.1:8000/playground/submit"} 
+[2026-02-25 06:30:38] local.INFO: Playground: Captcha verification status {"is_captcha_verified":false,"has_captcha_flag":false} 
+[2026-02-25 06:30:38] local.INFO: Playground: Redirecting to captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:30:39] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:30:45] local.INFO: === CAPTCHA VERIFICATION STARTED === {"form_id":"playground_dd0fe449a468dad5c8865a5485aaf21c"} 
+[2026-02-25 06:30:46] local.ERROR: SQLSTATE[22P02]: Invalid text representation: 7 ERROR:  invalid input syntax for type uuid: "playground_dd0fe449a468dad5c8865a5485aaf21c"
+CONTEXT:  unnamed portal parameter $1 = '...' (Connection: pgsql, SQL: select * from "forms" where "forms"."id" = playground_dd0fe449a468dad5c8865a5485aaf21c and "forms"."deleted_at" is null limit 1) {"userId":"d4846ed8-0c73-4d43-8052-21cb0f8e8039","exception":"[object] (Illuminate\\Database\\QueryException(code: 22P02): SQLSTATE[22P02]: Invalid text representation: 7 ERROR:  invalid input syntax for type uuid: \"playground_dd0fe449a468dad5c8865a5485aaf21c\"
+CONTEXT:  unnamed portal parameter $1 = '...' (Connection: pgsql, SQL: select * from \"forms\" where \"forms\".\"id\" = playground_dd0fe449a468dad5c8865a5485aaf21c and \"forms\".\"deleted_at\" is null limit 1) at C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate/Database/Connection->runQueryCallback('select * from \"...', Array, Object(Closure))
+#1 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php(398): Illuminate/Database/Connection->run('select * from \"...', Array, Object(Closure))
+#2 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3106): Illuminate/Database/Connection->select('select * from \"...', Array, true)
+#3 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3091): Illuminate/Database/Query/Builder->runSelect()
+#4 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3676): Illuminate/Database/Query/Builder->Illuminate/Database/Query/{closure}()
+#5 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3090): Illuminate/Database/Query/Builder->onceWithColumns(Array, Object(Closure))
+#6 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(811): Illuminate/Database/Query/Builder->get(Array)
+#7 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(793): Illuminate/Database/Eloquent/Builder->getModels(Array)
+#8 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Concerns/BuildsQueries.php(343): Illuminate/Database/Eloquent/Builder->get(Array)
+#9 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(477): Illuminate/Database/Eloquent/Builder->first(Array)
+#10 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(524): Illuminate/Database/Eloquent/Builder->find('playground_dd0f...', Array)
+#11 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(23): Illuminate/Database/Eloquent/Builder->findOrFail('playground_dd0f...')
+#12 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'findOrFail', Array)
+#13 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('findOrFail', Array)
+#14 C:/Git-folders/000FORMS-Claude.ai/000form/app/Http/Controllers/FormSubmissionController.php(351): Illuminate/Database/Eloquent/Model::__callStatic('findOrFail', Array)
+#15 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/FormSubmissionController->verifyCaptcha(Object(Illuminate/Http/Request), 'playground_dd0f...')
+#16 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44): Illuminate/Routing/Controller->callAction('verifyCaptcha', Array)
+#17 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Route.php(266): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/FormSubmissionController), 'verifyCaptcha')
+#18 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Route.php(212): Illuminate/Routing/Route->runController()
+#19 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(808): Illuminate/Routing/Route->run()
+#20 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(170): Illuminate/Routing/Router->Illuminate/Routing/{closure}(Object(Illuminate/Http/Request))
+#21 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(51): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#22 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#23 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(88): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#24 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/VerifyCsrfToken->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#26 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/View/Middleware/ShareErrorsFromSession->handle(Object(Illuminate/Http/Request), Object(Closure))
+#27 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#28 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate/Session/Middleware/StartSession->handleStatefulRequest(Object(Illuminate/Http/Request), Object(Illuminate/Session/Store), Object(Closure))
+#29 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Session/Middleware/StartSession->handle(Object(Illuminate/Http/Request), Object(Closure))
+#30 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#31 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(75): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#33 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Cookie/Middleware/EncryptCookies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(127): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#35 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(807): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#36 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(786): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#37 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(750): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#38 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(739): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#39 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(201): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#40 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(170): Illuminate/Foundation/Http/Kernel->Illuminate/Foundation/Http/{closure}(Object(Illuminate/Http/Request))
+#41 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#42 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#43 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#44 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#45 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#46 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#47 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#48 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#49 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(110): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#50 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#51 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#52 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#53 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#54 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#55 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#56 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#57 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(127): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#58 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(176): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#59 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(145): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#60 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1220): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#61 C:/Git-folders/000FORMS-Claude.ai/000form/public/index.php(17): Illuminate/Foundation/Application->handleRequest(Object(Illuminate/Http/Request))
+#62 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://Git-folders//...')
+#63 {main}
+
+[previous exception] [object] (PDOException(code: 22P02): SQLSTATE[22P02]: Invalid text representation: 7 ERROR:  invalid input syntax for type uuid: \"playground_dd0fe449a468dad5c8865a5485aaf21c\"
+CONTEXT:  unnamed portal parameter $1 = '...' at C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php:412)
+[stacktrace]
+#0 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php(412): PDOStatement->execute()
+#1 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate/Database/Connection->Illuminate/Database/{closure}('select * from \"...', Array)
+#2 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate/Database/Connection->runQueryCallback('select * from \"...', Array, Object(Closure))
+#3 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Connection.php(398): Illuminate/Database/Connection->run('select * from \"...', Array, Object(Closure))
+#4 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3106): Illuminate/Database/Connection->select('select * from \"...', Array, true)
+#5 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3091): Illuminate/Database/Query/Builder->runSelect()
+#6 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3676): Illuminate/Database/Query/Builder->Illuminate/Database/Query/{closure}()
+#7 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3090): Illuminate/Database/Query/Builder->onceWithColumns(Array, Object(Closure))
+#8 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(811): Illuminate/Database/Query/Builder->get(Array)
+#9 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(793): Illuminate/Database/Eloquent/Builder->getModels(Array)
+#10 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Concerns/BuildsQueries.php(343): Illuminate/Database/Eloquent/Builder->get(Array)
+#11 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(477): Illuminate/Database/Eloquent/Builder->first(Array)
+#12 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(524): Illuminate/Database/Eloquent/Builder->find('playground_dd0f...', Array)
+#13 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(23): Illuminate/Database/Eloquent/Builder->findOrFail('playground_dd0f...')
+#14 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'findOrFail', Array)
+#15 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('findOrFail', Array)
+#16 C:/Git-folders/000FORMS-Claude.ai/000form/app/Http/Controllers/FormSubmissionController.php(351): Illuminate/Database/Eloquent/Model::__callStatic('findOrFail', Array)
+#17 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App/Http/Controllers/FormSubmissionController->verifyCaptcha(Object(Illuminate/Http/Request), 'playground_dd0f...')
+#18 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44): Illuminate/Routing/Controller->callAction('verifyCaptcha', Array)
+#19 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Route.php(266): Illuminate/Routing/ControllerDispatcher->dispatch(Object(Illuminate/Routing/Route), Object(App/Http/Controllers/FormSubmissionController), 'verifyCaptcha')
+#20 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Route.php(212): Illuminate/Routing/Route->runController()
+#21 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(808): Illuminate/Routing/Route->run()
+#22 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(170): Illuminate/Routing/Router->Illuminate/Routing/{closure}(Object(Illuminate/Http/Request))
+#23 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(51): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#24 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Routing/Middleware/SubstituteBindings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#25 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(88): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#26 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/VerifyCsrfToken->handle(Object(Illuminate/Http/Request), Object(Closure))
+#27 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#28 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/View/Middleware/ShareErrorsFromSession->handle(Object(Illuminate/Http/Request), Object(Closure))
+#29 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#30 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate/Session/Middleware/StartSession->handleStatefulRequest(Object(Illuminate/Http/Request), Object(Illuminate/Session/Store), Object(Closure))
+#31 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Session/Middleware/StartSession->handle(Object(Illuminate/Http/Request), Object(Closure))
+#32 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#33 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse->handle(Object(Illuminate/Http/Request), Object(Closure))
+#34 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(75): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#35 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Cookie/Middleware/EncryptCookies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#36 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(127): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#37 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(807): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#38 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(786): Illuminate/Routing/Router->runRouteWithinStack(Object(Illuminate/Routing/Route), Object(Illuminate/Http/Request))
+#39 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(750): Illuminate/Routing/Router->runRoute(Object(Illuminate/Http/Request), Object(Illuminate/Routing/Route))
+#40 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Routing/Router.php(739): Illuminate/Routing/Router->dispatchToRoute(Object(Illuminate/Http/Request))
+#41 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(201): Illuminate/Routing/Router->dispatch(Object(Illuminate/Http/Request))
+#42 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(170): Illuminate/Foundation/Http/Kernel->Illuminate/Foundation/Http/{closure}(Object(Illuminate/Http/Request))
+#43 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#44 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#45 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull->handle(Object(Illuminate/Http/Request), Object(Closure))
+#46 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#47 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate/Foundation/Http/Middleware/TransformsRequest->handle(Object(Illuminate/Http/Request), Object(Closure))
+#48 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/TrimStrings->handle(Object(Illuminate/Http/Request), Object(Closure))
+#49 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#50 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Http/Middleware/ValidatePostSize->handle(Object(Illuminate/Http/Request), Object(Closure))
+#51 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(110): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#52 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance->handle(Object(Illuminate/Http/Request), Object(Closure))
+#53 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#54 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Http/Middleware/HandleCors->handle(Object(Illuminate/Http/Request), Object(Closure))
+#55 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#56 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Http/Middleware/TrustProxies->handle(Object(Illuminate/Http/Request), Object(Closure))
+#57 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#58 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(209): Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks->handle(Object(Illuminate/Http/Request), Object(Closure))
+#59 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(127): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#60 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(176): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#61 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(145): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#62 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1220): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#63 C:/Git-folders/000FORMS-Claude.ai/000form/public/index.php(17): Illuminate/Foundation/Application->handleRequest(Object(Illuminate/Http/Request))
+#64 C:/Git-folders/000FORMS-Claude.ai/000form/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://Git-folders//...')
+#65 {main}
+"} 
+[2026-02-25 06:36:21] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:36:30] local.INFO: Playground: Captcha verification started {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:36:30] local.INFO: Playground: Verifying captcha {"token_exists":true,"ip":"127.0.0.1"} 
+[2026-02-25 06:36:31] local.INFO: RecaptchaService: Verification result {"success":true,"score":null,"action":null,"error_codes":[]} 
+[2026-02-25 06:36:31] local.INFO: Playground: Captcha verified successfully  
+[2026-02-25 06:36:31] local.INFO: Playground: Pending submission found {"data_keys":["name","email","message","from_playground"],"stored_ip":"127.0.0.1"} 
+[2026-02-25 06:36:31] local.INFO: Playground: Recreating request with files {"temp_files":[],"ip":"127.0.0.1"} 
+[2026-02-25 06:36:31] local.INFO: Playground: Recreated request {"has_files":0,"ip":"127.0.0.1"} 
+[2026-02-25 06:36:31] local.INFO: Playground: Processing verified submission {"recipient":"sakshi.saklani@drishinfo.com","all_input":{"name":"sakshi saklani","email":"tsaklani2drish@gmail.com","message":"Testing the Captcha in playground","from_playground":"true","captcha_verified":true,"recipient_email":"sakshi.saklani@drishinfo.com"},"all_files":[]} 
+[2026-02-25 06:36:31] local.INFO: Playground: Form data prepared {"name":"sakshi saklani","has_sender_email":true,"attachments_count":0} 
+[2026-02-25 06:36:31] local.INFO: Playground: Attempting to send email {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:36:31] local.INFO: Building form submission email {"subject":"New Form Submission from 000form","template":"basic","view":"emails.submission-basic","attachments":0,"has_cc":false,"has_bcc":false,"has_replyto":true} 
+[2026-02-25 06:36:35] local.INFO: Playground: Email sent successfully {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:36:35] local.INFO: Playground: Submission completed successfully {"recipient":"sakshi.saklani@drishinfo.com","attachments":0} 
+[2026-02-25 06:47:04] local.INFO: Playground: verification email sent {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:47:15] local.INFO: Playground: email verified {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:47:40] local.INFO: Playground submit called {"has_recipient_email":true,"has_form_slug":false,"method":"POST","url":"http://127.0.0.1:8000/playground/submit"} 
+[2026-02-25 06:47:40] local.INFO: Playground: Captcha verification status {"is_captcha_verified":false,"has_captcha_flag":false} 
+[2026-02-25 06:47:40] local.INFO: Playground: Redirecting to captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:47:41] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:47:46] local.INFO: Playground: Captcha verification started {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:47:46] local.INFO: Playground: Verifying captcha {"token_exists":true,"ip":"127.0.0.1"} 
+[2026-02-25 06:47:46] local.INFO: RecaptchaService: Verification result {"success":true,"score":null,"action":null,"error_codes":[]} 
+[2026-02-25 06:47:46] local.INFO: Playground: Captcha verified successfully  
+[2026-02-25 06:47:46] local.INFO: Playground: Pending submission found {"data_keys":["name","email","message","from_playground"],"stored_ip":"127.0.0.1","source":"playground"} 
+[2026-02-25 06:47:46] local.INFO: Playground: Recreating request with files {"temp_files":[],"ip":"127.0.0.1"} 
+[2026-02-25 06:47:46] local.INFO: Playground: Recreated request {"has_files":0,"ip":"127.0.0.1","source":"playground"} 
+[2026-02-25 06:47:46] local.INFO: Playground: Processing verified submission {"recipient":"sakshi.saklani@drishinfo.com","all_input":{"name":"sakshi saklani","email":"tsaklani2drish@gmail.com","message":"Testing the Captcha Response in the Playground .","recipient_email":"sakshi.saklani@drishinfo.com"},"all_files":[]} 
+[2026-02-25 06:47:46] local.INFO: Playground: Form data prepared {"name":"sakshi saklani","has_sender_email":true,"attachments_count":0} 
+[2026-02-25 06:47:46] local.INFO: Playground: Attempting to send email {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:47:46] local.INFO: Building form submission email {"subject":"New Form Submission from 000form","template":"basic","view":"emails.submission-basic","attachments":0,"has_cc":false,"has_bcc":false,"has_replyto":true} 
+[2026-02-25 06:47:50] local.INFO: Playground: Email sent successfully {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:47:50] local.INFO: Playground: Submission completed successfully {"recipient":"sakshi.saklani@drishinfo.com","attachments":0} 
+[2026-02-25 06:47:50] local.INFO: Playground: Redirecting back to playground after verification  
+[2026-02-25 06:49:04] local.INFO: Playground email submission received {"email":"sakshi.saklani@drishinfo.com","ip":"127.0.0.1","method":"POST","has_files":"no"} 
+[2026-02-25 06:49:04] local.INFO: Playground email: Redirecting to captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:49:04] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:49:17] local.INFO: Playground: Captcha verification started {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:49:17] local.INFO: Playground: Verifying captcha {"token_exists":true,"ip":"127.0.0.1"} 
+[2026-02-25 06:49:17] local.INFO: RecaptchaService: Verification result {"success":true,"score":null,"action":null,"error_codes":[]} 
+[2026-02-25 06:49:17] local.INFO: Playground: Captcha verified successfully  
+[2026-02-25 06:49:17] local.INFO: Playground: Pending submission found {"data_keys":["name","email","message"],"stored_ip":"127.0.0.1","source":"external"} 
+[2026-02-25 06:49:17] local.INFO: Playground: Recreating request with files {"temp_files":[],"ip":"127.0.0.1"} 
+[2026-02-25 06:49:17] local.INFO: Playground: Recreated request {"has_files":0,"ip":"127.0.0.1","source":"external"} 
+[2026-02-25 06:49:17] local.INFO: Playground: Processing verified submission {"recipient":"sakshi.saklani@drishinfo.com","all_input":{"name":"Tanuja","email":"tsaklani2drish@gmail.com","message":"Testing the Captcha outside Playground.","recipient_email":"sakshi.saklani@drishinfo.com"},"all_files":[]} 
+[2026-02-25 06:49:17] local.INFO: Playground: Form data prepared {"name":"Tanuja","has_sender_email":true,"attachments_count":0} 
+[2026-02-25 06:49:17] local.INFO: Playground: Attempting to send email {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:49:17] local.INFO: Building form submission email {"subject":"New Form Submission from 000form","template":"basic","view":"emails.submission-basic","attachments":0,"has_cc":false,"has_bcc":false,"has_replyto":true} 
+[2026-02-25 06:49:21] local.INFO: Playground: Email sent successfully {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:49:21] local.INFO: Playground: Submission completed successfully {"recipient":"sakshi.saklani@drishinfo.com","attachments":0} 
+[2026-02-25 06:49:21] local.INFO: Playground: Redirecting to form submitted page  
+[2026-02-25 06:50:31] local.INFO: Playground email submission received {"email":"sakshi.saklani@drishinfo.com","ip":"127.0.0.1","method":"POST","has_files":"no"} 
+[2026-02-25 06:50:31] local.INFO: Playground email: Redirecting to captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:50:31] local.INFO: Playground: Showing captcha page {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:50:35] local.INFO: Playground: Captcha verification started {"email":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:50:35] local.INFO: Playground: Verifying captcha {"token_exists":true,"ip":"127.0.0.1"} 
+[2026-02-25 06:50:35] local.INFO: RecaptchaService: Verification result {"success":true,"score":null,"action":null,"error_codes":[]} 
+[2026-02-25 06:50:35] local.INFO: Playground: Captcha verified successfully  
+[2026-02-25 06:50:35] local.INFO: Playground: Pending submission found {"data_keys":["name","email","message","_next"],"stored_ip":"127.0.0.1","source":"external"} 
+[2026-02-25 06:50:35] local.INFO: Playground: Recreating request with files {"temp_files":[],"ip":"127.0.0.1"} 
+[2026-02-25 06:50:35] local.INFO: Playground: Recreated request {"has_files":0,"ip":"127.0.0.1","source":"external"} 
+[2026-02-25 06:50:35] local.INFO: Playground: Processing verified submission {"recipient":"sakshi.saklani@drishinfo.com","all_input":{"name":"sakshi","email":"tsaklani2@gmail.com","message":"Testing the _next with the Captcha.","_next":"https://000form.com","recipient_email":"sakshi.saklani@drishinfo.com"},"all_files":[]} 
+[2026-02-25 06:50:35] local.INFO: Playground: Special field found {"key":"_next","value":"https://000form.com"} 
+[2026-02-25 06:50:35] local.INFO: Playground: Form data prepared {"name":"sakshi","has_sender_email":true,"attachments_count":0} 
+[2026-02-25 06:50:35] local.INFO: Playground: Attempting to send email {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:50:35] local.INFO: Building form submission email {"subject":"New Form Submission from 000form","template":"basic","view":"emails.submission-basic","attachments":0,"has_cc":false,"has_bcc":false,"has_replyto":true} 
+[2026-02-25 06:50:39] local.INFO: Playground: Email sent successfully {"to":"sakshi.saklani@drishinfo.com"} 
+[2026-02-25 06:50:39] local.INFO: Playground: Submission completed successfully {"recipient":"sakshi.saklani@drishinfo.com","attachments":0} 
+[2026-02-25 06:50:39] local.INFO: Playground: Redirecting to form submitted page  
