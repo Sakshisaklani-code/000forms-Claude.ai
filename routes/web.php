@@ -97,6 +97,7 @@ Route::prefix('playground')->name('playground.')->group(function () {
     Route::post('/f/{email}', [PlaygroundController::class, 'handleEmailSubmission'])->name('email-submit');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Email Verification

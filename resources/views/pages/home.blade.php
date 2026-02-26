@@ -30,7 +30,59 @@
                 Connect your HTML forms to our endpoint and receive submissions in your inbox. 
                 No backend code, no servers, no hassle. Just forms that work.
             </p>
-            
+
+            {{-- ── TWO WAYS TO USE 000form ── --}}
+                <div class="usage-paths">
+                    <p class="usage-paths__label">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Two ways to use 000form :
+                    </p>
+                    <div class="usage-paths__grid">
+
+                        <!-- ① Instant — no account -->
+                        <div class="usage-path">
+                            <div class="usage-path__eyebrow">
+                                Option 1 &nbsp;·&nbsp; No account needed
+                            </div>
+                            <p class="usage-path__body">
+                                Verify your email once and instantly get a personal endpoint.
+                                Point any HTML form's <code>action</code> to it — submissions
+                                land straight in your inbox. That's it.
+                            </p>
+                            <ol class="usage-path__steps">
+                                <li>Enter your email in the code block below &amp; Verify</li>
+                                <li>Click the confirmation link we email you</li>
+                                <li>Your endpoint is live: <code>/f/you@email.com</code></li>
+                            </ol>
+                            <span class="usage-path__hint">↓ Scroll down to try it right now</span>
+                        </div>
+
+                        <div class="usage-paths__or">or</div>
+
+                        <!-- ② Full dashboard -->
+                        <div class="usage-path">
+                            <div class="usage-path__eyebrow">
+                                Option 2 &nbsp;·&nbsp; Register account
+                            </div>
+                            <p class="usage-path__body">
+                                Create a free account to manage multiple forms, browse full
+                                submission history and track everything in one place.
+                            </p>
+                            <ol class="usage-path__steps">
+                                <li>Sign up — takes 30 seconds, no card required</li>
+                                <li>Create a form and grab its unique endpoint</li>
+                                <li>View, search submission from the dashboard</li>
+                            </ol>
+                            <a href="{{ route('signup') }}" class="usage-path__cta">
+                                Create your free account
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            {{-- ── END TWO WAYS ── --}}
+
             <div class="hero-actions">
                 <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">
                     Start for Free
@@ -48,7 +100,6 @@
                     <div class="code-header">
                         <div class="code-header-left">
                             <span class="code-lang">HTML</span>
-                            <span class="code-badge">Test it now</span>
                         </div>
                         <div class="code-header-right">
                             <div class="email-verify-wrapper">
@@ -87,30 +138,6 @@
                     </div>
                     <div class="code-footer">
                         <div class="status-message" id="heroEmailStatus"></div>
-                        <div class="test-form" id="testFormContainer" style="display: none;">
-                            <div class="test-form-header">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 12H4M12 4v16"/>
-                                </svg>
-                                <h4>Test your endpoint</h4>
-                            </div>
-                            <form id="heroTestForm" class="mini-test-form">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <div class="test-form-row">
-                                    <input type="text" name="name" placeholder="Your Name" required>
-                                </div>
-                                <div class="test-form-row">
-                                    <input type="email" name="email" placeholder="Your Email" required>
-                                </div>
-                                <div class="test-form-row">
-                                    <textarea name="message" placeholder="Test message" rows="2" required></textarea>
-                                </div>
-                                <button type="submit" class="btn-submit-mini">
-                                    <span>Send Test Message</span>
-                                </button>
-                            </form>
-                            <div id="testResponse" class="test-response"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -229,18 +256,222 @@
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="cta-section">
-    <div class="container">
-        <div class="card cta-card">
-            <h2>Ready to simplify your forms?</h2>
-            <p>Join thousands of developers who trust 000form for their static sites. Forever free, no credit card required.</p>
-            <a href="{{ route('signup') }}" class="btn btn-primary btn-lg">Get Started Free</a>
-        </div>
-    </div>
-</section>
-
 @endsection
+
+@push('styles')
+<style>
+/* ─── Two Ways to Use — Brighter with #00ff88 Theme ─── */
+
+.usage-paths {
+    margin: 2rem 0 2.5rem;
+}
+
+.usage-paths__label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #00ff88;
+    margin-bottom: 1rem;
+}
+
+.usage-paths__label svg {
+    stroke: #00ff88;
+}
+
+.usage-paths__grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.15);
+}
+
+/* Divider */
+.usage-paths__or {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: horizontal-tb;
+    padding: 0 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #00ff88;
+    position: relative;
+}
+
+.usage-paths__or::before,
+.usage-paths__or::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: calc(50% - 14px);
+    background: rgba(0, 255, 136, 0.3);
+}
+
+.usage-paths__or::before { top: 0; }
+.usage-paths__or::after  { bottom: 0; }
+
+/* Each path card */
+.usage-path {
+    padding: 1.5rem 1.75rem;
+}
+
+.usage-path:first-child {
+    border-right: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.usage-path__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #00ff88;
+    margin-bottom: 0.6rem;
+}
+
+.usage-path__eyebrow svg {
+    stroke: currentColor;
+}
+
+.usage-path__body {
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1rem;
+}
+
+.usage-path__body code {
+    font-size: 0.78rem;
+    background: rgba(0, 255, 136, 0.15);
+    padding: 0.15rem 0.3rem;
+    border-radius: 4px;
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+/* Numbered steps */
+.usage-path__steps {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.1rem;
+    counter-reset: up-step;
+}
+
+.usage-path__steps li {
+    counter-increment: up-step;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.35rem 0;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+}
+
+.usage-path__steps li:last-child {
+    border-bottom: none;
+}
+
+.usage-path__steps li::before {
+    content: counter(up-step);
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(0, 255, 136, 0.2);
+    border: 1px solid #00ff88;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: white;
+}
+
+/* Hint text (option 1) */
+.usage-path__hint {
+    display: inline-block;
+    font-size: 0.76rem;
+    color: #00ff88;
+    font-style: italic;
+}
+
+/* CTA link (option 2) */
+.usage-path__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: 1px solid #00ff88;
+    background: rgba(0, 255, 136, 0.15);
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.usage-path__cta:hover {
+    background: #00ff88;
+    border-color: #00ff88;
+    color: #000000;
+    gap: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+.usage-path__cta svg {
+    stroke: currentColor;
+}
+
+/* Responsive */
+@media (max-width: 680px) {
+    .usage-paths__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .usage-path:first-child {
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .usage-paths__or {
+        writing-mode: horizontal-tb;
+        padding: 0.6rem 1.5rem;
+        flex-direction: row;
+    }
+
+    .usage-paths__or::before,
+    .usage-paths__or::after {
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: calc(50% - 18px);
+        height: 1px;
+        background: rgba(0, 255, 136, 0.3);
+    }
+
+    .usage-paths__or::before { left: 0; }
+    .usage-paths__or::after  { left: auto; right: 0; }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
@@ -259,10 +490,8 @@
         let verifiedEmail = '';
         let pollInterval = null;
 
-        // Get app URL from config
         const appUrl = '{{ config('app.url') }}';
 
-        // Update email in code snippet
         heroEmail.addEventListener('input', function() {
             const email = this.value.trim();
             if (email && email.includes('@')) {
@@ -273,9 +502,7 @@
             }
         });
 
-        // Copy code functionality
         heroCopyBtn.addEventListener('click', function() {
-            // Get the code content and replace placeholder with actual email if available
             let codeContent = document.querySelector('.code-content pre').innerText;
             const email = heroEmail.value.trim();
             
@@ -307,7 +534,6 @@
             });
         });
 
-        // Verify email
         heroVerifyBtn.addEventListener('click', function() {
             const email = heroEmail.value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -323,7 +549,6 @@
                 return;
             }
 
-            // Disable verify button and show loading
             heroVerifyBtn.disabled = true;
             const btnText = heroVerifyBtn.querySelector('.btn-text');
             const btnSpinner = heroVerifyBtn.querySelector('.btn-spinner');
@@ -333,7 +558,6 @@
             
             showStatus('Sending verification email...', 'pending');
 
-            // Send verification request
             fetch('{{ route("playground.verify") }}', {
                 method: 'POST',
                 headers: {
@@ -360,10 +584,9 @@
             });
         });
 
-        // Poll for verification status
         function pollVerification(email) {
             let attempts = 0;
-            const maxAttempts = 40; // 2 minutes (3s * 40)
+            const maxAttempts = 40;
             
             if (pollInterval) {
                 clearInterval(pollInterval);
@@ -387,11 +610,9 @@
                         isVerified = true;
                         verifiedEmail = email;
                         
-                        // Save to localStorage
                         localStorage.setItem('verified_email', email);
                         
-                        // Update UI
-                        showStatus('✅ Email verified! You can now test the form.', 'verified');
+                        showStatus('✅ Email verified! You can use the form now.', 'verified');
                         
                         const btnText = heroVerifyBtn.querySelector('.btn-text');
                         const btnSpinner = heroVerifyBtn.querySelector('.btn-spinner');
@@ -405,11 +626,9 @@
                         heroVerifyBtn.classList.add('verified');
                         heroVerifyBtn.disabled = false;
                         
-                        // Show test form with animation
                         testFormContainer.style.display = 'block';
                         testFormContainer.style.animation = 'fadeIn 0.5s ease';
                         
-                        // Update placeholder to show verified email
                         heroEmailPlaceholder.textContent = email;
                     }
                 })
@@ -419,7 +638,6 @@
             }, 3000);
         }
 
-        // Reset verify button
         function resetVerifyButton() {
             heroVerifyBtn.disabled = false;
             const btnText = heroVerifyBtn.querySelector('.btn-text');
@@ -431,13 +649,11 @@
             heroVerifyBtn.classList.remove('verified');
         }
 
-        // Show status message
         function showStatus(message, type) {
             heroEmailStatus.textContent = message;
             heroEmailStatus.className = 'status-message ' + type;
         }
 
-        // Handle test form submission
         heroTestForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -451,13 +667,11 @@
             const formData = new FormData(this);
             formData.append('recipient_email', verifiedEmail);
 
-            // Disable submit button
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="btn-spinner">⟳</span> Sending...';
             testResponse.textContent = '';
             testResponse.className = 'test-response';
 
-            // Send test submission
             fetch('{{ route("playground.submit") }}', {
                 method: 'POST',
                 headers: {
@@ -473,7 +687,6 @@
                     testResponse.className = 'test-response success';
                     this.reset();
                     
-                    // Show success message and clear after 5 seconds
                     setTimeout(() => {
                         testResponse.style.opacity = '0';
                         setTimeout(() => {
@@ -498,13 +711,11 @@
             });
         });
 
-        // Check if email was previously verified (from localStorage)
         const savedEmail = localStorage.getItem('verified_email');
         if (savedEmail) {
             heroEmail.value = savedEmail;
             heroEmailPlaceholder.textContent = savedEmail;
             
-            // Check verification status
             fetch('{{ route("playground.check-verified") }}?email=' + encodeURIComponent(savedEmail))
             .then(response => response.json())
             .then(data => {
@@ -521,7 +732,6 @@
             });
         }
 
-        // Add fade animation if not exists
         if (!document.querySelector('#fadeAnimation')) {
             const style = document.createElement('style');
             style.id = 'fadeAnimation';
