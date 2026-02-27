@@ -312,7 +312,7 @@
 </section>
 
 <!-- How It Works -->
-<section class="how-it-works" id="how-it-works">
+<section class="how-it-works">
     <div class="container">
         <div class="section-header">
             <h2>Up and running in 3 simple steps</h2>

@@ -180,18 +180,22 @@
 
     <script src="/js/app.js"></script>
     <script>
-        // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggle = document.getElementById('mobileMenuToggle');
-            const navLinks = document.getElementById('navLinks');
-            const navActions = document.getElementById('navActions');
-            
-            if (toggle && navLinks && navActions) {
-                toggle.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    navLinks.classList.toggle('active');
-                    navActions.classList.toggle('active');
-                });
+        // Remove hash from URL immediately on page load
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname);
+        }
+
+        // Intercept all anchor hash clicks — smooth scroll without hash in URL
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            const hash = link.getAttribute('href');
+            if (hash === '#' || hash === '') return;
+            const target = document.querySelector(hash);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.replaceState(null, '', window.location.pathname);
             }
         });
     </script>
